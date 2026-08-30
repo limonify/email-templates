@@ -4,28 +4,16 @@ import type {
   EmailTheme,
   TemplateEngine,
   BrandingConfig,
-  LimonifyEmailConfig,
 } from "../theme/types.js";
 import { adaptVariables } from "./adapters.js";
+import { getTemplatePropsForLocale } from "../i18n/index.js";
 
-import { OTPEmail, type OTPEmailProps } from "../templates/otp.js";
-import {
-  PasswordResetEmail,
-  type PasswordResetEmailProps,
-} from "../templates/password-reset.js";
-import { WelcomeEmail, type WelcomeEmailProps } from "../templates/welcome.js";
-import {
-  NotificationEmail,
-  type NotificationEmailProps,
-} from "../templates/notification.js";
-import {
-  PaymentCompletedEmail,
-  type PaymentCompletedEmailProps,
-} from "../templates/payment-completed.js";
-import {
-  MagicLinkEmail,
-  type MagicLinkEmailProps,
-} from "../templates/magic-link.js";
+import { OTPEmail } from "../templates/otp.js";
+import { PasswordResetEmail } from "../templates/password-reset.js";
+import { WelcomeEmail } from "../templates/welcome.js";
+import { NotificationEmail } from "../templates/notification.js";
+import { PaymentCompletedEmail } from "../templates/payment-completed.js";
+import { MagicLinkEmail } from "../templates/magic-link.js";
 
 export type TemplateId =
   | "otp"
@@ -94,14 +82,18 @@ export async function renderTemplateToHtml(
   engine: TemplateEngine = "go",
   branding: BrandingConfig = {},
   customTemplateProps: Record<string, any> = {},
+  locale: string = "en",
 ): Promise<string> {
   const meta = TEMPLATES_REGISTRY[templateId];
   if (!meta) {
     throw new Error(`Unknown template ID: ${templateId}`);
   }
 
+  const localeProps = getTemplatePropsForLocale(templateId, locale);
+
   const mergedProps = {
     theme,
+    ...localeProps,
     ...branding,
     ...customTemplateProps,
   };

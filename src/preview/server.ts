@@ -8,6 +8,7 @@ import {
   defaultLimonifyLightTheme,
 } from "../theme/defaults.js";
 import type { EmailTheme, TemplateEngine } from "../theme/types.js";
+import { LOCALES_REGISTRY, type SupportedLocale } from "../i18n/index.js";
 
 export function startPreviewServer(port: number = 3000) {
   console.log(
@@ -28,6 +29,8 @@ export function startPreviewServer(port: number = 3000) {
           "double-frame") as "double-frame" | "single" | "minimal";
         const engine = (url.searchParams.get("engine") ||
           "go") as TemplateEngine;
+        const locale = (url.searchParams.get("locale") ||
+          "en") as SupportedLocale;
         const useDummy = url.searchParams.get("dummy") === "true";
 
         const baseTheme: EmailTheme =
@@ -45,18 +48,39 @@ export function startPreviewServer(port: number = 3000) {
             resetUrl: "https://ui.limonify.com/reset",
             dashboardUrl: "https://ui.limonify.com/dashboard",
             loginUrl: "https://ui.limonify.com/magic-login",
-            expiresIn: "10 minutes",
+            expiresIn:
+              locale === "tr"
+                ? "10 dakika"
+                : locale === "de"
+                  ? "10 Minuten"
+                  : locale === "es"
+                    ? "10 minutos"
+                    : locale === "fr"
+                      ? "10 minutes"
+                      : "10 minutes",
             orderId: "#LMN-94820",
             amount: "$49.00",
             planName: "Limonify UI Pro (Annual Plan)",
             paymentMethod: "Visa ending in 4242",
             subtotal: "$40.83",
             tax: "$8.17",
-            date: "August 30, 2026",
+            date:
+              locale === "tr"
+                ? "30 Ağustos 2026"
+                : locale === "de"
+                  ? "30. August 2026"
+                  : "August 30, 2026",
             receiptUrl: "https://ui.limonify.com/invoices/94820",
-            title: "Security Alert: New Sign-in Detected",
+            title:
+              locale === "tr"
+                ? "Güvenlik Uyarısı: Yeni Giriş Algılandı"
+                : locale === "de"
+                  ? "Sicherheitswarnung: Neue Anmeldung"
+                  : "Security Alert: New Sign-in Detected",
             message:
-              "A new session was initiated on your account from Safari on macOS in San Francisco, CA. If this was you, no action is needed.",
+              locale === "tr"
+                ? "Hesabınıza San Francisco, ABD konumundaki macOS Safari tarayıcısından yeni bir giriş yapıldı."
+                : "A new session was initiated on your account from Safari on macOS in San Francisco, CA. If this was you, no action is needed.",
             actionUrl: "https://ui.limonify.com/security",
             sessionDetails: {
               device: "MacBook Pro (macOS 15.4)",
@@ -75,6 +99,7 @@ export function startPreviewServer(port: number = 3000) {
             engine,
             { appName: "Limonify" },
             dummyProps,
+            locale,
           );
           return new Response(html, {
             headers: { "Content-Type": "text/html; charset=utf-8" },
@@ -97,12 +122,12 @@ export function startPreviewServer(port: number = 3000) {
   <title>Limonify Email Templates Studio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #070a11;
+      background: #0a0a0a;
       color: #f8fafc;
       display: flex;
       height: 100vh;
@@ -110,8 +135,8 @@ export function startPreviewServer(port: number = 3000) {
     }
     aside {
       width: 290px;
-      background: #0e1422;
-      border-right: 1px solid #1c263c;
+      background: #171717;
+      border-right: 1px solid #262626;
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
@@ -121,7 +146,7 @@ export function startPreviewServer(port: number = 3000) {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid #1c263c;
+      border-bottom: 1px solid #262626;
     }
     .brand-left {
       display: flex;
@@ -131,14 +156,13 @@ export function startPreviewServer(port: number = 3000) {
     .brand-icon {
       width: 32px;
       height: 32px;
-      background: #131b2e;
-      border: 1px solid #1c263c;
+      background: #262626;
+      border: 1px solid #383838;
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 16px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     }
     .brand-title {
       font-weight: 700;
@@ -169,13 +193,13 @@ export function startPreviewServer(port: number = 3000) {
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: #64748b;
+      color: #737373;
       padding: 8px 10px 4px;
     }
     .nav-item {
       padding: 10px 12px;
       border-radius: 10px;
-      color: #94a3b8;
+      color: #a3a3a3;
       text-decoration: none;
       font-size: 13px;
       font-weight: 500;
@@ -187,32 +211,32 @@ export function startPreviewServer(port: number = 3000) {
       border: 1px solid transparent;
     }
     .nav-item:hover {
-      background: #131b2e;
+      background: #262626;
       color: #f8fafc;
-      border-color: #1c263c;
+      border-color: #383838;
     }
     .nav-item.active {
       background: #facc15;
-      color: #070a11;
+      color: #0a0a0a;
       font-weight: 700;
       box-shadow: 0 4px 14px rgba(250, 204, 21, 0.25);
     }
     .nav-item.active .desc { color: #423b05; font-weight: 500; }
-    .desc { font-size: 11px; color: #64748b; line-height: 14px; }
+    .desc { font-size: 11px; color: #737373; line-height: 14px; }
     main {
       flex: 1;
       display: flex;
       flex-direction: column;
-      background: #070a11;
+      background: #0a0a0a;
     }
     header {
       height: 64px;
-      border-bottom: 1px solid #1c263c;
+      border-bottom: 1px solid #262626;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 24px;
-      background: #0e1422;
+      background: #171717;
     }
     .header-left {
       display: flex;
@@ -228,15 +252,15 @@ export function startPreviewServer(port: number = 3000) {
     .control-group {
       display: flex;
       align-items: center;
-      background: #131b2e;
-      border: 1px solid #1c263c;
+      background: #262626;
+      border: 1px solid #383838;
       border-radius: 8px;
       padding: 2px;
     }
     .btn-toggle {
       background: transparent;
       border: none;
-      color: #94a3b8;
+      color: #a3a3a3;
       padding: 6px 12px;
       border-radius: 6px;
       font-size: 12px;
@@ -246,13 +270,12 @@ export function startPreviewServer(port: number = 3000) {
       font-family: inherit;
     }
     .btn-toggle.active {
-      background: #1c263c;
+      background: #383838;
       color: #f8fafc;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
     select {
-      background: #131b2e;
-      border: 1px solid #1c263c;
+      background: #262626;
+      border: 1px solid #383838;
       color: #f8fafc;
       padding: 7px 12px;
       border-radius: 8px;
@@ -265,7 +288,7 @@ export function startPreviewServer(port: number = 3000) {
     select:focus { border-color: #facc15; }
     .btn-copy {
       background: #facc15;
-      color: #070a11;
+      color: #0a0a0a;
       border: none;
       padding: 7px 14px;
       border-radius: 8px;
@@ -286,10 +309,10 @@ export function startPreviewServer(port: number = 3000) {
       align-items: center;
       padding: 32px;
       overflow: auto;
-      background: radial-gradient(circle at 50% 30%, #111827 0%, #070a11 100%);
+      background: radial-gradient(circle at 50% 30%, #1f1f1f 0%, #0a0a0a 100%);
     }
     iframe {
-      border: 1px solid #1c263c;
+      border: 1px solid #262626;
       border-radius: 16px;
       background: #000;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
@@ -326,6 +349,15 @@ export function startPreviewServer(port: number = 3000) {
         <div class="template-title" id="current-title">OTP / Verification Code</div>
       </div>
       <div class="controls">
+        <!-- Language Selector -->
+        <select id="locale-select" onchange="updatePreview()">
+          <option value="en">🇺🇸 English</option>
+          <option value="tr">🇹🇷 Türkçe</option>
+          <option value="de">🇩🇪 Deutsch</option>
+          <option value="es">🇪🇸 Español</option>
+          <option value="fr">🇫🇷 Français</option>
+        </select>
+
         <div class="control-group">
           <button class="btn-toggle active" id="btn-dark" onclick="setMode('dark')">Dark</button>
           <button class="btn-toggle" id="btn-light" onclick="setMode('light')">Light</button>
@@ -351,7 +383,7 @@ export function startPreviewServer(port: number = 3000) {
       </div>
     </header>
     <div class="viewport-container">
-      <iframe id="preview-frame" src="/api/render?template=otp&mode=dark&cardStyle=double-frame&dummy=true" width="540px" height="760px"></iframe>
+      <iframe id="preview-frame" src="/api/render?template=otp&mode=dark&cardStyle=double-frame&dummy=true&locale=en" width="540px" height="760px"></iframe>
     </div>
   </main>
 
@@ -383,17 +415,19 @@ export function startPreviewServer(port: number = 3000) {
     }
 
     function updatePreview() {
+      const locale = document.getElementById('locale-select').value;
       const cardStyle = document.getElementById('card-style-select').value;
       const dummy = document.getElementById('data-select').value;
       const iframe = document.getElementById('preview-frame');
-      iframe.src = '/api/render?template=' + activeTemplate + '&mode=' + activeMode + '&cardStyle=' + cardStyle + '&dummy=' + dummy;
+      iframe.src = '/api/render?template=' + activeTemplate + '&mode=' + activeMode + '&cardStyle=' + cardStyle + '&dummy=' + dummy + '&locale=' + locale;
     }
 
     async function copyHtml() {
       try {
+        const locale = document.getElementById('locale-select').value;
         const cardStyle = document.getElementById('card-style-select').value;
         const dummy = document.getElementById('data-select').value;
-        const res = await fetch('/api/render?template=' + activeTemplate + '&mode=' + activeMode + '&cardStyle=' + cardStyle + '&dummy=' + dummy);
+        const res = await fetch('/api/render?template=' + activeTemplate + '&mode=' + activeMode + '&cardStyle=' + cardStyle + '&dummy=' + dummy + '&locale=' + locale);
         const html = await res.text();
         await navigator.clipboard.writeText(html);
         const btn = document.querySelector('.btn-copy');
