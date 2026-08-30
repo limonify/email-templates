@@ -37,6 +37,7 @@ export function createStarterConfigFile(
     themeCssPath: "./src/styles.css",
     mode: "dark",
     engine: "go",
+    locales: ["en", "tr"],
     outputDir: "./templates/emails",
     theme: {
       cardStyle: "double-frame",
@@ -55,50 +56,43 @@ export function createStarterConfigFile(
         { platform: "twitter", url: "https://twitter.com/limonify" },
       ],
     },
+    translations: {
+      tr: {
+        otp: {
+          heading: "Giriş Doğrulama Kodunuz",
+          description:
+            "Hesabınıza erişmek için tek kullanımlık güvenlik kodunuz:",
+        },
+      },
+    },
     templates: {
       otp: {
-        badgeText: "Security Verification",
-        heading: "Sign In Verification Code",
-        description:
-          "Please use the one-time verification code below to securely sign in:",
         code: "{{ .Code }}",
         expiresIn: "{{ .ExpiresIn }}",
       },
       passwordReset: {
-        badgeText: "Account Security",
-        heading: "Reset Your Password",
         userName: "{{ .UserName }}",
         resetUrl: "{{ .ResetURL }}",
-        buttonText: "Reset Password →",
         expiresIn: "{{ .ExpiresIn }}",
       },
       welcome: {
-        badgeText: "Welcome Aboard",
         userName: "{{ .UserName }}",
         dashboardUrl: "{{ .DashboardURL }}",
-        buttonText: "Go to Dashboard →",
       },
       notification: {
-        badgeText: "System Notification",
         title: "{{ .Title }}",
         message: "{{ .Message }}",
         actionUrl: "{{ .ActionURL }}",
-        actionText: "View Details →",
       },
       paymentCompleted: {
-        badgeText: "Payment Confirmed",
-        heading: "Thank You for Your Order!",
         orderId: "{{ .OrderID }}",
         amount: "{{ .Amount }}",
         planName: "{{ .PlanName }}",
         date: "{{ .Date }}",
         receiptUrl: "{{ .ReceiptURL }}",
-        buttonText: "Download Invoice →",
       },
       magicLink: {
-        badgeText: "Instant Sign In",
         loginUrl: "{{ .LoginURL }}",
-        buttonText: "Sign In Instantly →",
         expiresIn: "{{ .ExpiresIn }}",
       },
     },

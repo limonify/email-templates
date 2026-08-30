@@ -40,6 +40,14 @@ export interface LimonifyEmailConfig {
   themeCssPath?: string;
   mode?: "light" | "dark";
   engine?: TemplateEngine;
+  locales?: string[];
+  localesDir?: string;
+  translations?: Record<
+    string,
+    import("../i18n/types.js").DeepPartial<
+      import("../i18n/types.js").EmailLocaleDictionary
+    >
+  >;
   outputDir?: string;
   branding?: BrandingConfig;
   templates?: {

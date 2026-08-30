@@ -1,4 +1,10 @@
-import type { SupportedLocale, EmailLocaleDictionary } from "./types.js";
+import fs from "node:fs";
+import path from "node:path";
+import type {
+  SupportedLocale,
+  EmailLocaleDictionary,
+  DeepPartial,
+} from "./types.js";
 import { enLocale } from "./locales/en.js";
 import { trLocale } from "./locales/tr.js";
 import { deLocale } from "./locales/de.js";
@@ -8,7 +14,7 @@ import { frLocale } from "./locales/fr.js";
 export * from "./types.js";
 
 export const LOCALES_REGISTRY: Record<
-  SupportedLocale,
+  string,
   { name: string; flag: string; dict: EmailLocaleDictionary }
 > = {
   en: { name: "English", flag: "🇺🇸", dict: enLocale },
@@ -18,11 +24,92 @@ export const LOCALES_REGISTRY: Record<
   fr: { name: "Français", flag: "🇫🇷", dict: frLocale },
 };
 
+// In-memory registry of custom translations/overrides
+const customOverrides: Record<string, DeepPartial<EmailLocaleDictionary>> = {};
+
+/**
+ * Register or override a locale dictionary programmatically or from config
+ */
+export function registerCustomLocale(
+  locale: string,
+  dict: DeepPartial<EmailLocaleDictionary>,
+  name?: string,
+  flag?: string,
+) {
+  const clean = locale.toLowerCase();
+  customOverrides[clean] = deepMerge(customOverrides[clean] || {}, dict);
+
+  if (!LOCALES_REGISTRY[clean]) {
+    LOCALES_REGISTRY[clean] = {
+      name: name || locale.toUpperCase(),
+      flag: flag || "🌐",
+      dict: deepMerge(enLocale, dict) as EmailLocaleDictionary,
+    };
+  } else {
+    LOCALES_REGISTRY[clean].dict = deepMerge(
+      LOCALES_REGISTRY[clean].dict,
+      dict,
+    ) as EmailLocaleDictionary;
+  }
+}
+
+/**
+ * Automatically load any custom locale json files from a directory (e.g. ./locales/tr.json)
+ */
+export function loadCustomLocalesFromDir(
+  dirPath: string = path.join(process.cwd(), "locales"),
+) {
+  if (!fs.existsSync(dirPath)) return;
+
+  try {
+    const files = fs.readdirSync(dirPath);
+    for (const file of files) {
+      if (file.endsWith(".json")) {
+        const localeCode = path.basename(file, ".json").toLowerCase();
+        const content = JSON.parse(
+          fs.readFileSync(path.join(dirPath, file), "utf8"),
+        );
+        registerCustomLocale(localeCode, content);
+      }
+    }
+  } catch (err: any) {
+    console.warn(
+      `Warning: Could not load custom locales from ${dirPath}: ${err.message}`,
+    );
+  }
+}
+
+function deepMerge(target: any, source: any): any {
+  const output = { ...target };
+  if (source && typeof source === "object") {
+    for (const key of Object.keys(source)) {
+      if (
+        source[key] &&
+        typeof source[key] === "object" &&
+        !Array.isArray(source[key])
+      ) {
+        output[key] = deepMerge(target[key] || {}, source[key]);
+      } else if (source[key] !== undefined) {
+        output[key] = source[key];
+      }
+    }
+  }
+  return output;
+}
+
 export function getLocaleDictionary(
   locale: string = "en",
 ): EmailLocaleDictionary {
-  const clean = locale.toLowerCase().slice(0, 2) as SupportedLocale;
-  return LOCALES_REGISTRY[clean]?.dict || enLocale;
+  const clean = locale.toLowerCase();
+  const base =
+    LOCALES_REGISTRY[clean]?.dict ||
+    LOCALES_REGISTRY[clean.slice(0, 2)]?.dict ||
+    enLocale;
+  const overrides =
+    customOverrides[clean] || customOverrides[clean.slice(0, 2)];
+  return overrides
+    ? (deepMerge(base, overrides) as EmailLocaleDictionary)
+    : base;
 }
 
 export function getTemplatePropsForLocale(

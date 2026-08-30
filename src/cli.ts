@@ -26,7 +26,12 @@ import {
   createStarterConfigFile,
 } from "./config/loader.js";
 import { startPreviewServer } from "./preview/server.js";
-import { LOCALES_REGISTRY, type SupportedLocale } from "./i18n/index.js";
+import {
+  LOCALES_REGISTRY,
+  registerCustomLocale,
+  loadCustomLocalesFromDir,
+  type SupportedLocale,
+} from "./i18n/index.js";
 
 async function runInteractiveCli(options: {
   config?: string;
@@ -34,6 +39,9 @@ async function runInteractiveCli(options: {
   preview?: boolean;
   port?: string;
 }) {
+  // Load any project-level custom ./locales/*.json files
+  loadCustomLocalesFromDir();
+
   if (options.preview) {
     const port = options.port ? parseInt(options.port, 10) : 3000;
     startPreviewServer(port);
@@ -76,7 +84,20 @@ async function runInteractiveCli(options: {
 
     if (useConfig) {
       loadedConfig = loadConfigFile(existingConfigPath);
-      p.log.success("Configuration loaded successfully.");
+      // Register custom translations from config if present
+      if (loadedConfig.translations) {
+        for (const [loc, dict] of Object.entries(loadedConfig.translations)) {
+          registerCustomLocale(loc, dict);
+        }
+      }
+      if (loadedConfig.localesDir) {
+        loadCustomLocalesFromDir(
+          path.resolve(process.cwd(), loadedConfig.localesDir),
+        );
+      }
+      p.log.success(
+        "Configuration and custom translations loaded successfully.",
+      );
     }
   }
 
@@ -106,12 +127,14 @@ async function runInteractiveCli(options: {
     }),
   );
 
+  const initialLocales = loadedConfig?.locales || ["en"];
+
   const selectedLocales = (await p.multiselect({
     message: "Which languages / locales would you like to generate?",
     options: localeChoices,
-    initialValues: ["en"],
+    initialValues: initialLocales,
     required: true,
-  })) as SupportedLocale[];
+  })) as string[];
 
   if (p.isCancel(selectedLocales)) {
     p.cancel("Operation cancelled.");
