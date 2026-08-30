@@ -50,7 +50,8 @@ export function createStarterConfigFile(
     },
     branding: {
       appName: "{{ .AppName }}",
-      logoUrl: "https://limeui.limonify.com/lime-ui.png?v=5",
+      logoUrl:
+        "https://raw.githubusercontent.com/limonify/email-templates/main/.github/assets/logo.png",
       logoWidth: 26,
       logoHeight: 26,
       logoRadius: "6px",

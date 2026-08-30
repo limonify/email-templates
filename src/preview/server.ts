@@ -43,7 +43,8 @@ export function startPreviewServer(port: number = 3000) {
         if (useDummy) {
           dummyProps = {
             appName: "Limonify",
-            logoUrl: "https://limeui.limonify.com/lime-ui.png?v=5",
+            logoUrl:
+              "https://raw.githubusercontent.com/limonify/email-templates/main/.github/assets/logo.png",
             logoWidth: 26,
             logoHeight: 26,
             code: "849201",
@@ -149,7 +150,8 @@ export function startPreviewServer(port: number = 3000) {
             engine,
             {
               appName: "Limonify",
-              logoUrl: "https://limeui.limonify.com/lime-ui.png?v=5",
+              logoUrl:
+                "https://raw.githubusercontent.com/limonify/email-templates/main/.github/assets/logo.png",
               logoWidth: 26,
               logoHeight: 26,
             },
@@ -370,7 +372,7 @@ export function startPreviewServer(port: number = 3000) {
   <aside>
     <div class="brand">
       <div class="brand-left">
-        <img class="brand-img" src="https://limeui.limonify.com/lime-ui.png?v=5" alt="Limonify UI" />
+        <img class="brand-img" src="https://raw.githubusercontent.com/limonify/email-templates/main/.github/assets/logo.png" alt="Limonify UI" />
         <div class="brand-title">Limonify Email</div>
       </div>
       <div class="badge-pill">26 TEMPLATES</div>

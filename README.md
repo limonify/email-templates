@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://limeui.limonify.com/lime-ui.png?v=5" width="48" height="48" alt="Limonify UI Logo" />
+  <img src="https://raw.githubusercontent.com/limonify/email-templates/main/.github/assets/logo.png" width="64" height="64" alt="Limonify Logo" />
   <h1>@limonify/email-templates</h1>
   <p><strong>Design-system-first, production-grade email template suite for Go, Node.js, and Python backends.</strong></p>
   <p>Crafted with authentic <code>@limonify/ui</code> design tokens, mathematical OKLCH-to-sRGB CSS parsing, and built-in multi-language (i18n) support.</p>
@@ -164,7 +164,8 @@ const html = await renderTemplateToHtml(
   "handlebars", // or 'go' | 'raw'
   {
     appName: "Limonify Daily",
-    logoUrl: "https://limeui.limonify.com/lime-ui.png?v=5",
+    logoUrl:
+      "https://raw.githubusercontent.com/limonify/email-templates/main/.github/assets/logo.png",
   },
   {
     issueNumber: "#142",
