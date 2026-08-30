@@ -6,6 +6,10 @@ import {
 } from "../components/email-layout.js";
 import { EmailButton } from "../components/button.js";
 import { InfoCard } from "../components/info-card.js";
+import {
+  DeviceSessionCard,
+  type DeviceSessionProps,
+} from "../components/device-session-card.js";
 import type { EmailTheme } from "../theme/types.js";
 
 export interface NotificationEmailProps extends Partial<
@@ -19,16 +23,18 @@ export interface NotificationEmailProps extends Partial<
   message?: string;
   actionUrl?: string;
   actionText?: string;
+  sessionDetails?: DeviceSessionProps;
 }
 
 export const NotificationEmail: React.FC<NotificationEmailProps> = ({
   appName = "{{ .AppName }}",
-  badgeText = "System Notification",
+  badgeText = "Security Alert",
   userName = "{{ .UserName }}",
   title = "{{ .Title }}",
   message = "{{ .Message }}",
   actionUrl = "{{ .ActionURL }}",
-  actionText = "View Update →",
+  actionText = "Review Security Activity →",
+  sessionDetails,
   heading,
   greeting,
   theme,
@@ -69,6 +75,10 @@ export const NotificationEmail: React.FC<NotificationEmailProps> = ({
       </Text>
 
       <InfoCard theme={theme}>{message}</InfoCard>
+
+      {sessionDetails ? (
+        <DeviceSessionCard {...sessionDetails} theme={theme} />
+      ) : null}
 
       {actionUrl ? (
         <EmailButton href={actionUrl} theme={theme}>

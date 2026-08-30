@@ -5,6 +5,7 @@ import {
   type EmailLayoutProps,
 } from "../components/email-layout.js";
 import { EmailButton } from "../components/button.js";
+import { EmailBadge } from "../components/badge.js";
 import { InfoCard } from "../components/info-card.js";
 import type { EmailTheme } from "../theme/types.js";
 
@@ -46,10 +47,13 @@ export const MagicLinkEmail: React.FC<MagicLinkEmailProps> = ({
     <EmailLayout
       previewText={`Your ${appName} sign-in link`}
       appName={appName}
-      badgeText={badgeText}
       theme={theme}
       {...layoutProps}
     >
+      <EmailBadge variant="accent" dot={true} theme={theme}>
+        {badgeText}
+      </EmailBadge>
+
       <Heading
         style={{
           fontSize: "22px",

@@ -5,6 +5,7 @@ import {
   type EmailLayoutProps,
 } from "../components/email-layout.js";
 import { EmailButton } from "../components/button.js";
+import { EmailBadge } from "../components/badge.js";
 import type { EmailTheme } from "../theme/types.js";
 
 export interface PaymentItemRow {
@@ -25,6 +26,10 @@ export interface PaymentCompletedEmailProps extends Partial<
   dateLabel?: string;
   planName?: string;
   planLabel?: string;
+  paymentMethod?: string;
+  paymentMethodLabel?: string;
+  subtotal?: string;
+  tax?: string;
   amount?: string;
   amountLabel?: string;
   receiptUrl?: string;
@@ -38,15 +43,19 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
   heading = "Thank You for Your Order!",
   userName = "{{ .UserName }}",
   orderId = "{{ .OrderID }}",
-  orderIdLabel = "Order ID",
+  orderIdLabel = "Invoice ID",
   amount = "{{ .Amount }}",
   amountLabel = "Total Paid",
+  subtotal,
+  tax,
+  paymentMethod = "Visa ending in 4242",
+  paymentMethodLabel = "Payment Method",
   receiptUrl = "{{ .ReceiptURL }}",
-  buttonText = "Download Official Invoice →",
+  buttonText = "Download Invoice (PDF) →",
   planName = "{{ .PlanName }}",
   planLabel = "Plan / Subscription",
   date = "{{ .Date }}",
-  dateLabel = "Date",
+  dateLabel = "Billing Date",
   description,
   customRows,
   theme,
@@ -60,10 +69,13 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
     <EmailLayout
       previewText={`Payment Receipt (${orderId})`}
       appName={appName}
-      badgeText={badgeText}
       theme={theme}
       {...layoutProps}
     >
+      <EmailBadge variant="success" dot={true} theme={theme}>
+        Payment Successful
+      </EmailBadge>
+
       <Heading
         style={{
           fontSize: "22px",
@@ -86,13 +98,13 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
         {resolvedDescription}
       </Text>
 
-      {/* Limonify Receipt Table */}
+      {/* Limonify Receipt Card Frame Table */}
       <div
         style={{
           backgroundColor: theme.muted,
           borderRadius: `calc(${theme.radius} - 4px)`,
           border: `1px solid ${theme.surfaceBorder}`,
-          padding: "16px 20px",
+          padding: "18px 20px",
           margin: "16px 0 24px",
         }}
       >
@@ -164,6 +176,76 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
                 {planName}
               </td>
             </tr>
+            <tr>
+              <td
+                style={{
+                  padding: "6px 0",
+                  fontSize: "13px",
+                  color: theme.mutedForeground,
+                }}
+              >
+                {paymentMethodLabel}
+              </td>
+              <td
+                style={{
+                  padding: "6px 0",
+                  fontSize: "13px",
+                  color: theme.foreground,
+                  textAlign: "right",
+                  fontWeight: "500",
+                }}
+              >
+                {paymentMethod}
+              </td>
+            </tr>
+
+            {subtotal ? (
+              <tr>
+                <td
+                  style={{
+                    padding: "6px 0",
+                    fontSize: "13px",
+                    color: theme.mutedForeground,
+                  }}
+                >
+                  Subtotal
+                </td>
+                <td
+                  style={{
+                    padding: "6px 0",
+                    fontSize: "13px",
+                    color: theme.foreground,
+                    textAlign: "right",
+                  }}
+                >
+                  {subtotal}
+                </td>
+              </tr>
+            ) : null}
+
+            {tax ? (
+              <tr>
+                <td
+                  style={{
+                    padding: "6px 0",
+                    fontSize: "13px",
+                    color: theme.mutedForeground,
+                  }}
+                >
+                  Tax / VAT
+                </td>
+                <td
+                  style={{
+                    padding: "6px 0",
+                    fontSize: "13px",
+                    color: theme.foreground,
+                    textAlign: "right",
+                  }}
+                >
+                  {tax}
+                </td>
+              </tr>
+            ) : null}
 
             {customRows &&
               customRows.map((row, idx) => (
@@ -204,7 +286,7 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
               <td
                 style={{
                   padding: "12px 0 4px",
-                  fontSize: "17px",
+                  fontSize: "18px",
                   color: theme.accent,
                   textAlign: "right",
                   fontWeight: "800",

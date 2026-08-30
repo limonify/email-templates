@@ -4,7 +4,8 @@ import {
   EmailLayout,
   type EmailLayoutProps,
 } from "../components/email-layout.js";
-import { CodeBox } from "../components/code-box.js";
+import { OTPField } from "../components/otp-field.js";
+import { EmailBadge } from "../components/badge.js";
 import type { EmailTheme } from "../theme/types.js";
 
 export interface OTPEmailProps extends Partial<
@@ -41,10 +42,13 @@ export const OTPEmail: React.FC<OTPEmailProps> = ({
     <EmailLayout
       previewText={`Your verification code: ${code}`}
       appName={appName}
-      badgeText={badgeText}
       theme={theme}
       {...layoutProps}
     >
+      <EmailBadge variant="accent" dot={true} theme={theme}>
+        {badgeText}
+      </EmailBadge>
+
       {heading ? (
         <Heading
           style={{
@@ -72,7 +76,7 @@ export const OTPEmail: React.FC<OTPEmailProps> = ({
         </Text>
       ) : null}
 
-      <CodeBox code={code} theme={theme} />
+      <OTPField code={code} theme={theme} />
 
       <Text
         style={{

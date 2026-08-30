@@ -24,20 +24,23 @@ export function startPreviewServer(port: number = 3000) {
         const templateId = (url.searchParams.get("template") ||
           "otp") as TemplateId;
         const mode = url.searchParams.get("mode") || "dark";
+        const cardStyle = (url.searchParams.get("cardStyle") ||
+          "double-frame") as "double-frame" | "single" | "minimal";
         const engine = (url.searchParams.get("engine") ||
           "go") as TemplateEngine;
         const useDummy = url.searchParams.get("dummy") === "true";
 
-        const theme: EmailTheme =
+        const baseTheme: EmailTheme =
           mode === "light"
             ? defaultLimonifyLightTheme
             : defaultLimonifyDarkTheme;
+        const theme: EmailTheme = { ...baseTheme, cardStyle };
 
-        let dummyProps = {};
+        let dummyProps: Record<string, any> = {};
         if (useDummy) {
           dummyProps = {
             appName: "Limonify",
-            code: "849 201",
+            code: "849201",
             userName: "Alex Morgan",
             resetUrl: "https://ui.limonify.com/reset",
             dashboardUrl: "https://ui.limonify.com/dashboard",
@@ -45,13 +48,23 @@ export function startPreviewServer(port: number = 3000) {
             expiresIn: "10 minutes",
             orderId: "#LMN-94820",
             amount: "$49.00",
-            planName: "Limonify UI Pro (Annual)",
+            planName: "Limonify UI Pro (Annual Plan)",
+            paymentMethod: "Visa ending in 4242",
+            subtotal: "$40.83",
+            tax: "$8.17",
             date: "August 30, 2026",
             receiptUrl: "https://ui.limonify.com/invoices/94820",
             title: "Security Alert: New Sign-in Detected",
             message:
-              "A new login was detected from Safari on macOS in San Francisco, CA. If this was you, you can safely ignore this alert.",
+              "A new session was initiated on your account from Safari on macOS in San Francisco, CA. If this was you, no action is needed.",
             actionUrl: "https://ui.limonify.com/security",
+            sessionDetails: {
+              device: "MacBook Pro (macOS 15.4)",
+              browser: "Safari 18.3",
+              location: "San Francisco, CA, United States",
+              ipAddress: "192.0.2.14",
+              timestamp: "August 30, 2026 at 23:05 UTC",
+            },
           };
         }
 
@@ -68,7 +81,7 @@ export function startPreviewServer(port: number = 3000) {
           });
         } catch (err: any) {
           return new Response(
-            `<div style="color: red; padding: 20px;">Render Error: ${err.message}</div>`,
+            `<div style="color: red; padding: 20px; font-family: sans-serif;">Render Error: ${err.message}</div>`,
             { status: 500, headers: { "Content-Type": "text/html" } },
           );
         }
@@ -81,12 +94,14 @@ export function startPreviewServer(port: number = 3000) {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Limonify Email Templates Preview</title>
+  <title>Limonify Email Templates Studio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       background: #070a11;
       color: #f8fafc;
       display: flex;
@@ -94,7 +109,7 @@ export function startPreviewServer(port: number = 3000) {
       overflow: hidden;
     }
     aside {
-      width: 280px;
+      width: 290px;
       background: #0e1422;
       border-right: 1px solid #1c263c;
       display: flex;
@@ -102,13 +117,16 @@ export function startPreviewServer(port: number = 3000) {
       flex-shrink: 0;
     }
     .brand {
-      padding: 20px;
+      padding: 18px 20px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      justify-content: space-between;
       border-bottom: 1px solid #1c263c;
-      font-weight: 700;
-      font-size: 16px;
+    }
+    .brand-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
     .brand-icon {
       width: 32px;
@@ -119,7 +137,24 @@ export function startPreviewServer(port: number = 3000) {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      font-size: 16px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+    .brand-title {
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+    }
+    .badge-pill {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 3px 7px;
+      border-radius: 9999px;
+      background: rgba(250, 204, 21, 0.15);
+      color: #facc15;
+      border: 1px solid rgba(250, 204, 21, 0.3);
     }
     .templates-list {
       flex: 1;
@@ -127,11 +162,19 @@ export function startPreviewServer(port: number = 3000) {
       padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
+    }
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #64748b;
+      padding: 8px 10px 4px;
     }
     .nav-item {
       padding: 10px 12px;
-      border-radius: 8px;
+      border-radius: 10px;
       color: #94a3b8;
       text-decoration: none;
       font-size: 13px;
@@ -139,20 +182,23 @@ export function startPreviewServer(port: number = 3000) {
       cursor: pointer;
       display: flex;
       flex-direction: column;
-      gap: 2px;
-      transition: all 0.15s;
+      gap: 3px;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid transparent;
     }
     .nav-item:hover {
       background: #131b2e;
       color: #f8fafc;
+      border-color: #1c263c;
     }
     .nav-item.active {
       background: #facc15;
       color: #070a11;
-      font-weight: 600;
+      font-weight: 700;
+      box-shadow: 0 4px 14px rgba(250, 204, 21, 0.25);
     }
-    .nav-item.active .desc { color: #3b3506; }
-    .desc { font-size: 11px; opacity: 0.75; }
+    .nav-item.active .desc { color: #423b05; font-weight: 500; }
+    .desc { font-size: 11px; color: #64748b; line-height: 14px; }
     main {
       flex: 1;
       display: flex;
@@ -160,7 +206,7 @@ export function startPreviewServer(port: number = 3000) {
       background: #070a11;
     }
     header {
-      height: 60px;
+      height: 64px;
       border-bottom: 1px solid #1c263c;
       display: flex;
       align-items: center;
@@ -168,43 +214,100 @@ export function startPreviewServer(port: number = 3000) {
       padding: 0 24px;
       background: #0e1422;
     }
-    .controls { display: flex; align-items: center; gap: 12px; }
-    select, button {
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .template-title {
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+    }
+    .controls { display: flex; align-items: center; gap: 10px; }
+    .control-group {
+      display: flex;
+      align-items: center;
+      background: #131b2e;
+      border: 1px solid #1c263c;
+      border-radius: 8px;
+      padding: 2px;
+    }
+    .btn-toggle {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .btn-toggle.active {
+      background: #1c263c;
+      color: #f8fafc;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    select {
       background: #131b2e;
       border: 1px solid #1c263c;
       color: #f8fafc;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 13px;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
       cursor: pointer;
       outline: none;
+      font-family: inherit;
     }
-    select:focus, button:focus { border-color: #facc15; }
+    select:focus { border-color: #facc15; }
+    .btn-copy {
+      background: #facc15;
+      color: #070a11;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .btn-copy:hover {
+      background: #fde047;
+      box-shadow: 0 4px 12px rgba(250, 204, 21, 0.3);
+    }
     .viewport-container {
       flex: 1;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 24px;
+      padding: 32px;
       overflow: auto;
-      background: radial-gradient(circle at 50% 50%, #131b2e 0%, #070a11 100%);
+      background: radial-gradient(circle at 50% 30%, #111827 0%, #070a11 100%);
     }
     iframe {
       border: 1px solid #1c263c;
-      border-radius: 12px;
-      background: #fff;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 16px;
+      background: #000;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
   </style>
 </head>
 <body>
   <aside>
     <div class="brand">
-      <div class="brand-icon">🍋</div>
-      <div>Limonify Email</div>
+      <div class="brand-left">
+        <div class="brand-icon">🍋</div>
+        <div class="brand-title">Limonify Email</div>
+      </div>
+      <div class="badge-pill">STUDIO</div>
     </div>
     <div class="templates-list">
+      <div class="section-label">Core Templates</div>
       ${templatesList
         .map(
           (t, i) => `
@@ -219,30 +322,42 @@ export function startPreviewServer(port: number = 3000) {
   </aside>
   <main>
     <header>
-      <div style="font-weight: 600; font-size: 14px;" id="current-title">OTP / Verification Code</div>
+      <div class="header-left">
+        <div class="template-title" id="current-title">OTP / Verification Code</div>
+      </div>
       <div class="controls">
-        <select id="mode-select" onchange="updatePreview()">
-          <option value="dark">Dark Theme</option>
-          <option value="light">Light Theme</option>
+        <div class="control-group">
+          <button class="btn-toggle active" id="btn-dark" onclick="setMode('dark')">Dark</button>
+          <button class="btn-toggle" id="btn-light" onclick="setMode('light')">Light</button>
+        </div>
+
+        <select id="card-style-select" onchange="updatePreview()">
+          <option value="double-frame">Double-Frame Card</option>
+          <option value="single">Single Card</option>
+          <option value="minimal">Minimal / Flat</option>
         </select>
+
         <select id="data-select" onchange="updatePreview()">
-          <option value="true">Realistic Sample Data</option>
-          <option value="false">Backend Variables ({{ .Code }})</option>
+          <option value="true">Live Sample Data</option>
+          <option value="false">Go Template ({{ .Code }})</option>
         </select>
-        <select id="viewport-select" onchange="updateViewport()">
-          <option value="560px">Desktop (560px)</option>
-          <option value="375px">Mobile (375px)</option>
-          <option value="100%">Full Width</option>
-        </select>
+
+        <div class="control-group">
+          <button class="btn-toggle active" id="btn-desktop" onclick="setViewport('540px', this)">Desktop</button>
+          <button class="btn-toggle" id="btn-mobile" onclick="setViewport('375px', this)">Mobile</button>
+        </div>
+
+        <button class="btn-copy" onclick="copyHtml()">Copy HTML</button>
       </div>
     </header>
     <div class="viewport-container">
-      <iframe id="preview-frame" src="/api/render?template=otp&mode=dark&dummy=true" width="560px" height="740px"></iframe>
+      <iframe id="preview-frame" src="/api/render?template=otp&mode=dark&cardStyle=double-frame&dummy=true" width="540px" height="760px"></iframe>
     </div>
   </main>
 
   <script>
     let activeTemplate = 'otp';
+    let activeMode = 'dark';
 
     function selectTemplate(id, el) {
       activeTemplate = id;
@@ -252,17 +367,46 @@ export function startPreviewServer(port: number = 3000) {
       updatePreview();
     }
 
-    function updatePreview() {
-      const mode = document.getElementById('mode-select').value;
-      const dummy = document.getElementById('data-select').value;
-      const iframe = document.getElementById('preview-frame');
-      iframe.src = '/api/render?template=' + activeTemplate + '&mode=' + mode + '&dummy=' + dummy;
+    function setMode(mode) {
+      activeMode = mode;
+      document.getElementById('btn-dark').classList.toggle('active', mode === 'dark');
+      document.getElementById('btn-light').classList.toggle('active', mode === 'light');
+      updatePreview();
     }
 
-    function updateViewport() {
-      const vp = document.getElementById('viewport-select').value;
+    function setViewport(width, el) {
+      document.querySelectorAll('.control-group button').forEach(b => {
+        if (b.id === 'btn-desktop' || b.id === 'btn-mobile') b.classList.remove('active');
+      });
+      el.classList.add('active');
+      document.getElementById('preview-frame').style.width = width;
+    }
+
+    function updatePreview() {
+      const cardStyle = document.getElementById('card-style-select').value;
+      const dummy = document.getElementById('data-select').value;
       const iframe = document.getElementById('preview-frame');
-      iframe.style.width = vp;
+      iframe.src = '/api/render?template=' + activeTemplate + '&mode=' + activeMode + '&cardStyle=' + cardStyle + '&dummy=' + dummy;
+    }
+
+    async function copyHtml() {
+      try {
+        const cardStyle = document.getElementById('card-style-select').value;
+        const dummy = document.getElementById('data-select').value;
+        const res = await fetch('/api/render?template=' + activeTemplate + '&mode=' + activeMode + '&cardStyle=' + cardStyle + '&dummy=' + dummy);
+        const html = await res.text();
+        await navigator.clipboard.writeText(html);
+        const btn = document.querySelector('.btn-copy');
+        const oldText = btn.textContent;
+        btn.textContent = '✓ Copied!';
+        btn.style.background = '#22c55e';
+        setTimeout(() => {
+          btn.textContent = oldText;
+          btn.style.background = '#facc15';
+        }, 1500);
+      } catch (err) {
+        alert('Failed to copy HTML: ' + err.message);
+      }
     }
   </script>
 </body>

@@ -5,6 +5,7 @@ import {
   type EmailLayoutProps,
 } from "../components/email-layout.js";
 import { EmailButton } from "../components/button.js";
+import { StepsList, type StepItem } from "../components/steps-list.js";
 import type { EmailTheme } from "../theme/types.js";
 
 export interface WelcomeEmailProps extends Partial<
@@ -17,6 +18,7 @@ export interface WelcomeEmailProps extends Partial<
   userName?: string;
   dashboardUrl?: string;
   buttonText?: string;
+  steps?: StepItem[];
 }
 
 export const WelcomeEmail: React.FC<WelcomeEmailProps> = ({
@@ -28,6 +30,7 @@ export const WelcomeEmail: React.FC<WelcomeEmailProps> = ({
   userName = "{{ .UserName }}",
   dashboardUrl = "{{ .DashboardURL }}",
   buttonText = "Go to Dashboard →",
+  steps,
   theme,
   ...layoutProps
 }) => {
@@ -35,6 +38,29 @@ export const WelcomeEmail: React.FC<WelcomeEmailProps> = ({
   const resolvedDescription =
     description ||
     `Hi ${userName}, we're thrilled to have you with us. Your account is activated and ready to build modern experiences.`;
+
+  const defaultSteps: StepItem[] = [
+    {
+      number: 1,
+      title: "Verify Your Email",
+      description: "Your email address has been confirmed and verified.",
+      completed: true,
+    },
+    {
+      number: 2,
+      title: "Complete Your Profile",
+      description: "Set up your workspace, team members, and preferences.",
+      completed: false,
+    },
+    {
+      number: 3,
+      title: "Start Building",
+      description: "Explore the component library and ship your next project.",
+      completed: false,
+    },
+  ];
+
+  const resolvedSteps = steps || defaultSteps;
 
   return (
     <EmailLayout
@@ -66,6 +92,8 @@ export const WelcomeEmail: React.FC<WelcomeEmailProps> = ({
       >
         {resolvedDescription}
       </Text>
+
+      <StepsList steps={resolvedSteps} theme={theme} />
 
       <EmailButton href={dashboardUrl} theme={theme}>
         {buttonText}

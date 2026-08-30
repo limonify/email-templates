@@ -5,6 +5,7 @@ import {
   type EmailLayoutProps,
 } from "../components/email-layout.js";
 import { EmailButton } from "../components/button.js";
+import { EmailBadge } from "../components/badge.js";
 import { InfoCard } from "../components/info-card.js";
 import type { EmailTheme } from "../theme/types.js";
 
@@ -47,10 +48,13 @@ export const PasswordResetEmail: React.FC<PasswordResetEmailProps> = ({
     <EmailLayout
       previewText="Reset your password"
       appName={appName}
-      badgeText={badgeText}
       theme={theme}
       {...layoutProps}
     >
+      <EmailBadge variant="warning" dot={true} theme={theme}>
+        {badgeText}
+      </EmailBadge>
+
       {heading ? (
         <Heading
           style={{
