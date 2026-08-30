@@ -16,7 +16,7 @@ bunx @limonify/email-templates
 npx @limonify/email-templates
 ```
 
-Or start the live interactive preview studio:
+Or launch the live interactive preview studio:
 
 ```bash
 bunx @limonify/email-templates preview
@@ -24,22 +24,28 @@ bunx @limonify/email-templates preview
 
 ---
 
-## 📦 12 Core Production Templates
+## 📦 18 Core Production Templates
 
-| Category             | Template                   | ID                      | Description                                                   |
-| :------------------- | :------------------------- | :---------------------- | :------------------------------------------------------------ |
-| **Auth & Security**  | OTP / 2FA Code             | `otp`                   | Segmented 6-digit verification code with expiration note      |
-|                      | Password Reset             | `password-reset`        | Secure password reset request with action button              |
-|                      | Magic Link Sign In         | `magic-link`            | One-click passwordless authentication link                    |
-|                      | Security / Session Alert   | `notification`          | New sign-in alert with IP, device, and location details       |
-| **Billing & Team**   | Payment Receipt / Invoice  | `payment-completed`     | Itemized invoice breakdown with PDF download action           |
-|                      | Team / Workspace Invite    | `team-invite`           | Member invitation with role assignment and accept button      |
-|                      | Subscription Canceled      | `subscription-canceled` | Cancellation confirmation with access period and reactivation |
-|                      | API Key Created            | `api-key-created`       | New token alert with prefix and revocation button             |
-| **Product & Growth** | Welcome & Onboarding       | `welcome`               | New account onboarding with setup checklist                   |
-|                      | Usage Quota Warning        | `usage-limit-warning`   | Monthly quota limit alert (80%/100%) with progress meter      |
-|                      | Feedback / NPS Survey      | `feedback-request`      | Customer satisfaction feedback with 1-click rating link       |
-|                      | Product Update / Changelog | `product-update`        | Release announcement with categorized feature tags            |
+| Category                       | Template                   | ID                      | Description                                                |
+| :----------------------------- | :------------------------- | :---------------------- | :--------------------------------------------------------- |
+| **Authentication & Security**  | OTP / 2FA Code             | `otp`                   | Segmented 6-digit verification code with expiration note   |
+|                                | Password Reset             | `password-reset`        | Secure password reset request with action button           |
+|                                | Magic Link Sign In         | `magic-link`            | One-click passwordless authentication link                 |
+|                                | Security / Session Alert   | `notification`          | New sign-in alert with IP, device, and location details    |
+|                                | API Key Created            | `api-key-created`       | New token alert with prefix and revocation button          |
+|                                | 2FA Disabled Alert         | `two-factor-disabled`   | Critical security alert when 2FA is removed from account   |
+| **Billing & Subscriptions**    | Payment Receipt / Invoice  | `payment-completed`     | Itemized invoice breakdown with PDF download action        |
+|                                | Payment Failed / Dunning   | `payment-failed`        | Declined renewal payment notice with update billing action |
+|                                | Trial Ending Reminder      | `trial-ending`          | Free trial expiration countdown and upgrade notice         |
+|                                | Subscription Canceled      | `subscription-canceled` | Cancellation notice with access period and reactivation    |
+| **Team & Workspace**           | Team / Workspace Invite    | `team-invite`           | Member invitation with role assignment and accept button   |
+|                                | Account Deletion Scheduled | `account-deletion`      | 30-day grace period notice with restore account button     |
+| **Product, Digest & Shipping** | Welcome & Onboarding       | `welcome`               | New account onboarding with setup checklist                |
+|                                | Usage Quota Warning        | `usage-limit-warning`   | Monthly quota limit alert (80%/100%) with progress meter   |
+|                                | Weekly Analytics Digest    | `weekly-digest`         | 7-day performance metrics and activity 2x2 grid            |
+|                                | Order Shipped / Tracking   | `order-shipped`         | Delivery confirmation with tracking number and carrier     |
+| **Growth & Updates**           | Feedback / NPS Survey      | `feedback-request`      | Customer satisfaction feedback with 1-click survey         |
+|                                | Product Update / Changelog | `product-update`        | Release announcement with categorized feature tags         |
 
 ---
 

@@ -255,6 +255,65 @@ export function getTemplatePropsForLocale(
         buttonText: dict.productUpdate.buttonText,
         supportText: dict.layout.supportText,
       };
+    case "payment-failed":
+      return {
+        badgeText: dict.paymentFailed.badgeText,
+        heading: dict.paymentFailed.heading,
+        description: dict.paymentFailed.description,
+        amountLabel: dict.paymentFailed.amountLabel,
+        retryDateLabel: dict.paymentFailed.retryDateLabel,
+        buttonText: dict.paymentFailed.buttonText,
+        noticeText: dict.paymentFailed.noticeText,
+        supportText: dict.layout.supportText,
+      };
+    case "trial-ending":
+      return {
+        badgeText: dict.trialEnding.badgeText,
+        heading: dict.trialEnding.heading,
+        description: dict.trialEnding.description,
+        daysLeftLabel: dict.trialEnding.daysLeftLabel,
+        expiryDateLabel: dict.trialEnding.expiryDateLabel,
+        buttonText: dict.trialEnding.buttonText,
+        supportText: dict.layout.supportText,
+      };
+    case "account-deletion":
+      return {
+        badgeText: dict.accountDeletion.badgeText,
+        heading: dict.accountDeletion.heading,
+        description: dict.accountDeletion.description,
+        scheduledDateLabel: dict.accountDeletion.scheduledDateLabel,
+        cancelButtonText: dict.accountDeletion.cancelButtonText,
+        warningText: dict.accountDeletion.warningText,
+        supportText: dict.layout.supportText,
+      };
+    case "two-factor-disabled":
+      return {
+        badgeText: dict.twoFactorDisabled.badgeText,
+        heading: dict.twoFactorDisabled.heading,
+        description: dict.twoFactorDisabled.description,
+        actionText: dict.twoFactorDisabled.actionText,
+        securityWarning: dict.twoFactorDisabled.securityWarning,
+        supportText: dict.layout.supportText,
+      };
+    case "weekly-digest":
+      return {
+        badgeText: dict.weeklyDigest.badgeText,
+        heading: dict.weeklyDigest.heading,
+        description: dict.weeklyDigest.description,
+        buttonText: dict.weeklyDigest.buttonText,
+        supportText: dict.layout.supportText,
+      };
+    case "order-shipped":
+      return {
+        badgeText: dict.orderShipped.badgeText,
+        heading: dict.orderShipped.heading,
+        description: dict.orderShipped.description,
+        trackingLabel: dict.orderShipped.trackingLabel,
+        carrierLabel: dict.orderShipped.carrierLabel,
+        estDeliveryLabel: dict.orderShipped.estDeliveryLabel,
+        buttonText: dict.orderShipped.buttonText,
+        supportText: dict.layout.supportText,
+      };
     default:
       return {};
   }

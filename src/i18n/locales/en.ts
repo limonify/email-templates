@@ -133,4 +133,60 @@ export const enLocale: EmailLocaleDictionary = {
       "Here are the latest features, improvements, and updates shipped in this release:",
     buttonText: "Read full release notes",
   },
+  paymentFailed: {
+    badgeText: "Payment failed",
+    heading: "Payment unsuccessful",
+    description:
+      "We were unable to process your payment of {{ .Amount }} for {{ .PlanName }}. Please update your payment method to maintain uninterrupted service.",
+    amountLabel: "Amount due",
+    retryDateLabel: "Next retry attempt",
+    buttonText: "Update payment method",
+    noticeText:
+      "If your payment details are not updated, your subscription may be suspended.",
+  },
+  trialEnding: {
+    badgeText: "Trial ending",
+    heading: "Your trial ends soon",
+    description:
+      "Your free trial for {{ .AppName }} {{ .PlanName }} will expire in {{ .DaysLeft }} days. Upgrade now to keep full access to your workspace.",
+    daysLeftLabel: "Time remaining",
+    expiryDateLabel: "Trial ends on",
+    buttonText: "Upgrade to Pro",
+  },
+  accountDeletion: {
+    badgeText: "Account alert",
+    heading: "Account deletion scheduled",
+    description:
+      "Your request to delete your {{ .AppName }} account has been received. Your data is scheduled for permanent deletion on {{ .ScheduledDate }}.",
+    scheduledDateLabel: "Deletion date",
+    cancelButtonText: "Cancel deletion & keep account",
+    warningText:
+      "After this date, all workspaces, API keys, and associated data will be permanently wiped and cannot be recovered.",
+  },
+  twoFactorDisabled: {
+    badgeText: "Critical security",
+    heading: "Two-factor authentication disabled",
+    description:
+      "Two-Factor Authentication (2FA) was recently disabled on your {{ .AppName }} account. If this was not authorized by you, secure your account immediately.",
+    actionText: "Secure account & re-enable 2FA",
+    securityWarning:
+      "Disabling two-factor authentication significantly reduces your account security.",
+  },
+  weeklyDigest: {
+    badgeText: "Weekly digest",
+    heading: "Your weekly performance overview",
+    description:
+      "Here is a summary of your workspace activity and metrics for the past 7 days:",
+    buttonText: "Open analytics dashboard",
+  },
+  orderShipped: {
+    badgeText: "Shipped",
+    heading: "Your order is on the way",
+    description:
+      "Great news! Your order {{ .OrderID }} has been shipped and is heading your way.",
+    trackingLabel: "Tracking number",
+    carrierLabel: "Shipping carrier",
+    estDeliveryLabel: "Estimated delivery",
+    buttonText: "Track shipment",
+  },
 };

@@ -120,4 +120,51 @@ export interface EmailLocaleDictionary {
     description: string;
     buttonText: string;
   };
+  paymentFailed: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    amountLabel: string;
+    retryDateLabel: string;
+    buttonText: string;
+    noticeText: string;
+  };
+  trialEnding: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    daysLeftLabel: string;
+    expiryDateLabel: string;
+    buttonText: string;
+  };
+  accountDeletion: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    scheduledDateLabel: string;
+    cancelButtonText: string;
+    warningText: string;
+  };
+  twoFactorDisabled: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    actionText: string;
+    securityWarning: string;
+  };
+  weeklyDigest: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    buttonText: string;
+  };
+  orderShipped: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    trackingLabel: string;
+    carrierLabel: string;
+    estDeliveryLabel: string;
+    buttonText: string;
+  };
 }

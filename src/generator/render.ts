@@ -20,6 +20,12 @@ import { ApiKeyCreatedEmail } from "../templates/api-key-created.js";
 import { UsageLimitWarningEmail } from "../templates/usage-limit-warning.js";
 import { FeedbackRequestEmail } from "../templates/feedback-request.js";
 import { ProductUpdateEmail } from "../templates/product-update.js";
+import { PaymentFailedEmail } from "../templates/payment-failed.js";
+import { TrialEndingEmail } from "../templates/trial-ending.js";
+import { AccountDeletionEmail } from "../templates/account-deletion.js";
+import { TwoFactorDisabledEmail } from "../templates/two-factor-disabled.js";
+import { WeeklyDigestEmail } from "../templates/weekly-digest.js";
+import { OrderShippedEmail } from "../templates/order-shipped.js";
 
 export type TemplateId =
   | "otp"
@@ -33,7 +39,13 @@ export type TemplateId =
   | "api-key-created"
   | "usage-limit-warning"
   | "feedback-request"
-  | "product-update";
+  | "product-update"
+  | "payment-failed"
+  | "trial-ending"
+  | "account-deletion"
+  | "two-factor-disabled"
+  | "weekly-digest"
+  | "order-shipped";
 
 export interface TemplateMetadata {
   id: TemplateId;
@@ -58,12 +70,12 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
     filename: "password-reset.html",
     component: (props) => React.createElement(PasswordResetEmail, props),
   },
-  welcome: {
-    id: "welcome",
-    name: "Welcome & Onboarding",
-    description: "New account confirmation with setup checklist",
-    filename: "welcome.html",
-    component: (props) => React.createElement(WelcomeEmail, props),
+  "magic-link": {
+    id: "magic-link",
+    name: "Magic Link Sign In",
+    description: "One-click passwordless login link",
+    filename: "magic-link.html",
+    component: (props) => React.createElement(MagicLinkEmail, props),
   },
   notification: {
     id: "notification",
@@ -72,6 +84,20 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
     filename: "notification.html",
     component: (props) => React.createElement(NotificationEmail, props),
   },
+  "api-key-created": {
+    id: "api-key-created",
+    name: "API Key Created Alert",
+    description: "New API token notice with prefix and revocation button",
+    filename: "api-key-created.html",
+    component: (props) => React.createElement(ApiKeyCreatedEmail, props),
+  },
+  "two-factor-disabled": {
+    id: "two-factor-disabled",
+    name: "2FA Disabled Alert",
+    description: "Critical security alert when 2FA is removed from account",
+    filename: "two-factor-disabled.html",
+    component: (props) => React.createElement(TwoFactorDisabledEmail, props),
+  },
   "payment-completed": {
     id: "payment-completed",
     name: "Payment Receipt / Invoice",
@@ -79,12 +105,19 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
     filename: "payment-completed.html",
     component: (props) => React.createElement(PaymentCompletedEmail, props),
   },
-  "magic-link": {
-    id: "magic-link",
-    name: "Magic Link Sign In",
-    description: "One-click passwordless login link",
-    filename: "magic-link.html",
-    component: (props) => React.createElement(MagicLinkEmail, props),
+  "payment-failed": {
+    id: "payment-failed",
+    name: "Payment Failed / Dunning",
+    description: "Declined payment notice with card update action",
+    filename: "payment-failed.html",
+    component: (props) => React.createElement(PaymentFailedEmail, props),
+  },
+  "trial-ending": {
+    id: "trial-ending",
+    name: "Trial Ending Reminder",
+    description: "Free trial expiration countdown and upgrade notice",
+    filename: "trial-ending.html",
+    component: (props) => React.createElement(TrialEndingEmail, props),
   },
   "team-invite": {
     id: "team-invite",
@@ -100,12 +133,19 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
     filename: "subscription-canceled.html",
     component: (props) => React.createElement(SubscriptionCanceledEmail, props),
   },
-  "api-key-created": {
-    id: "api-key-created",
-    name: "API Key Created Alert",
-    description: "New API token notice with prefix and revocation button",
-    filename: "api-key-created.html",
-    component: (props) => React.createElement(ApiKeyCreatedEmail, props),
+  "account-deletion": {
+    id: "account-deletion",
+    name: "Account Deletion Scheduled",
+    description: "Grace period notice with cancellation button",
+    filename: "account-deletion.html",
+    component: (props) => React.createElement(AccountDeletionEmail, props),
+  },
+  welcome: {
+    id: "welcome",
+    name: "Welcome & Onboarding",
+    description: "New account confirmation with setup checklist",
+    filename: "welcome.html",
+    component: (props) => React.createElement(WelcomeEmail, props),
   },
   "usage-limit-warning": {
     id: "usage-limit-warning",
@@ -113,6 +153,20 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
     description: "Monthly quota threshold alert with progress meter",
     filename: "usage-limit-warning.html",
     component: (props) => React.createElement(UsageLimitWarningEmail, props),
+  },
+  "weekly-digest": {
+    id: "weekly-digest",
+    name: "Weekly Analytics Digest",
+    description: "7-day performance metrics and activity summary",
+    filename: "weekly-digest.html",
+    component: (props) => React.createElement(WeeklyDigestEmail, props),
+  },
+  "order-shipped": {
+    id: "order-shipped",
+    name: "Order Shipped / Tracking",
+    description: "Delivery confirmation with tracking number and carrier",
+    filename: "order-shipped.html",
+    component: (props) => React.createElement(OrderShippedEmail, props),
   },
   "feedback-request": {
     id: "feedback-request",

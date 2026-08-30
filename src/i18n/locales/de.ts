@@ -129,4 +129,60 @@ export const deLocale: EmailLocaleDictionary = {
       "Hier sind die neuesten Funktionen und Verbesserungen dieser Version:",
     buttonText: "Vollständige Versionshinweise lesen",
   },
+  paymentFailed: {
+    badgeText: "Zahlung fehlgeschlagen",
+    heading: "Zahlung nicht erfolgreich",
+    description:
+      "Ihre Zahlung für {{ .PlanName }} konnte nicht verarbeitet werden. Bitte aktualisieren Sie Ihre Zahlungsart.",
+    amountLabel: "Fälliger Betrag",
+    retryDateLabel: "Nächster Versuch",
+    buttonText: "Zahlungsart aktualisieren",
+    noticeText:
+      "Wird die Zahlung nicht aktualisiert, kann Ihr Abonnement ausgesetzt werden.",
+  },
+  trialEnding: {
+    badgeText: "Testphase",
+    heading: "Testphase endet bald",
+    description:
+      "Ihre kostenlose Testphase für {{ .AppName }} {{ .PlanName }} endet in {{ .DaysLeft }} Tagen.",
+    daysLeftLabel: "Verbleibende Zeit",
+    expiryDateLabel: "Endet am",
+    buttonText: "Auf Pro upgraden",
+  },
+  accountDeletion: {
+    badgeText: "Kontohinweis",
+    heading: "Kontolöschung geplant",
+    description:
+      "Ihre Anfrage zur Löschung Ihres Kontos wurde empfangen. Die Daten werden am {{ .ScheduledDate }} gelöscht.",
+    scheduledDateLabel: "Löschdatum",
+    cancelButtonText: "Löschung abbrechen",
+    warningText:
+      "Nach diesem Datum werden alle Arbeitsbereiche und Daten unwiderruflich gelöscht.",
+  },
+  twoFactorDisabled: {
+    badgeText: "Kritische Sicherheit",
+    heading: "Zwei-Faktor-Authentifizierung deaktiviert",
+    description:
+      "2FA wurde auf Ihrem Konto deaktiviert. Wenn Sie dies nicht autorisiert haben, sichern Sie Ihr Konto sofort.",
+    actionText: "Konto sichern & 2FA aktivieren",
+    securityWarning:
+      "Das Deaktivieren der Zwei-Faktor-Authentifizierung verringert die Kontosicherheit erheblich.",
+  },
+  weeklyDigest: {
+    badgeText: "Wöchentlicher Bericht",
+    heading: "Ihre wöchentliche Übersicht",
+    description:
+      "Hier ist die Zusammenfassung Ihrer Aktivitäten der letzten 7 Tage:",
+    buttonText: "Analytics öffnen",
+  },
+  orderShipped: {
+    badgeText: "Versandt",
+    heading: "Ihre Bestellung ist unterwegs",
+    description:
+      "Ihre Bestellung {{ .OrderID }} wurde versandt und ist auf dem Weg zu Ihnen.",
+    trackingLabel: "Sendungsnummer",
+    carrierLabel: "Versanddienstleister",
+    estDeliveryLabel: "Voraussichtliche Lieferung",
+    buttonText: "Sendung verfolgen",
+  },
 };

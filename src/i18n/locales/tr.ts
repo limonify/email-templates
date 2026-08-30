@@ -132,4 +132,60 @@ export const trLocale: EmailLocaleDictionary = {
       "Bu sürümde yayınlanan en son özellikler, iyileştirmeler ve güncellemeler:",
     buttonText: "Tüm sürüm notlarını oku",
   },
+  paymentFailed: {
+    badgeText: "Ödeme başarısız",
+    heading: "Ödeme alınamadı",
+    description:
+      "{{ .PlanName }} için {{ .Amount }} tutarındaki ödemeniz işleme alınamadı. Kesintisiz erişim için lütfen ödeme yönteminizi güncelleyin.",
+    amountLabel: "Ödenecek tutar",
+    retryDateLabel: "Sonraki deneme tarihi",
+    buttonText: "Ödeme yöntemini güncelle",
+    noticeText:
+      "Ödeme bilgileri güncellenmezse aboneliğiniz askıya alınabilir.",
+  },
+  trialEnding: {
+    badgeText: "Deneme süresi",
+    heading: "Deneme süreniz doluyor",
+    description:
+      "{{ .AppName }} {{ .PlanName }} ücretsiz deneme süreniz {{ .DaysLeft }} gün içinde sona erecektir. Kesintisiz erişim için planınızı yükseltin.",
+    daysLeftLabel: "Kalan süre",
+    expiryDateLabel: "Bitiş tarihi",
+    buttonText: "Pro'ya Yükselt",
+  },
+  accountDeletion: {
+    badgeText: "Hesap bildirimi",
+    heading: "Hesap silme planlandı",
+    description:
+      "{{ .AppName }} hesabınızı silme talebiniz alındı. Verileriniz {{ .ScheduledDate }} tarihinde kalıcı olarak silinmek üzere planlanmıştır.",
+    scheduledDateLabel: "Kalıcı silinme tarihi",
+    cancelButtonText: "Silme talebini iptal et",
+    warningText:
+      "Bu tarihten sonra tüm çalışma alanları, API anahtarları ve verileriniz geri döndürülemez şekilde silinecektir.",
+  },
+  twoFactorDisabled: {
+    badgeText: "Kritik güvenlik",
+    heading: "İki faktörlü doğrulama kapatıldı",
+    description:
+      "{{ .AppName }} hesabınızda iki faktörlü doğrulama (2FA) devre dışı bırakıldı. Bu işlemi siz yapmadıysanız hesabınızı derhal güvene alın.",
+    actionText: "Hesabı güvene al ve 2FA'yı aç",
+    securityWarning:
+      "İki faktörlü doğrulamayı kapatmak hesap güvenliğinizi önemli ölçüde azaltır.",
+  },
+  weeklyDigest: {
+    badgeText: "Haftalık özet",
+    heading: "Haftalık performans raporunuz",
+    description:
+      "Son 7 gün içindeki çalışma alanı aktiviteniz ve metriklerinizin özeti:",
+    buttonText: "Analitik panelini aç",
+  },
+  orderShipped: {
+    badgeText: "Kargolandı",
+    heading: "Siparişiniz yola çıktı",
+    description:
+      "Harika haber! {{ .OrderID }} numaralı siparişiniz kargoya verildi ve teslimat adresinize doğru yola çıktı.",
+    trackingLabel: "Takip numarası",
+    carrierLabel: "Kargo firması",
+    estDeliveryLabel: "Tahmini teslimat",
+    buttonText: "Kargoyu takip et",
+  },
 };

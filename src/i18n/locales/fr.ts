@@ -127,4 +127,60 @@ export const frLocale: EmailLocaleDictionary = {
       "Voici les dernières fonctionnalités et améliorations de cette version :",
     buttonText: "Lire les notes de version",
   },
+  paymentFailed: {
+    badgeText: "Paiement échoué",
+    heading: "Paiement non abouti",
+    description:
+      "Nous n’avons pas pu traiter votre paiement de {{ .Amount }} pour {{ .PlanName }}. Veuillez mettre à jour votre moyen de paiement.",
+    amountLabel: "Montant dû",
+    retryDateLabel: "Prochaine tentative",
+    buttonText: "Mettre à jour le moyen de paiement",
+    noticeText:
+      "Si vos coordonnées ne sont pas mises à jour, votre abonnement pourrait être suspendu.",
+  },
+  trialEnding: {
+    badgeText: "Fin d’essai",
+    heading: "Votre essai se termine bientôt",
+    description:
+      "Votre période d’essai pour {{ .AppName }} {{ .PlanName }} expire dans {{ .DaysLeft }} jours.",
+    daysLeftLabel: "Temps restant",
+    expiryDateLabel: "Date de fin",
+    buttonText: "Passer à la version Pro",
+  },
+  accountDeletion: {
+    badgeText: "Alerte compte",
+    heading: "Suppression du compte programmée",
+    description:
+      "Votre demande de suppression a été enregistrée. Vos données seront définitivement supprimées le {{ .ScheduledDate }}.",
+    scheduledDateLabel: "Date de suppression",
+    cancelButtonText: "Annuler la suppression",
+    warningText:
+      "Après cette date, toutes vos données et espaces seront définitivement effacés.",
+  },
+  twoFactorDisabled: {
+    badgeText: "Sécurité critique",
+    heading: "Authentification à deux facteurs désactivée",
+    description:
+      "La 2FA a été désactivée sur votre compte. Si vous n’en êtes pas à l’origine, sécurisez votre compte immédiatement.",
+    actionText: "Sécuriser le compte et réactiver la 2FA",
+    securityWarning:
+      "La désactivation de la 2FA réduit fortement la sécurité de votre compte.",
+  },
+  weeklyDigest: {
+    badgeText: "Rapport hebdomadaire",
+    heading: "Votre récapitulatif de la semaine",
+    description:
+      "Voici le résumé de l’activité de votre espace de travail au cours des 7 derniers jours :",
+    buttonText: "Ouvrir le tableau de bord",
+  },
+  orderShipped: {
+    badgeText: "Expédié",
+    heading: "Votre commande est en route",
+    description:
+      "Votre commande {{ .OrderID }} a été expédiée et est en cours d’acheminement.",
+    trackingLabel: "Numéro de suivi",
+    carrierLabel: "Transporteur",
+    estDeliveryLabel: "Livraison estimée",
+    buttonText: "Suivre la livraison",
+  },
 };

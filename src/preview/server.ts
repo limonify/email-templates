@@ -58,8 +58,16 @@ export function startPreviewServer(port: number = 3000) {
             surveyUrl: "https://ui.limonify.com/survey",
             manageUrl: "https://ui.limonify.com/settings/tokens",
             upgradeUrl: "https://ui.limonify.com/billing/upgrade",
+            updateBillingUrl: "https://ui.limonify.com/billing/payment-methods",
+            cancelDeletionUrl: "https://ui.limonify.com/account/restore",
+            secureAccountUrl: "https://ui.limonify.com/security/2fa",
+            analyticsUrl: "https://ui.limonify.com/analytics",
+            trackingUrl: "https://ui.limonify.com/orders/track/9482",
             changelogUrl: "https://ui.limonify.com/changelog",
             version: "v2.4.0",
+            daysLeft: "3",
+            scheduledDate: "September 30, 2026",
+            retryDate: "September 2, 2026",
             keyName: "Production Deployer Token",
             keyPrefix: "lmn_live_94f8...",
             createdAt: "August 30, 2026 at 23:15 UTC",
@@ -77,6 +85,10 @@ export function startPreviewServer(port: number = 3000) {
                   ? "10 Minuten"
                   : "10 minutes",
             orderId: "INV-2026-9482",
+            trackingNumber: "TRK-9481-0294-DHL",
+            carrier: "DHL Express Worldwide",
+            estDelivery:
+              locale === "tr" ? "Perşembe, 3 Eylül" : "Thursday, Sept 3",
             amount: "$49.00",
             planName: "Limonify Pro (Annual)",
             paymentMethod: "Visa •••• 4242",
@@ -152,7 +164,7 @@ export function startPreviewServer(port: number = 3000) {
       overflow: hidden;
     }
     aside {
-      width: 290px;
+      width: 295px;
       background: #121212;
       border-right: 1px solid #222222;
       display: flex;
@@ -336,12 +348,12 @@ export function startPreviewServer(port: number = 3000) {
         <img class="brand-img" src="https://limeui.limonify.com/lime-ui.png?v=5" alt="Limonify UI" />
         <div class="brand-title">Limonify Email</div>
       </div>
-      <div class="badge-pill">12 TEMPLATES</div>
+      <div class="badge-pill">18 TEMPLATES</div>
     </div>
     <div class="templates-list">
-      <div class="section-label">Auth & Security</div>
+      <div class="section-label">Authentication & Security (6)</div>
       ${templatesList
-        .slice(0, 4)
+        .slice(0, 6)
         .map(
           (t, i) => `
         <div class="nav-item ${i === 0 ? "active" : ""}" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">
@@ -352,9 +364,9 @@ export function startPreviewServer(port: number = 3000) {
         )
         .join("")}
 
-      <div class="section-label" style="margin-top: 8px;">Billing & Team</div>
+      <div class="section-label" style="margin-top: 8px;">Billing & Subscriptions (4)</div>
       ${templatesList
-        .slice(4, 8)
+        .slice(6, 10)
         .map(
           (t) => `
         <div class="nav-item" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">
@@ -365,9 +377,35 @@ export function startPreviewServer(port: number = 3000) {
         )
         .join("")}
 
-      <div class="section-label" style="margin-top: 8px;">Product & Growth</div>
+      <div class="section-label" style="margin-top: 8px;">Team & Workspace (2)</div>
       ${templatesList
-        .slice(8)
+        .slice(10, 12)
+        .map(
+          (t) => `
+        <div class="nav-item" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">
+          <div>${t.name}</div>
+          <div class="desc">${t.description}</div>
+        </div>
+      `,
+        )
+        .join("")}
+
+      <div class="section-label" style="margin-top: 8px;">Product, Digest & Shipping (4)</div>
+      ${templatesList
+        .slice(12, 16)
+        .map(
+          (t) => `
+        <div class="nav-item" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">
+          <div>${t.name}</div>
+          <div class="desc">${t.description}</div>
+        </div>
+      `,
+        )
+        .join("")}
+
+      <div class="section-label" style="margin-top: 8px;">Growth & Updates (2)</div>
+      ${templatesList
+        .slice(16)
         .map(
           (t) => `
         <div class="nav-item" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">

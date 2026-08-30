@@ -121,4 +121,60 @@ export const esLocale: EmailLocaleDictionary = {
     description: "Estas son las últimas funciones y mejoras de esta versión:",
     buttonText: "Leer notas de la versión",
   },
+  paymentFailed: {
+    badgeText: "Pago fallido",
+    heading: "Pago no procesado",
+    description:
+      "No pudimos procesar su pago de {{ .Amount }} para {{ .PlanName }}. Por favor, actualice su método de pago.",
+    amountLabel: "Importe adeudado",
+    retryDateLabel: "Próximo intento",
+    buttonText: "Actualizar método de pago",
+    noticeText:
+      "Si no actualiza los datos de pago, su suscripción podría suspenderse.",
+  },
+  trialEnding: {
+    badgeText: "Fin de prueba",
+    heading: "Tu prueba gratuita termina pronto",
+    description:
+      "Tu periodo de prueba para {{ .AppName }} {{ .PlanName }} caducará en {{ .DaysLeft }} días.",
+    daysLeftLabel: "Tiempo restante",
+    expiryDateLabel: "Termina el",
+    buttonText: "Mejorar a Pro",
+  },
+  accountDeletion: {
+    badgeText: "Alerta de cuenta",
+    heading: "Eliminación de cuenta programada",
+    description:
+      "Hemos recibido tu solicitud para eliminar tu cuenta. La eliminación se completará el {{ .ScheduledDate }}.",
+    scheduledDateLabel: "Fecha de eliminación",
+    cancelButtonText: "Cancelar eliminación",
+    warningText:
+      "Tras esta fecha, todos los datos y espacios de trabajo se eliminarán de forma permanente.",
+  },
+  twoFactorDisabled: {
+    badgeText: "Seguridad crítica",
+    heading: "Autenticación en dos pasos desactivada",
+    description:
+      "La autenticación 2FA se ha desactivado en tu cuenta de {{ .AppName }}. Si no lo autorizaste, asegura tu cuenta de inmediato.",
+    actionText: "Asegurar cuenta y activar 2FA",
+    securityWarning:
+      "Desactivar la autenticación en dos pasos reduce significativamente la seguridad de tu cuenta.",
+  },
+  weeklyDigest: {
+    badgeText: "Resumen semanal",
+    heading: "Tu resumen semanal",
+    description:
+      "Aquí tienes un resumen de la actividad de tu espacio de trabajo en los últimos 7 días:",
+    buttonText: "Abrir panel de análisis",
+  },
+  orderShipped: {
+    badgeText: "Enviado",
+    heading: "Tu pedido está en camino",
+    description:
+      "Tu pedido {{ .OrderID }} ha sido enviado y se encuentra en camino.",
+    trackingLabel: "Número de seguimiento",
+    carrierLabel: "Transportista",
+    estDeliveryLabel: "Entrega estimada",
+    buttonText: "Rastrear envío",
+  },
 };
