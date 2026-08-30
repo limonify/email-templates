@@ -12,8 +12,7 @@ coverage
 
 # logs
 logs
-_.log
-report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
+*.log
 
 # dotenv environment variable files
 .env
@@ -33,6 +32,6 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 # Finder (MacOS) folder config
 .DS_Store
 
-# generated templates & config
-templates/
+# generated output templates & config
+/templates/
 limonify-email.config.json
