@@ -8,7 +8,6 @@ export interface OTPFieldProps {
 }
 
 export const OTPField: React.FC<OTPFieldProps> = ({ code, theme }) => {
-  // If code is a 6-digit static string (e.g., '849201')
   const cleanCode = code.replace(/\s+/g, "");
   const isDigits = /^\d{6}$/.test(cleanCode);
 
@@ -17,8 +16,8 @@ export const OTPField: React.FC<OTPFieldProps> = ({ code, theme }) => {
     return (
       <table
         style={{
-          margin: "24px auto",
-          borderSpacing: "8px",
+          margin: "20px 0",
+          borderSpacing: "6px",
           borderCollapse: "separate",
         }}
       >
@@ -28,23 +27,23 @@ export const OTPField: React.FC<OTPFieldProps> = ({ code, theme }) => {
               <td
                 key={idx}
                 style={{
-                  width: "46px",
-                  height: "54px",
+                  width: "42px",
+                  height: "46px",
                   textAlign: "center",
                   verticalAlign: "middle",
-                  backgroundColor: theme.muted,
-                  borderRadius: `calc(${theme.radius} - 4px)`,
-                  border: `1px solid ${idx === 0 ? theme.accent : theme.surfaceBorder}`,
-                  boxShadow: idx === 0 ? `0 0 0 2px ${theme.accent}33` : "none",
+                  backgroundColor: theme.surface,
+                  borderRadius: "8px",
+                  border: `1px solid ${theme.surfaceBorder}`,
                 }}
               >
                 <span
                   style={{
-                    fontSize: "26px",
-                    fontWeight: "800",
-                    color: idx === 0 ? theme.accent : theme.foreground,
+                    fontSize: "20px",
+                    fontWeight: "600",
+                    color: theme.foreground,
                     fontFamily:
                       "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+                    letterSpacing: "-0.02em",
                   }}
                 >
                   {digit}
@@ -57,32 +56,31 @@ export const OTPField: React.FC<OTPFieldProps> = ({ code, theme }) => {
     );
   }
 
-  // Dynamic template variable {{ .Code }} or custom variable format
+  // Dynamic template variable {{ .Code }}
   return (
     <div
       style={{
-        backgroundColor: theme.muted,
-        borderRadius: theme.radius,
+        backgroundColor: theme.surface,
+        borderRadius: "8px",
         border: `1px solid ${theme.surfaceBorder}`,
-        padding: "18px 24px",
-        margin: "24px 0",
-        textAlign: "center",
-        boxShadow: "inset 0 2px 6px rgba(0, 0, 0, 0.08)",
+        padding: "14px 20px",
+        margin: "20px 0",
+        textAlign: "left",
+        display: "inline-block",
       }}
     >
-      <Text
+      <span
         style={{
-          fontSize: "32px",
-          fontWeight: "800",
-          letterSpacing: "8px",
-          color: theme.accent,
-          margin: 0,
+          fontSize: "24px",
+          fontWeight: "600",
+          letterSpacing: "6px",
+          color: theme.foreground,
           fontFamily:
             "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
         }}
       >
         {code}
-      </Text>
+      </span>
     </div>
   );
 };

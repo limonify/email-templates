@@ -19,47 +19,58 @@ export const DeviceSessionCard: React.FC<DeviceSessionProps> = ({
   timestamp = "Just now",
   theme,
 }) => {
+  const isDark =
+    theme.background === "#0a0a0a" || theme.background.startsWith("#0");
+  const cardBg = isDark ? "#111111" : "#f9f9fb";
+  const cardBorder = isDark ? "#222222" : "#ebebeb";
+
   return (
     <div
       style={{
-        backgroundColor: theme.muted,
-        borderRadius: `calc(${theme.radius} - 4px)`,
-        border: `1px solid ${theme.surfaceBorder}`,
-        padding: "16px 20px",
-        margin: "20px 0",
+        backgroundColor: cardBg,
+        borderRadius: "8px",
+        border: `1px solid ${cardBorder}`,
+        padding: "14px 16px",
+        margin: "18px 0",
       }}
     >
       <Text
         style={{
-          fontSize: "12px",
-          fontWeight: "700",
-          color: theme.foreground,
+          fontSize: "11px",
+          fontWeight: "600",
+          color: theme.mutedForeground,
           textTransform: "uppercase",
           letterSpacing: "0.04em",
-          margin: "0 0 12px",
+          margin: "0 0 10px",
+          fontFamily: theme.fontFamily,
         }}
       >
-        Device & Session Details
+        Session details
       </Text>
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+      <table
+        style={{
+          width: "100%",
+          borderCollapse: "collapse",
+          fontFamily: theme.fontFamily,
+        }}
+      >
         <tbody>
           <tr>
             <td
               style={{
-                padding: "4px 0",
-                fontSize: "13px",
+                padding: "3px 0",
+                fontSize: "12px",
                 color: theme.mutedForeground,
               }}
             >
-              Device / OS:
+              Device
             </td>
             <td
               style={{
-                padding: "4px 0",
-                fontSize: "13px",
+                padding: "3px 0",
+                fontSize: "12px",
                 color: theme.foreground,
                 textAlign: "right",
-                fontWeight: "500",
               }}
             >
               {device}
@@ -68,20 +79,19 @@ export const DeviceSessionCard: React.FC<DeviceSessionProps> = ({
           <tr>
             <td
               style={{
-                padding: "4px 0",
-                fontSize: "13px",
+                padding: "3px 0",
+                fontSize: "12px",
                 color: theme.mutedForeground,
               }}
             >
-              Location:
+              Location
             </td>
             <td
               style={{
-                padding: "4px 0",
-                fontSize: "13px",
+                padding: "3px 0",
+                fontSize: "12px",
                 color: theme.foreground,
                 textAlign: "right",
-                fontWeight: "500",
               }}
             >
               {location}
@@ -90,20 +100,20 @@ export const DeviceSessionCard: React.FC<DeviceSessionProps> = ({
           <tr>
             <td
               style={{
-                padding: "4px 0",
-                fontSize: "13px",
+                padding: "3px 0",
+                fontSize: "12px",
                 color: theme.mutedForeground,
               }}
             >
-              IP Address:
+              IP address
             </td>
             <td
               style={{
-                padding: "4px 0",
-                fontSize: "13px",
+                padding: "3px 0",
+                fontSize: "12px",
                 color: theme.foreground,
                 textAlign: "right",
-                fontFamily: "monospace",
+                fontFamily: "ui-monospace, monospace",
               }}
             >
               {ipAddress}
@@ -112,17 +122,17 @@ export const DeviceSessionCard: React.FC<DeviceSessionProps> = ({
           <tr>
             <td
               style={{
-                padding: "4px 0",
-                fontSize: "13px",
+                padding: "3px 0",
+                fontSize: "12px",
                 color: theme.mutedForeground,
               }}
             >
-              Time:
+              Timestamp
             </td>
             <td
               style={{
-                padding: "4px 0",
-                fontSize: "13px",
+                padding: "3px 0",
+                fontSize: "12px",
                 color: theme.foreground,
                 textAlign: "right",
               }}

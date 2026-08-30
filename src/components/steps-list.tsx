@@ -15,33 +15,45 @@ export interface StepsListProps {
 }
 
 export const StepsList: React.FC<StepsListProps> = ({ steps, theme }) => {
+  const isDark =
+    theme.background === "#0a0a0a" || theme.background.startsWith("#0");
+
   return (
     <table
-      style={{ width: "100%", borderCollapse: "collapse", margin: "20px 0" }}
+      style={{
+        width: "100%",
+        borderCollapse: "collapse",
+        margin: "18px 0",
+        fontFamily: theme.fontFamily,
+      }}
     >
       <tbody>
         {steps.map((step, idx) => (
           <tr key={idx}>
             <td
               style={{
-                width: "36px",
+                width: "32px",
                 verticalAlign: "top",
-                paddingBottom: "16px",
+                paddingBottom: "14px",
               }}
             >
               <div
                 style={{
-                  width: "28px",
-                  height: "28px",
-                  lineHeight: "28px",
+                  width: "22px",
+                  height: "22px",
+                  lineHeight: "22px",
                   borderRadius: "50%",
-                  backgroundColor: step.completed ? theme.accent : theme.muted,
+                  backgroundColor: step.completed
+                    ? isDark
+                      ? "#262626"
+                      : "#e4e4e7"
+                    : "transparent",
                   color: step.completed
-                    ? theme.accentForeground
-                    : theme.foreground,
+                    ? theme.foreground
+                    : theme.mutedForeground,
                   textAlign: "center",
-                  fontWeight: "700",
-                  fontSize: "12px",
+                  fontWeight: "600",
+                  fontSize: "11px",
                   border: `1px solid ${theme.surfaceBorder}`,
                 }}
               >
@@ -51,26 +63,28 @@ export const StepsList: React.FC<StepsListProps> = ({ steps, theme }) => {
             <td
               style={{
                 verticalAlign: "top",
-                paddingLeft: "8px",
-                paddingBottom: "16px",
+                paddingLeft: "6px",
+                paddingBottom: "14px",
               }}
             >
               <Text
                 style={{
-                  fontSize: "14px",
-                  fontWeight: "600",
+                  fontSize: "13px",
+                  fontWeight: "500",
                   color: theme.foreground,
                   margin: "0 0 2px",
+                  fontFamily: theme.fontFamily,
                 }}
               >
                 {step.title}
               </Text>
               <Text
                 style={{
-                  fontSize: "13px",
+                  fontSize: "12px",
                   color: theme.mutedForeground,
                   lineHeight: "18px",
                   margin: 0,
+                  fontFamily: theme.fontFamily,
                 }}
               >
                 {step.description}

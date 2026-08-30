@@ -13,16 +13,16 @@ export interface BrandLogoProps {
 export const BrandLogo: React.FC<BrandLogoProps> = ({
   appName = "Limonify",
   logoUrl,
-  logoWidth = 36,
-  logoHeight = 36,
+  logoWidth = 28,
+  logoHeight = 28,
   theme,
 }) => {
   if (logoUrl) {
     return (
-      <table style={{ margin: "0 auto" }}>
+      <table style={{ margin: "0 0 24px 0" }}>
         <tbody>
           <tr>
-            <td style={{ verticalAlign: "middle", textAlign: "center" }}>
+            <td style={{ verticalAlign: "middle" }}>
               <Img
                 src={logoUrl}
                 alt={appName}
@@ -30,11 +30,9 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
                 height={String(logoHeight)}
                 style={{
                   display: "block",
-                  margin: "0 auto",
-                  borderRadius: logoWidth === logoHeight ? "10px" : "0",
+                  borderRadius: "6px",
                   outline: "none",
                   border: "none",
-                  textDecoration: "none",
                 }}
               />
             </td>
@@ -44,49 +42,39 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
     );
   }
 
-  // Modern Limonify Monogram Mark
-  const initial = (appName.trim().charAt(0) || "L").toUpperCase();
-
+  // Clean, modern SVG monogram icon + wordmark
   return (
-    <table style={{ margin: "0 auto" }}>
+    <table style={{ margin: "0 0 24px 0" }}>
       <tbody>
         <tr>
-          <td style={{ verticalAlign: "middle" }}>
+          <td style={{ verticalAlign: "middle", width: "26px" }}>
             <div
               style={{
-                width: "36px",
-                height: "36px",
-                lineHeight: "36px",
-                borderRadius: "10px",
-                backgroundColor: theme.surface,
-                border: `1px solid ${theme.surfaceBorder}`,
+                width: "24px",
+                height: "24px",
+                lineHeight: "24px",
+                borderRadius: "6px",
+                backgroundColor: theme.primary,
+                color: theme.primaryForeground,
                 textAlign: "center",
-                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
+                fontWeight: "700",
+                fontSize: "12px",
+                fontFamily: theme.fontFamily,
                 display: "inline-block",
                 verticalAlign: "middle",
               }}
             >
-              <span
-                style={{
-                  fontSize: "17px",
-                  fontWeight: "800",
-                  color: theme.accent,
-                  fontFamily: theme.fontFamily,
-                  letterSpacing: "-0.02em",
-                }}
-              >
-                {initial}
-              </span>
+              {appName.charAt(0).toUpperCase()}
             </div>
           </td>
-          <td style={{ paddingLeft: "12px", verticalAlign: "middle" }}>
+          <td style={{ paddingLeft: "8px", verticalAlign: "middle" }}>
             <Text
               style={{
-                fontSize: "18px",
-                fontWeight: "700",
+                fontSize: "14px",
+                fontWeight: "600",
                 color: theme.foreground,
                 margin: 0,
-                letterSpacing: "-0.03em",
+                letterSpacing: "-0.02em",
                 fontFamily: theme.fontFamily,
               }}
             >

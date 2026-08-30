@@ -1,48 +1,43 @@
-import * as React from "react";
-import { Heading, Text } from "@react-email/components";
-import {
-  EmailLayout,
-  type EmailLayoutProps,
-} from "../components/email-layout.js";
-import { EmailButton } from "../components/button.js";
-import { EmailBadge } from "../components/badge.js";
-import { InfoCard } from "../components/info-card.js";
-import type { EmailTheme } from "../theme/types.js";
+import * as React from 'react'
+import { Heading, Text } from '@react-email/components'
+import { EmailLayout, type EmailLayoutProps } from '../components/email-layout.js'
+import { EmailButton } from '../components/button.js'
+import { EmailBadge } from '../components/badge.js'
+import { InfoCard } from '../components/info-card.js'
+import type { EmailTheme } from '../theme/types.js'
 
-export interface PasswordResetEmailProps extends Partial<
-  Omit<EmailLayoutProps, "children" | "theme">
-> {
-  theme: EmailTheme;
-  heading?: string;
-  description?: string;
-  userName?: string;
-  resetUrl?: string;
-  buttonText?: string;
-  expiresIn?: string;
-  securityNoticeTitle?: string;
-  securityNoticeText?: string;
+export interface PasswordResetEmailProps extends Partial<Omit<EmailLayoutProps, 'children' | 'theme'>> {
+  theme: EmailTheme
+  heading?: string
+  description?: string
+  userName?: string
+  resetUrl?: string
+  buttonText?: string
+  expiresIn?: string
+  securityNoticeTitle?: string
+  securityNoticeText?: string
 }
 
 export const PasswordResetEmail: React.FC<PasswordResetEmailProps> = ({
-  appName = "{{ .AppName }}",
-  badgeText = "Account Security",
-  heading = "Reset Your Password",
-  userName = "{{ .UserName }}",
+  appName = '{{ .AppName }}',
+  badgeText = 'Security',
+  heading = 'Reset your password',
+  userName = '{{ .UserName }}',
   description,
-  resetUrl = "{{ .ResetURL }}",
-  buttonText = "Reset Password →",
-  expiresIn = "{{ .ExpiresIn }}",
-  securityNoticeTitle = "Security Notice",
+  resetUrl = '{{ .ResetURL }}',
+  buttonText = 'Reset password',
+  expiresIn = '{{ .ExpiresIn }}',
+  securityNoticeTitle = 'Security note',
   securityNoticeText,
   theme,
   ...layoutProps
 }) => {
   const resolvedDescription =
     description ||
-    `Hi ${userName}, we received a password reset request for your account. Click the button below to choose a new password:`;
+    `We received a request to reset the password for your account. Click the button below to proceed:`
   const resolvedNotice =
     securityNoticeText ||
-    `This reset link will expire in ${expiresIn}. If you did not make this request, your account remains secure and you can safely ignore this email.`;
+    `This link will expire in ${expiresIn}. If you didn't request a password reset, no action is required.`
 
   return (
     <EmailLayout
@@ -58,11 +53,12 @@ export const PasswordResetEmail: React.FC<PasswordResetEmailProps> = ({
       {heading ? (
         <Heading
           style={{
-            fontSize: "22px",
-            fontWeight: "700",
+            fontSize: '18px',
+            fontWeight: '600',
             color: theme.foreground,
-            margin: "0 0 10px",
-            letterSpacing: "-0.025em",
+            margin: '0 0 8px',
+            letterSpacing: '-0.025em',
+            fontFamily: theme.fontFamily,
           }}
         >
           {heading}
@@ -71,10 +67,11 @@ export const PasswordResetEmail: React.FC<PasswordResetEmailProps> = ({
 
       <Text
         style={{
-          fontSize: "14px",
+          fontSize: '13px',
           color: theme.mutedForeground,
-          lineHeight: "22px",
-          margin: "0 0 16px",
+          lineHeight: '20px',
+          margin: '0 0 12px',
+          fontFamily: theme.fontFamily,
         }}
       >
         {resolvedDescription}
@@ -88,5 +85,5 @@ export const PasswordResetEmail: React.FC<PasswordResetEmailProps> = ({
         {resolvedNotice}
       </InfoCard>
     </EmailLayout>
-  );
-};
+  )
+}

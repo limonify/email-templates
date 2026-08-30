@@ -16,21 +16,22 @@ export const InfoCard: React.FC<InfoCardProps> = ({
   return (
     <div
       style={{
-        backgroundColor: theme.muted,
-        borderRadius: `calc(${theme.radius} - 4px)`,
+        backgroundColor: theme.surface,
+        borderRadius: "8px",
         border: `1px solid ${theme.surfaceBorder}`,
-        padding: "16px 20px",
-        margin: "24px 0",
+        padding: "14px 16px",
+        margin: "20px 0",
       }}
     >
       {title ? (
         <Text
           style={{
-            fontSize: "13px",
+            fontSize: "12px",
             fontWeight: "600",
             color: theme.foreground,
-            margin: "0 0 6px",
+            margin: "0 0 4px",
             letterSpacing: "-0.01em",
+            fontFamily: theme.fontFamily,
           }}
         >
           {title}
@@ -41,6 +42,7 @@ export const InfoCard: React.FC<InfoCardProps> = ({
           fontSize: "13px",
           color: theme.mutedForeground,
           lineHeight: "20px",
+          fontFamily: theme.fontFamily,
         }}
       >
         {children}

@@ -13,25 +13,29 @@ export const EmailButton: React.FC<EmailButtonProps> = ({
   href,
   children,
   theme,
-  align = "center",
+  align = "left",
 }) => {
   return (
-    <div style={{ textAlign: align, margin: "28px 0" }}>
+    <div style={{ textAlign: align, margin: "24px 0" }}>
       <ReactEmailButton
         href={href}
         style={{
           backgroundColor: theme.primary,
           color: theme.primaryForeground,
-          borderRadius: `calc(${theme.radius} - 4px)`,
-          padding: "13px 32px",
-          fontWeight: "600",
-          fontSize: "14px",
+          borderRadius: "8px",
+          padding: "10px 20px",
+          fontWeight: "500",
+          fontSize: "13px",
           letterSpacing: "-0.01em",
           textDecoration: "none",
           display: "inline-block",
           textAlign: "center",
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-          border: "1px solid rgba(255, 255, 255, 0.1)",
+          fontFamily: theme.fontFamily,
+          border:
+            theme.primary === "#ffffff"
+              ? "1px solid #e5e5e5"
+              : "1px solid transparent",
+          boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
         }}
       >
         {children}
