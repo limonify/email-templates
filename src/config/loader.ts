@@ -45,9 +45,9 @@ export function createStarterConfigFile(
     },
     branding: {
       appName: "{{ .AppName }}",
-      logoUrl: "https://example.com/logo.png",
-      logoWidth: 36,
-      logoHeight: 36,
+      logoUrl: "https://limeui.limonify.com/lime-ui.png?v=5",
+      logoWidth: 26,
+      logoHeight: 26,
       supportUrl: "https://example.com/support",
       supportText: "Have questions?",
       copyrightText: "© 2026 Limonify. All rights reserved.",

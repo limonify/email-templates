@@ -43,6 +43,9 @@ export function startPreviewServer(port: number = 3000) {
         if (useDummy) {
           dummyProps = {
             appName: "Limonify",
+            logoUrl: "https://limeui.limonify.com/lime-ui.png?v=5",
+            logoWidth: 26,
+            logoHeight: 26,
             code: "849201",
             userName: "Alex Morgan",
             inviterName: "Sarah Connor",
@@ -107,7 +110,12 @@ export function startPreviewServer(port: number = 3000) {
             templateId,
             theme,
             engine,
-            { appName: "Limonify" },
+            {
+              appName: "Limonify",
+              logoUrl: "https://limeui.limonify.com/lime-ui.png?v=5",
+              logoWidth: 26,
+              logoHeight: 26,
+            },
             dummyProps,
             locale,
           );
@@ -129,7 +137,7 @@ export function startPreviewServer(port: number = 3000) {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Limonify Email Templates Studio</title>
+  <title>Limonify Email Studio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -144,7 +152,7 @@ export function startPreviewServer(port: number = 3000) {
       overflow: hidden;
     }
     aside {
-      width: 300px;
+      width: 290px;
       background: #121212;
       border-right: 1px solid #222222;
       display: flex;
@@ -163,17 +171,11 @@ export function startPreviewServer(port: number = 3000) {
       align-items: center;
       gap: 10px;
     }
-    .brand-icon {
-      width: 26px;
-      height: 26px;
-      background: #ffffff;
-      color: #0a0a0a;
+    .brand-img {
+      width: 24px;
+      height: 24px;
       border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 700;
+      display: block;
     }
     .brand-title {
       font-weight: 600;
@@ -331,7 +333,7 @@ export function startPreviewServer(port: number = 3000) {
   <aside>
     <div class="brand">
       <div class="brand-left">
-        <div class="brand-icon">L</div>
+        <img class="brand-img" src="https://limeui.limonify.com/lime-ui.png?v=5" alt="Limonify UI" />
         <div class="brand-title">Limonify Email</div>
       </div>
       <div class="badge-pill">12 TEMPLATES</div>
@@ -350,7 +352,7 @@ export function startPreviewServer(port: number = 3000) {
         )
         .join("")}
 
-      <div class="section-label" style="margin-top: 8px;">Billing & Account</div>
+      <div class="section-label" style="margin-top: 8px;">Billing & Team</div>
       ${templatesList
         .slice(4, 8)
         .map(
@@ -363,7 +365,7 @@ export function startPreviewServer(port: number = 3000) {
         )
         .join("")}
 
-      <div class="section-label" style="margin-top: 8px;">Product & System</div>
+      <div class="section-label" style="margin-top: 8px;">Product & Growth</div>
       ${templatesList
         .slice(8)
         .map(

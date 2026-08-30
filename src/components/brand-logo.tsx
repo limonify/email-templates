@@ -12,7 +12,7 @@ export interface BrandLogoProps {
 
 export const BrandLogo: React.FC<BrandLogoProps> = ({
   appName = "Limonify",
-  logoUrl,
+  logoUrl = "https://limeui.limonify.com/lime-ui.png?v=5",
   logoWidth = 28,
   logoHeight = 28,
   theme,
@@ -22,7 +22,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
       <table style={{ margin: "0 0 24px 0" }}>
         <tbody>
           <tr>
-            <td style={{ verticalAlign: "middle" }}>
+            <td style={{ verticalAlign: "middle", width: `${logoWidth}px` }}>
               <Img
                 src={logoUrl}
                 alt={appName}
@@ -36,13 +36,29 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
                 }}
               />
             </td>
+            {appName ? (
+              <td style={{ paddingLeft: "10px", verticalAlign: "middle" }}>
+                <Text
+                  style={{
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    color: theme.foreground,
+                    margin: 0,
+                    letterSpacing: "-0.02em",
+                    fontFamily: theme.fontFamily,
+                  }}
+                >
+                  {appName}
+                </Text>
+              </td>
+            ) : null}
           </tr>
         </tbody>
       </table>
     );
   }
 
-  // Clean, modern SVG monogram icon + wordmark
+  // Fallback monogram if no logo URL
   return (
     <table style={{ margin: "0 0 24px 0" }}>
       <tbody>
