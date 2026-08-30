@@ -1,6 +1,7 @@
 export * from "./theme/types.js";
 export * from "./theme/defaults.js";
 export * from "./theme/parser.js";
+export * from "./config/loader.js";
 export * from "./generator/render.js";
 export * from "./generator/adapters.js";
 

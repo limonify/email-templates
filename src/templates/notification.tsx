@@ -1,47 +1,49 @@
 import * as React from "react";
 import { Heading, Text } from "@react-email/components";
-import { EmailLayout } from "../components/email-layout.js";
+import {
+  EmailLayout,
+  type EmailLayoutProps,
+} from "../components/email-layout.js";
 import { EmailButton } from "../components/button.js";
 import { InfoCard } from "../components/info-card.js";
 import type { EmailTheme } from "../theme/types.js";
 
-export interface NotificationEmailProps {
-  appName?: string;
-  logoUrl?: string;
-  logoWidth?: number;
-  logoHeight?: number;
-  supportUrl?: string;
+export interface NotificationEmailProps extends Partial<
+  Omit<EmailLayoutProps, "children" | "theme">
+> {
+  theme: EmailTheme;
+  heading?: string;
+  greeting?: string;
   userName?: string;
   title?: string;
   message?: string;
   actionUrl?: string;
   actionText?: string;
-  theme: EmailTheme;
 }
 
 export const NotificationEmail: React.FC<NotificationEmailProps> = ({
   appName = "{{ .AppName }}",
-  logoUrl,
-  logoWidth,
-  logoHeight,
-  supportUrl,
+  badgeText = "System Notification",
   userName = "{{ .UserName }}",
   title = "{{ .Title }}",
   message = "{{ .Message }}",
   actionUrl = "{{ .ActionURL }}",
   actionText = "View Update →",
+  heading,
+  greeting,
   theme,
+  ...layoutProps
 }) => {
+  const resolvedHeading = heading || title;
+  const resolvedGreeting = greeting || `Hi ${userName},`;
+
   return (
     <EmailLayout
       previewText={title}
       appName={appName}
-      logoUrl={logoUrl}
-      logoWidth={logoWidth}
-      logoHeight={logoHeight}
-      supportUrl={supportUrl}
-      badgeText="System Notification"
+      badgeText={badgeText}
       theme={theme}
+      {...layoutProps}
     >
       <Heading
         style={{
@@ -52,8 +54,9 @@ export const NotificationEmail: React.FC<NotificationEmailProps> = ({
           letterSpacing: "-0.025em",
         }}
       >
-        {title}
+        {resolvedHeading}
       </Heading>
+
       <Text
         style={{
           fontSize: "14px",
@@ -62,14 +65,16 @@ export const NotificationEmail: React.FC<NotificationEmailProps> = ({
           margin: "0 0 16px",
         }}
       >
-        Hi {userName},
+        {resolvedGreeting}
       </Text>
 
       <InfoCard theme={theme}>{message}</InfoCard>
 
-      <EmailButton href={actionUrl} theme={theme}>
-        {actionText}
-      </EmailButton>
+      {actionUrl ? (
+        <EmailButton href={actionUrl} theme={theme}>
+          {actionText}
+        </EmailButton>
+      ) : null}
     </EmailLayout>
   );
 };

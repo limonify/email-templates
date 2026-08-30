@@ -9,19 +9,63 @@ import {
   defaultLimonifyDarkTheme,
   defaultLimonifyLightTheme,
 } from "./theme/defaults.js";
-import type { EmailTheme, TemplateEngine } from "./theme/types.js";
+import type {
+  EmailTheme,
+  TemplateEngine,
+  BrandingConfig,
+  LimonifyEmailConfig,
+} from "./theme/types.js";
 import {
   TEMPLATES_REGISTRY,
   type TemplateId,
-  type BrandingConfig,
   renderTemplateToHtml,
 } from "./generator/render.js";
+import {
+  findConfigFile,
+  loadConfigFile,
+  createStarterConfigFile,
+} from "./config/loader.js";
 
-async function runInteractiveCli() {
+async function runInteractiveCli(options: { config?: string; init?: boolean }) {
   console.clear();
   p.intro(
     `${pc.bgYellow(pc.black(" @limonify/email-templates "))} ${pc.dim("v0.1.0")}`,
   );
+
+  if (options.init) {
+    const target = path.join(process.cwd(), "limonify-email.config.json");
+    createStarterConfigFile(target);
+    p.log.success(`Configuration file created at: ${pc.bold(target)}`);
+    p.outro(
+      pc.bold(
+        pc.yellow(
+          "Edit this file to customize all template texts, variables, and themes! ✨",
+        ),
+      ),
+    );
+    process.exit(0);
+  }
+
+  // Check for existing config file
+  const existingConfigPath = options.config || findConfigFile();
+  let loadedConfig: LimonifyEmailConfig | null = null;
+
+  if (existingConfigPath) {
+    const useConfig = await p.confirm({
+      message: `Found configuration file at ${pc.cyan(existingConfigPath)}. Use settings from this file?`,
+      initialValue: true,
+    });
+
+    if (p.isCancel(useConfig)) {
+      p.cancel("Operation cancelled.");
+      process.exit(0);
+    }
+
+    if (useConfig) {
+      loadedConfig = loadConfigFile(existingConfigPath);
+      p.log.success("Configuration loaded successfully.");
+    }
+  }
 
   // 1. Template selection
   const templateChoices = Object.values(TEMPLATES_REGISTRY).map((tmpl) => ({
@@ -42,96 +86,136 @@ async function runInteractiveCli() {
   }
 
   // 2. Theme source selection
-  const themeSource = await p.select({
-    message: "Where should we extract your theme & colors from?",
+  let theme: EmailTheme = defaultLimonifyDarkTheme;
+
+  if (loadedConfig?.themeCssPath) {
+    theme = parseCssFile(
+      loadedConfig.themeCssPath,
+      loadedConfig.mode || "dark",
+    );
+    if (loadedConfig.theme) {
+      theme = { ...theme, ...loadedConfig.theme };
+    }
+  } else {
+    const themeSource = await p.select({
+      message: "Where should we extract your theme & colors from?",
+      options: [
+        {
+          value: "file",
+          label: "Specify CSS File Path",
+          hint: "e.g. ./src/styles.css or globals.css",
+        },
+        {
+          value: "paste",
+          label: "Paste CSS Variables Directly",
+          hint: ":root { --primary: #... }",
+        },
+        {
+          value: "default-dark",
+          label: "Limonify Dark (Default Dark Theme)",
+          hint: "Limon yellow on dark background",
+        },
+        {
+          value: "default-light",
+          label: "Limonify Light (Default Light Theme)",
+          hint: "Limon yellow on light background",
+        },
+      ],
+    });
+
+    if (p.isCancel(themeSource)) {
+      p.cancel("Operation cancelled.");
+      process.exit(0);
+    }
+
+    if (themeSource === "default-dark") {
+      theme = defaultLimonifyDarkTheme;
+    } else if (themeSource === "default-light") {
+      theme = defaultLimonifyLightTheme;
+    } else if (themeSource === "file") {
+      const cssPath = await p.text({
+        message: "Enter the path to your CSS file:",
+        placeholder: "./styles.css",
+        defaultValue: "./styles.css",
+        validate: (val) => {
+          if (!val || !fs.existsSync(val)) return `File not found: ${val}`;
+        },
+      });
+
+      if (p.isCancel(cssPath)) {
+        p.cancel("Operation cancelled.");
+        process.exit(0);
+      }
+
+      const mode = await p.select({
+        message: "Which theme mode would you like to parse?",
+        options: [
+          { value: "dark", label: "Dark Mode" },
+          { value: "light", label: "Light Mode" },
+        ],
+      });
+
+      if (p.isCancel(mode)) {
+        p.cancel("Operation cancelled.");
+        process.exit(0);
+      }
+
+      try {
+        theme = parseCssFile(cssPath as string, mode as "light" | "dark");
+        p.log.success(
+          `CSS parsed: ${pc.bold(theme.primary)} (primary), ${pc.bold(theme.background)} (background)`,
+        );
+      } catch (err: any) {
+        p.log.error(`CSS parsing error: ${err.message}`);
+        theme = defaultLimonifyDarkTheme;
+      }
+    } else if (themeSource === "paste") {
+      const cssContent = await p.text({
+        message: "Paste your CSS variables or block:",
+        placeholder: ":root { --primary: #facc15; --background: #09090b; }",
+      });
+
+      if (p.isCancel(cssContent)) {
+        p.cancel("Operation cancelled.");
+        process.exit(0);
+      }
+
+      theme = parseCssTheme(cssContent as string, "dark");
+      p.log.success(`CSS parsed: ${pc.bold(theme.primary)} (primary)`);
+    }
+  }
+
+  // 3. Card Style Selection
+  const cardStyle = (await p.select({
+    message: "Card Visual Style:",
     options: [
       {
-        value: "file",
-        label: "Specify CSS File Path",
-        hint: "e.g. ./src/styles.css or globals.css",
+        value: "double-frame",
+        label: "Limonify Double-Frame Card (Recommended)",
+        hint: "Outer subtle frame + inner card",
       },
       {
-        value: "paste",
-        label: "Paste CSS Variables Directly",
-        hint: ":root { --primary: #... }",
+        value: "single",
+        label: "Single Solid Card",
+        hint: "Standard border card",
       },
       {
-        value: "default-dark",
-        label: "Limonify Dark (Default Dark Theme)",
-        hint: "Limon yellow on dark background",
-      },
-      {
-        value: "default-light",
-        label: "Limonify Light (Default Light Theme)",
-        hint: "Limon yellow on light background",
+        value: "minimal",
+        label: "Minimal / Flat",
+        hint: "Borderless clean text canvas",
       },
     ],
-  });
+    initialValue: loadedConfig?.theme?.cardStyle || "double-frame",
+  })) as "double-frame" | "single" | "minimal";
 
-  if (p.isCancel(themeSource)) {
+  if (p.isCancel(cardStyle)) {
     p.cancel("Operation cancelled.");
     process.exit(0);
   }
 
-  let theme: EmailTheme = defaultLimonifyDarkTheme;
+  theme.cardStyle = cardStyle;
 
-  if (themeSource === "default-dark") {
-    theme = defaultLimonifyDarkTheme;
-  } else if (themeSource === "default-light") {
-    theme = defaultLimonifyLightTheme;
-  } else if (themeSource === "file") {
-    const cssPath = await p.text({
-      message: "Enter the path to your CSS file:",
-      placeholder: "./styles.css",
-      defaultValue: "./styles.css",
-      validate: (val) => {
-        if (!val || !fs.existsSync(val)) return `File not found: ${val}`;
-      },
-    });
-
-    if (p.isCancel(cssPath)) {
-      p.cancel("Operation cancelled.");
-      process.exit(0);
-    }
-
-    const mode = await p.select({
-      message: "Which theme mode would you like to parse?",
-      options: [
-        { value: "dark", label: "Dark Mode" },
-        { value: "light", label: "Light Mode" },
-      ],
-    });
-
-    if (p.isCancel(mode)) {
-      p.cancel("Operation cancelled.");
-      process.exit(0);
-    }
-
-    try {
-      theme = parseCssFile(cssPath as string, mode as "light" | "dark");
-      p.log.success(
-        `CSS parsed: ${pc.bold(theme.primary)} (primary), ${pc.bold(theme.background)} (background)`,
-      );
-    } catch (err: any) {
-      p.log.error(`CSS parsing error: ${err.message}`);
-      theme = defaultLimonifyDarkTheme;
-    }
-  } else if (themeSource === "paste") {
-    const cssContent = await p.text({
-      message: "Paste your CSS variables or block:",
-      placeholder: ":root { --primary: #facc15; --background: #09090b; }",
-    });
-
-    if (p.isCancel(cssContent)) {
-      p.cancel("Operation cancelled.");
-      process.exit(0);
-    }
-
-    theme = parseCssTheme(cssContent as string, "dark");
-    p.log.success(`CSS parsed: ${pc.bold(theme.primary)} (primary)`);
-  }
-
-  // 3. Target Engine Selection
+  // 4. Target Engine Selection
   const engine = (await p.select({
     message: "What is your target backend template engine / variable format?",
     options: [
@@ -151,6 +235,7 @@ async function runInteractiveCli() {
         hint: "__APP_NAME__, __CODE__",
       },
     ],
+    initialValue: loadedConfig?.engine || "go",
   })) as TemplateEngine;
 
   if (p.isCancel(engine)) {
@@ -158,13 +243,14 @@ async function runInteractiveCli() {
     process.exit(0);
   }
 
-  // 4. Branding & Logo Configuration
+  // 5. Branding Configuration
   const defaultAppName =
-    engine === "go"
+    loadedConfig?.branding?.appName ||
+    (engine === "go"
       ? "{{ .AppName }}"
       : engine === "handlebars"
         ? "{{ appName }}"
-        : "Limonify";
+        : "Limonify");
   const appName = await p.text({
     message: "App / Brand Name:",
     placeholder: defaultAppName,
@@ -179,6 +265,7 @@ async function runInteractiveCli() {
   const logoUrl = await p.text({
     message: "Logo Image URL (Optional, leave empty for Limonify brand badge):",
     placeholder: "https://example.com/logo.png",
+    defaultValue: loadedConfig?.branding?.logoUrl || "",
   });
 
   if (p.isCancel(logoUrl)) {
@@ -189,15 +276,19 @@ async function runInteractiveCli() {
   const branding: BrandingConfig = {
     appName: appName as string,
     logoUrl: (logoUrl as string)?.trim() || undefined,
-    logoWidth: 36,
-    logoHeight: 36,
+    logoWidth: loadedConfig?.branding?.logoWidth || 36,
+    logoHeight: loadedConfig?.branding?.logoHeight || 36,
+    supportUrl:
+      loadedConfig?.branding?.supportUrl || "https://limonify.com/support",
+    copyrightText: loadedConfig?.branding?.copyrightText,
+    socialLinks: loadedConfig?.branding?.socialLinks,
   };
 
-  // 5. Output Directory
+  // 6. Output Directory
   const outputDir = await p.text({
     message: "Output directory for generated templates:",
     placeholder: "./templates/emails",
-    defaultValue: "./templates/emails",
+    defaultValue: loadedConfig?.outputDir || "./templates/emails",
   });
 
   if (p.isCancel(outputDir)) {
@@ -205,9 +296,9 @@ async function runInteractiveCli() {
     process.exit(0);
   }
 
-  // 6. Generate Files
+  // 7. Generate Files
   const s = p.spinner();
-  s.start("Compiling responsive email templates to HTML...");
+  s.start("Compiling customizable email templates to HTML...");
 
   const targetDir = path.resolve(process.cwd(), outputDir as string);
   if (!fs.existsSync(targetDir)) {
@@ -218,11 +309,13 @@ async function runInteractiveCli() {
 
   for (const templateId of selectedTemplates as TemplateId[]) {
     const meta = TEMPLATES_REGISTRY[templateId];
+    const customProps = (loadedConfig?.templates as any)?.[templateId] || {};
     const html = await renderTemplateToHtml(
       templateId,
       theme,
       engine,
       branding,
+      customProps,
     );
     const filePath = path.join(targetDir, meta.filename);
     fs.writeFileSync(filePath, html, "utf8");
@@ -252,6 +345,8 @@ program
   .name("limonify-email")
   .description("Limonify UI compatible dynamic HTML email templates generator")
   .version("0.1.0")
-  .action(runInteractiveCli);
+  .option("-c, --config <path>", "Path to custom limonify-email.config.json")
+  .option("--init", "Generate a starter limonify-email.config.json file")
+  .action((options) => runInteractiveCli(options));
 
 program.parse(process.argv);

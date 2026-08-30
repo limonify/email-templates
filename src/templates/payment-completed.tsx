@@ -1,48 +1,68 @@
 import * as React from "react";
 import { Heading, Text } from "@react-email/components";
-import { EmailLayout } from "../components/email-layout.js";
+import {
+  EmailLayout,
+  type EmailLayoutProps,
+} from "../components/email-layout.js";
 import { EmailButton } from "../components/button.js";
 import type { EmailTheme } from "../theme/types.js";
 
-export interface PaymentCompletedEmailProps {
-  appName?: string;
-  logoUrl?: string;
-  logoWidth?: number;
-  logoHeight?: number;
-  supportUrl?: string;
+export interface PaymentItemRow {
+  label: string;
+  value: string;
+}
+
+export interface PaymentCompletedEmailProps extends Partial<
+  Omit<EmailLayoutProps, "children" | "theme">
+> {
+  theme: EmailTheme;
+  heading?: string;
+  description?: string;
   userName?: string;
   orderId?: string;
-  amount?: string;
-  receiptUrl?: string;
-  planName?: string;
+  orderIdLabel?: string;
   date?: string;
-  theme: EmailTheme;
+  dateLabel?: string;
+  planName?: string;
+  planLabel?: string;
+  amount?: string;
+  amountLabel?: string;
+  receiptUrl?: string;
+  buttonText?: string;
+  customRows?: PaymentItemRow[];
 }
 
 export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
   appName = "{{ .AppName }}",
-  logoUrl,
-  logoWidth,
-  logoHeight,
-  supportUrl,
+  badgeText = "Payment Confirmed",
+  heading = "Thank You for Your Order!",
   userName = "{{ .UserName }}",
   orderId = "{{ .OrderID }}",
+  orderIdLabel = "Order ID",
   amount = "{{ .Amount }}",
+  amountLabel = "Total Paid",
   receiptUrl = "{{ .ReceiptURL }}",
+  buttonText = "Download Official Invoice →",
   planName = "{{ .PlanName }}",
+  planLabel = "Plan / Subscription",
   date = "{{ .Date }}",
+  dateLabel = "Date",
+  description,
+  customRows,
   theme,
+  ...layoutProps
 }) => {
+  const resolvedDescription =
+    description ||
+    `Hi ${userName}, your payment for ${planName} has been successfully processed. Here is your receipt summary:`;
+
   return (
     <EmailLayout
       previewText={`Payment Receipt (${orderId})`}
       appName={appName}
-      logoUrl={logoUrl}
-      logoWidth={logoWidth}
-      logoHeight={logoHeight}
-      supportUrl={supportUrl}
-      badgeText="Payment Confirmed"
+      badgeText={badgeText}
       theme={theme}
+      {...layoutProps}
     >
       <Heading
         style={{
@@ -53,7 +73,7 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
           letterSpacing: "-0.025em",
         }}
       >
-        Thank You for Your Order!
+        {heading}
       </Heading>
       <Text
         style={{
@@ -63,11 +83,10 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
           margin: "0 0 20px",
         }}
       >
-        Hi {userName}, your payment for <strong>{planName}</strong> has been
-        successfully processed. Here is your receipt summary:
+        {resolvedDescription}
       </Text>
 
-      {/* Limonify Card Frame Table */}
+      {/* Limonify Receipt Table */}
       <div
         style={{
           backgroundColor: theme.muted,
@@ -87,7 +106,7 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
                   color: theme.mutedForeground,
                 }}
               >
-                Order ID
+                {orderIdLabel}
               </td>
               <td
                 style={{
@@ -110,7 +129,7 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
                   color: theme.mutedForeground,
                 }}
               >
-                Date
+                {dateLabel}
               </td>
               <td
                 style={{
@@ -131,7 +150,7 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
                   color: theme.mutedForeground,
                 }}
               >
-                Plan / Subscription
+                {planLabel}
               </td>
               <td
                 style={{
@@ -145,6 +164,32 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
                 {planName}
               </td>
             </tr>
+
+            {customRows &&
+              customRows.map((row, idx) => (
+                <tr key={idx}>
+                  <td
+                    style={{
+                      padding: "6px 0",
+                      fontSize: "13px",
+                      color: theme.mutedForeground,
+                    }}
+                  >
+                    {row.label}
+                  </td>
+                  <td
+                    style={{
+                      padding: "6px 0",
+                      fontSize: "13px",
+                      color: theme.foreground,
+                      textAlign: "right",
+                    }}
+                  >
+                    {row.value}
+                  </td>
+                </tr>
+              ))}
+
             <tr style={{ borderTop: `1px solid ${theme.surfaceBorder}` }}>
               <td
                 style={{
@@ -154,7 +199,7 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
                   fontWeight: "700",
                 }}
               >
-                Total Paid
+                {amountLabel}
               </td>
               <td
                 style={{
@@ -172,9 +217,11 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
         </table>
       </div>
 
-      <EmailButton href={receiptUrl} theme={theme}>
-        Download Official Invoice →
-      </EmailButton>
+      {receiptUrl ? (
+        <EmailButton href={receiptUrl} theme={theme}>
+          {buttonText}
+        </EmailButton>
+      ) : null}
     </EmailLayout>
   );
 };

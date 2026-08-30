@@ -1,40 +1,48 @@
 import * as React from "react";
 import { Heading, Text } from "@react-email/components";
-import { EmailLayout } from "../components/email-layout.js";
+import {
+  EmailLayout,
+  type EmailLayoutProps,
+} from "../components/email-layout.js";
 import { EmailButton } from "../components/button.js";
 import type { EmailTheme } from "../theme/types.js";
 
-export interface WelcomeEmailProps {
-  appName?: string;
-  logoUrl?: string;
-  logoWidth?: number;
-  logoHeight?: number;
-  supportUrl?: string;
+export interface WelcomeEmailProps extends Partial<
+  Omit<EmailLayoutProps, "children" | "theme">
+> {
+  theme: EmailTheme;
+  heading?: string;
+  description?: string;
+  footerText?: string;
   userName?: string;
   dashboardUrl?: string;
-  theme: EmailTheme;
+  buttonText?: string;
 }
 
 export const WelcomeEmail: React.FC<WelcomeEmailProps> = ({
   appName = "{{ .AppName }}",
-  logoUrl,
-  logoWidth,
-  logoHeight,
-  supportUrl,
+  badgeText = "Welcome Aboard",
+  heading,
+  description,
+  footerText = "Explore our components, start customizing your themes, and let us know if you need any help along the way!",
   userName = "{{ .UserName }}",
   dashboardUrl = "{{ .DashboardURL }}",
+  buttonText = "Go to Dashboard →",
   theme,
+  ...layoutProps
 }) => {
+  const resolvedHeading = heading || `Welcome to ${appName}! ✨`;
+  const resolvedDescription =
+    description ||
+    `Hi ${userName}, we're thrilled to have you with us. Your account is activated and ready to build modern experiences.`;
+
   return (
     <EmailLayout
       previewText={`Welcome to ${appName}!`}
       appName={appName}
-      logoUrl={logoUrl}
-      logoWidth={logoWidth}
-      logoHeight={logoHeight}
-      supportUrl={supportUrl}
-      badgeText="Welcome Aboard"
+      badgeText={badgeText}
       theme={theme}
+      {...layoutProps}
     >
       <Heading
         style={{
@@ -45,8 +53,9 @@ export const WelcomeEmail: React.FC<WelcomeEmailProps> = ({
           letterSpacing: "-0.025em",
         }}
       >
-        Welcome to {appName}! ✨
+        {resolvedHeading}
       </Heading>
+
       <Text
         style={{
           fontSize: "14px",
@@ -55,25 +64,25 @@ export const WelcomeEmail: React.FC<WelcomeEmailProps> = ({
           margin: "0 0 16px",
         }}
       >
-        Hi {userName}, we're thrilled to have you with us. Your account is
-        activated and ready to build modern experiences.
+        {resolvedDescription}
       </Text>
 
       <EmailButton href={dashboardUrl} theme={theme}>
-        Go to Dashboard →
+        {buttonText}
       </EmailButton>
 
-      <Text
-        style={{
-          fontSize: "13px",
-          color: theme.mutedForeground,
-          lineHeight: "20px",
-          margin: "20px 0 0",
-        }}
-      >
-        Explore our components, start customizing your themes, and let us know
-        if you need any help along the way!
-      </Text>
+      {footerText ? (
+        <Text
+          style={{
+            fontSize: "13px",
+            color: theme.mutedForeground,
+            lineHeight: "20px",
+            margin: "20px 0 0",
+          }}
+        >
+          {footerText}
+        </Text>
+      ) : null}
     </EmailLayout>
   );
 };

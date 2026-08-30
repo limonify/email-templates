@@ -3,6 +3,7 @@ import {
   Body,
   Container,
   Head,
+  Hr,
   Html,
   Link,
   Preview,
@@ -10,7 +11,7 @@ import {
   Text,
 } from "@react-email/components";
 import { BrandLogo } from "./brand-logo.js";
-import type { EmailTheme } from "../theme/types.js";
+import type { EmailTheme, SocialLink } from "../theme/types.js";
 
 export interface EmailLayoutProps {
   previewText?: string;
@@ -20,6 +21,13 @@ export interface EmailLayoutProps {
   logoHeight?: number;
   badgeText?: string;
   supportUrl?: string;
+  supportText?: string;
+  unsubscribeUrl?: string;
+  companyAddress?: string;
+  copyrightText?: string;
+  socialLinks?: SocialLink[];
+  align?: "center" | "left";
+  cardStyle?: "double-frame" | "single" | "minimal";
   children: React.ReactNode;
   theme: EmailTheme;
 }
@@ -32,9 +40,18 @@ export const EmailLayout: React.FC<EmailLayoutProps> = ({
   logoHeight,
   badgeText,
   supportUrl = "https://limonify.com/support",
+  supportText = "Have questions or need assistance?",
+  unsubscribeUrl,
+  companyAddress,
+  copyrightText,
+  socialLinks,
+  align = "center",
+  cardStyle = "double-frame",
   children,
   theme,
 }) => {
+  const resolvedCardStyle = theme.cardStyle || cardStyle;
+
   return (
     <Html>
       <Head />
@@ -55,8 +72,8 @@ export const EmailLayout: React.FC<EmailLayoutProps> = ({
             padding: "0 20px",
           }}
         >
-          {/* Limonify Header */}
-          <Section style={{ marginBottom: "28px", textAlign: "center" }}>
+          {/* Header Branding */}
+          <Section style={{ marginBottom: "28px", textAlign: align }}>
             <BrandLogo
               appName={appName}
               logoUrl={logoUrl}
@@ -66,23 +83,56 @@ export const EmailLayout: React.FC<EmailLayoutProps> = ({
             />
           </Section>
 
-          {/* Limonify Signature Double-Frame Card */}
-          <Section
-            style={{
-              backgroundColor: theme.muted,
-              borderRadius: `calc(${theme.radius} + 6px)`,
-              border: `1px solid ${theme.surfaceBorder}`,
-              padding: "6px",
-              boxShadow:
-                "0 10px 30px -10px rgba(0, 0, 0, 0.12), 0 20px 25px -5px rgba(0, 0, 0, 0.06)",
-            }}
-          >
-            <div
+          {/* Main Card Shell according to cardStyle */}
+          {resolvedCardStyle === "double-frame" ? (
+            <Section
+              style={{
+                backgroundColor: theme.muted,
+                borderRadius: `calc(${theme.radius} + 6px)`,
+                border: `1px solid ${theme.surfaceBorder}`,
+                padding: "6px",
+                boxShadow:
+                  "0 10px 30px -10px rgba(0, 0, 0, 0.12), 0 20px 25px -5px rgba(0, 0, 0, 0.06)",
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor: theme.surface,
+                  borderRadius: theme.radius,
+                  border: `1px solid ${theme.surfaceBorder}`,
+                  padding: "36px 32px",
+                }}
+              >
+                {badgeText ? (
+                  <div
+                    style={{
+                      display: "inline-block",
+                      padding: "3px 10px",
+                      borderRadius: "9999px",
+                      fontSize: "11px",
+                      fontWeight: "600",
+                      letterSpacing: "0.04em",
+                      textTransform: "uppercase",
+                      backgroundColor: `${theme.accent}1a`,
+                      color: theme.accent,
+                      marginBottom: "16px",
+                    }}
+                  >
+                    {badgeText}
+                  </div>
+                ) : null}
+
+                {children}
+              </div>
+            </Section>
+          ) : resolvedCardStyle === "single" ? (
+            <Section
               style={{
                 backgroundColor: theme.surface,
                 borderRadius: theme.radius,
                 border: `1px solid ${theme.surfaceBorder}`,
                 padding: "36px 32px",
+                boxShadow: "0 4px 16px rgba(0, 0, 0, 0.08)",
               }}
             >
               {badgeText ? (
@@ -105,31 +155,95 @@ export const EmailLayout: React.FC<EmailLayoutProps> = ({
               ) : null}
 
               {children}
-            </div>
-          </Section>
+            </Section>
+          ) : (
+            // Minimal / Flat style
+            <Section style={{ padding: "16px 0" }}>
+              {badgeText ? (
+                <div
+                  style={{
+                    display: "inline-block",
+                    padding: "3px 10px",
+                    borderRadius: "9999px",
+                    fontSize: "11px",
+                    fontWeight: "600",
+                    letterSpacing: "0.04em",
+                    textTransform: "uppercase",
+                    backgroundColor: `${theme.accent}1a`,
+                    color: theme.accent,
+                    marginBottom: "16px",
+                  }}
+                >
+                  {badgeText}
+                </div>
+              ) : null}
 
-          {/* Limonify Footer */}
+              {children}
+            </Section>
+          )}
+
+          {/* Footer Section */}
           <Section style={{ marginTop: "36px", textAlign: "center" }}>
-            <Text
-              style={{
-                fontSize: "12px",
-                color: theme.mutedForeground,
-                lineHeight: "20px",
-                margin: "0 0 10px",
-              }}
-            >
-              Questions or need assistance?{" "}
-              <Link
-                href={supportUrl}
+            {/* Social Links if provided */}
+            {socialLinks && socialLinks.length > 0 ? (
+              <div style={{ marginBottom: "16px" }}>
+                {socialLinks.map((link, idx) => (
+                  <Link
+                    key={idx}
+                    href={link.url}
+                    style={{
+                      display: "inline-block",
+                      margin: "0 8px",
+                      fontSize: "12px",
+                      color: theme.mutedForeground,
+                      textDecoration: "none",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {link.platform}
+                  </Link>
+                ))}
+              </div>
+            ) : null}
+
+            {/* Support Link */}
+            {supportUrl ? (
+              <Text
                 style={{
-                  color: theme.foreground,
-                  fontWeight: "500",
-                  textDecoration: "underline",
+                  fontSize: "12px",
+                  color: theme.mutedForeground,
+                  lineHeight: "20px",
+                  margin: "0 0 8px",
                 }}
               >
-                Contact Support
-              </Link>
-            </Text>
+                {supportText}{" "}
+                <Link
+                  href={supportUrl}
+                  style={{
+                    color: theme.foreground,
+                    fontWeight: "500",
+                    textDecoration: "underline",
+                  }}
+                >
+                  Contact Support
+                </Link>
+              </Text>
+            ) : null}
+
+            {/* Company Address if provided */}
+            {companyAddress ? (
+              <Text
+                style={{
+                  fontSize: "11px",
+                  color: theme.mutedForeground,
+                  margin: "0 0 6px",
+                }}
+              >
+                {companyAddress}
+              </Text>
+            ) : null}
+
+            {/* Copyright */}
             <Text
               style={{
                 fontSize: "11px",
@@ -138,8 +252,30 @@ export const EmailLayout: React.FC<EmailLayoutProps> = ({
                 margin: 0,
               }}
             >
-              © {new Date().getFullYear()} {appName}. Crafted with Limonify UI.
+              {copyrightText ||
+                `© ${new Date().getFullYear()} ${appName}. All rights reserved.`}
             </Text>
+
+            {/* Unsubscribe link if provided */}
+            {unsubscribeUrl ? (
+              <Text
+                style={{
+                  fontSize: "11px",
+                  color: theme.mutedForeground,
+                  marginTop: "8px",
+                }}
+              >
+                <Link
+                  href={unsubscribeUrl}
+                  style={{
+                    color: theme.mutedForeground,
+                    textDecoration: "underline",
+                  }}
+                >
+                  Unsubscribe from emails
+                </Link>
+              </Text>
+            ) : null}
           </Section>
         </Container>
       </Body>

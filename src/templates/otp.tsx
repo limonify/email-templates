@@ -1,63 +1,76 @@
 import * as React from "react";
 import { Heading, Text } from "@react-email/components";
-import { EmailLayout } from "../components/email-layout.js";
+import {
+  EmailLayout,
+  type EmailLayoutProps,
+} from "../components/email-layout.js";
 import { CodeBox } from "../components/code-box.js";
 import type { EmailTheme } from "../theme/types.js";
 
-export interface OTPEmailProps {
-  appName?: string;
-  logoUrl?: string;
-  logoWidth?: number;
-  logoHeight?: number;
-  supportUrl?: string;
+export interface OTPEmailProps extends Partial<
+  Omit<EmailLayoutProps, "children" | "theme">
+> {
+  theme: EmailTheme;
+  heading?: string;
+  description?: string;
   code?: string;
   expiresIn?: string;
-  theme: EmailTheme;
+  expirationText?: string;
+  securityNotice?: string;
 }
 
 export const OTPEmail: React.FC<OTPEmailProps> = ({
   appName = "{{ .AppName }}",
-  logoUrl,
-  logoWidth,
-  logoHeight,
-  supportUrl,
+  badgeText = "Security Verification",
+  heading = "Sign In Verification Code",
+  description = "Please use the one-time verification code below to securely authenticate your session:",
   code = "{{ .Code }}",
   expiresIn = "{{ .ExpiresIn }}",
+  expirationText,
+  securityNotice,
   theme,
+  ...layoutProps
 }) => {
+  const resolvedExpiration =
+    expirationText || `This code is valid for ${expiresIn}.`;
+  const resolvedNotice =
+    securityNotice ||
+    "If you didn't initiate this request, no action is required and you can safely disregard this message.";
+
   return (
     <EmailLayout
       previewText={`Your verification code: ${code}`}
       appName={appName}
-      logoUrl={logoUrl}
-      logoWidth={logoWidth}
-      logoHeight={logoHeight}
-      supportUrl={supportUrl}
-      badgeText="Security Verification"
+      badgeText={badgeText}
       theme={theme}
+      {...layoutProps}
     >
-      <Heading
-        style={{
-          fontSize: "22px",
-          fontWeight: "700",
-          color: theme.foreground,
-          margin: "0 0 10px",
-          letterSpacing: "-0.025em",
-        }}
-      >
-        Sign In Verification Code
-      </Heading>
-      <Text
-        style={{
-          fontSize: "14px",
-          color: theme.mutedForeground,
-          lineHeight: "22px",
-          margin: "0 0 16px",
-        }}
-      >
-        Please use the one-time verification code below to securely authenticate
-        your session:
-      </Text>
+      {heading ? (
+        <Heading
+          style={{
+            fontSize: "22px",
+            fontWeight: "700",
+            color: theme.foreground,
+            margin: "0 0 10px",
+            letterSpacing: "-0.025em",
+          }}
+        >
+          {heading}
+        </Heading>
+      ) : null}
+
+      {description ? (
+        <Text
+          style={{
+            fontSize: "14px",
+            color: theme.mutedForeground,
+            lineHeight: "22px",
+            margin: "0 0 16px",
+          }}
+        >
+          {description}
+        </Text>
+      ) : null}
 
       <CodeBox code={code} theme={theme} />
 
@@ -69,10 +82,10 @@ export const OTPEmail: React.FC<OTPEmailProps> = ({
           margin: 0,
         }}
       >
-        This code is valid for{" "}
-        <strong style={{ color: theme.foreground }}>{expiresIn}</strong>. If you
-        didn't initiate this request, no action is required and you can safely
-        disregard this message.
+        <strong style={{ color: theme.foreground }}>
+          {resolvedExpiration}
+        </strong>{" "}
+        {resolvedNotice}
       </Text>
     </EmailLayout>
   );

@@ -1,14 +1,31 @@
 import * as React from "react";
 import { render } from "@react-email/render";
-import type { EmailTheme, TemplateEngine } from "../theme/types.js";
+import type {
+  EmailTheme,
+  TemplateEngine,
+  BrandingConfig,
+  LimonifyEmailConfig,
+} from "../theme/types.js";
 import { adaptVariables } from "./adapters.js";
 
-import { OTPEmail } from "../templates/otp.js";
-import { PasswordResetEmail } from "../templates/password-reset.js";
-import { WelcomeEmail } from "../templates/welcome.js";
-import { NotificationEmail } from "../templates/notification.js";
-import { PaymentCompletedEmail } from "../templates/payment-completed.js";
-import { MagicLinkEmail } from "../templates/magic-link.js";
+import { OTPEmail, type OTPEmailProps } from "../templates/otp.js";
+import {
+  PasswordResetEmail,
+  type PasswordResetEmailProps,
+} from "../templates/password-reset.js";
+import { WelcomeEmail, type WelcomeEmailProps } from "../templates/welcome.js";
+import {
+  NotificationEmail,
+  type NotificationEmailProps,
+} from "../templates/notification.js";
+import {
+  PaymentCompletedEmail,
+  type PaymentCompletedEmailProps,
+} from "../templates/payment-completed.js";
+import {
+  MagicLinkEmail,
+  type MagicLinkEmailProps,
+} from "../templates/magic-link.js";
 
 export type TemplateId =
   | "otp"
@@ -18,22 +35,12 @@ export type TemplateId =
   | "payment-completed"
   | "magic-link";
 
-export interface BrandingConfig {
-  appName?: string;
-  logoUrl?: string;
-  logoWidth?: number;
-  logoHeight?: number;
-  supportUrl?: string;
-}
-
 export interface TemplateMetadata {
   id: TemplateId;
   name: string;
   description: string;
   filename: string;
-  component: (
-    props: { theme: EmailTheme } & BrandingConfig,
-  ) => React.ReactElement;
+  component: (props: any) => React.ReactElement;
 }
 
 export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
@@ -86,14 +93,19 @@ export async function renderTemplateToHtml(
   theme: EmailTheme,
   engine: TemplateEngine = "go",
   branding: BrandingConfig = {},
+  customTemplateProps: Record<string, any> = {},
 ): Promise<string> {
   const meta = TEMPLATES_REGISTRY[templateId];
   if (!meta) {
     throw new Error(`Unknown template ID: ${templateId}`);
   }
 
-  const rawHtml = await render(meta.component({ theme, ...branding }), {
-    pretty: true,
-  });
+  const mergedProps = {
+    theme,
+    ...branding,
+    ...customTemplateProps,
+  };
+
+  const rawHtml = await render(meta.component(mergedProps), { pretty: true });
   return adaptVariables(rawHtml, engine);
 }
