@@ -11,22 +11,24 @@ export const CodeBox: React.FC<CodeBoxProps> = ({ code, theme }) => {
   return (
     <div
       style={{
-        backgroundColor: theme.background,
+        backgroundColor: theme.muted,
         borderRadius: theme.radius,
         border: `1px solid ${theme.surfaceBorder}`,
-        padding: "16px 20px",
-        margin: "24px 0",
+        padding: "20px 24px",
+        margin: "28px 0",
         textAlign: "center",
+        boxShadow: "inset 0 2px 6px rgba(0, 0, 0, 0.08)",
       }}
     >
       <Text
         style={{
-          fontSize: "28px",
-          fontWeight: "700",
-          letterSpacing: "6px",
-          color: theme.primary,
+          fontSize: "32px",
+          fontWeight: "800",
+          letterSpacing: "8px",
+          color: theme.accent,
           margin: 0,
-          fontFamily: "monospace, Courier, sans-serif",
+          fontFamily:
+            "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
         }}
       >
         {code}

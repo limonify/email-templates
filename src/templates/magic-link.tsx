@@ -22,6 +22,7 @@ export const MagicLinkEmail: React.FC<MagicLinkEmailProps> = ({
     <EmailLayout
       previewText={`Your ${appName} sign-in link`}
       appName={appName}
+      badgeText="Instant Sign In"
       theme={theme}
     >
       <Heading
@@ -29,11 +30,11 @@ export const MagicLinkEmail: React.FC<MagicLinkEmailProps> = ({
           fontSize: "22px",
           fontWeight: "700",
           color: theme.foreground,
-          margin: "0 0 12px",
-          letterSpacing: "-0.02em",
+          margin: "0 0 10px",
+          letterSpacing: "-0.025em",
         }}
       >
-        Sign In Link
+        Sign In to {appName}
       </Heading>
       <Text
         style={{
@@ -43,17 +44,17 @@ export const MagicLinkEmail: React.FC<MagicLinkEmailProps> = ({
           margin: "0 0 16px",
         }}
       >
-        Click the button below to sign in to your {appName} account without a
-        password:
+        Click the button below to securely sign in to your {appName} account
+        without entering a password:
       </Text>
 
       <EmailButton href={loginUrl} theme={theme}>
-        Sign In to My Account
+        Sign In Instantly →
       </EmailButton>
 
       <InfoCard title="Security Notice" theme={theme}>
-        This link is valid for <strong>{expiresIn}</strong> and can only be used
-        once.
+        This single-use magic link will expire in <strong>{expiresIn}</strong>.
+        If you did not request this email, you can safely ignore it.
       </InfoCard>
     </EmailLayout>
   );

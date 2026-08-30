@@ -21,6 +21,7 @@ export const WelcomeEmail: React.FC<WelcomeEmailProps> = ({
     <EmailLayout
       previewText={`Welcome to ${appName}!`}
       appName={appName}
+      badgeText="Welcome Aboard"
       theme={theme}
     >
       <Heading
@@ -28,11 +29,11 @@ export const WelcomeEmail: React.FC<WelcomeEmailProps> = ({
           fontSize: "22px",
           fontWeight: "700",
           color: theme.foreground,
-          margin: "0 0 12px",
-          letterSpacing: "-0.02em",
+          margin: "0 0 10px",
+          letterSpacing: "-0.025em",
         }}
       >
-        Welcome Aboard! 🎉
+        Welcome to {appName}! ✨
       </Heading>
       <Text
         style={{
@@ -42,12 +43,12 @@ export const WelcomeEmail: React.FC<WelcomeEmailProps> = ({
           margin: "0 0 16px",
         }}
       >
-        Hi {userName}, we're excited to have you with us. Your {appName} account
-        is ready and set up for you.
+        Hi {userName}, we're thrilled to have you with us. Your account is
+        activated and ready to build modern experiences.
       </Text>
 
       <EmailButton href={dashboardUrl} theme={theme}>
-        Go to Dashboard & Get Started
+        Go to Dashboard →
       </EmailButton>
 
       <Text
@@ -58,8 +59,8 @@ export const WelcomeEmail: React.FC<WelcomeEmailProps> = ({
           margin: "20px 0 0",
         }}
       >
-        If you have any questions, our support team is always here to help.
-        Enjoy your experience!
+        Explore our components, start customizing your themes, and let us know
+        if you need any help along the way!
       </Text>
     </EmailLayout>
   );

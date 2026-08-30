@@ -24,6 +24,7 @@ export const PasswordResetEmail: React.FC<PasswordResetEmailProps> = ({
     <EmailLayout
       previewText="Reset your password"
       appName={appName}
+      badgeText="Account Security"
       theme={theme}
     >
       <Heading
@@ -31,8 +32,8 @@ export const PasswordResetEmail: React.FC<PasswordResetEmailProps> = ({
           fontSize: "22px",
           fontWeight: "700",
           color: theme.foreground,
-          margin: "0 0 12px",
-          letterSpacing: "-0.02em",
+          margin: "0 0 10px",
+          letterSpacing: "-0.025em",
         }}
       >
         Reset Your Password
@@ -45,18 +46,18 @@ export const PasswordResetEmail: React.FC<PasswordResetEmailProps> = ({
           margin: "0 0 16px",
         }}
       >
-        Hi {userName}, we received a request to reset your password. Click the
-        button below to set a new password:
+        Hi {userName}, we received a password reset request for your account.
+        Click the button below to choose a new password:
       </Text>
 
       <EmailButton href={resetUrl} theme={theme}>
-        Reset Password
+        Reset Password →
       </EmailButton>
 
       <InfoCard title="Security Notice" theme={theme}>
-        This link will expire in <strong>{expiresIn}</strong>. If you didn't
-        request a password reset, your account is secure and you can disregard
-        this email.
+        This reset link will expire in <strong>{expiresIn}</strong>. If you did
+        not make this request, your account remains secure and you can safely
+        ignore this email.
       </InfoCard>
     </EmailLayout>
   );

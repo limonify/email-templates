@@ -29,6 +29,7 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
     <EmailLayout
       previewText={`Payment Receipt (${orderId})`}
       appName={appName}
+      badgeText="Payment Confirmed"
       theme={theme}
     >
       <Heading
@@ -36,11 +37,11 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
           fontSize: "22px",
           fontWeight: "700",
           color: theme.foreground,
-          margin: "0 0 12px",
-          letterSpacing: "-0.02em",
+          margin: "0 0 10px",
+          letterSpacing: "-0.025em",
         }}
       >
-        Payment Confirmed ✅
+        Thank You for Your Order!
       </Heading>
       <Text
         style={{
@@ -51,14 +52,14 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
         }}
       >
         Hi {userName}, your payment for <strong>{planName}</strong> has been
-        successfully processed.
+        successfully processed. Here is your receipt summary:
       </Text>
 
-      {/* Invoice Details Table */}
+      {/* Limonify Card Frame Table */}
       <div
         style={{
-          backgroundColor: theme.background,
-          borderRadius: theme.radius,
+          backgroundColor: theme.muted,
+          borderRadius: `calc(${theme.radius} - 4px)`,
           border: `1px solid ${theme.surfaceBorder}`,
           padding: "16px 20px",
           margin: "16px 0 24px",
@@ -74,7 +75,7 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
                   color: theme.mutedForeground,
                 }}
               >
-                Order ID:
+                Order ID
               </td>
               <td
                 style={{
@@ -83,6 +84,7 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
                   color: theme.foreground,
                   textAlign: "right",
                   fontWeight: "600",
+                  fontFamily: "monospace",
                 }}
               >
                 {orderId}
@@ -96,7 +98,7 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
                   color: theme.mutedForeground,
                 }}
               >
-                Date:
+                Date
               </td>
               <td
                 style={{
@@ -117,7 +119,7 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
                   color: theme.mutedForeground,
                 }}
               >
-                Plan / Item:
+                Plan / Subscription
               </td>
               <td
                 style={{
@@ -125,6 +127,7 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
                   fontSize: "13px",
                   color: theme.foreground,
                   textAlign: "right",
+                  fontWeight: "500",
                 }}
               >
                 {planName}
@@ -133,21 +136,21 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
             <tr style={{ borderTop: `1px solid ${theme.surfaceBorder}` }}>
               <td
                 style={{
-                  padding: "10px 0 4px",
+                  padding: "12px 0 4px",
                   fontSize: "14px",
                   color: theme.foreground,
                   fontWeight: "700",
                 }}
               >
-                Total Amount:
+                Total Paid
               </td>
               <td
                 style={{
-                  padding: "10px 0 4px",
-                  fontSize: "16px",
-                  color: theme.primary,
+                  padding: "12px 0 4px",
+                  fontSize: "17px",
+                  color: theme.accent,
                   textAlign: "right",
-                  fontWeight: "700",
+                  fontWeight: "800",
                 }}
               >
                 {amount}
@@ -158,7 +161,7 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
       </div>
 
       <EmailButton href={receiptUrl} theme={theme}>
-        Download Invoice / Receipt
+        Download Official Invoice →
       </EmailButton>
     </EmailLayout>
   );

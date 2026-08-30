@@ -21,18 +21,23 @@ export const NotificationEmail: React.FC<NotificationEmailProps> = ({
   title = "{{ .Title }}",
   message = "{{ .Message }}",
   actionUrl = "{{ .ActionURL }}",
-  actionText = "View Details",
+  actionText = "View Update →",
   theme,
 }) => {
   return (
-    <EmailLayout previewText={title} appName={appName} theme={theme}>
+    <EmailLayout
+      previewText={title}
+      appName={appName}
+      badgeText="System Notification"
+      theme={theme}
+    >
       <Heading
         style={{
           fontSize: "22px",
           fontWeight: "700",
           color: theme.foreground,
-          margin: "0 0 12px",
-          letterSpacing: "-0.02em",
+          margin: "0 0 10px",
+          letterSpacing: "-0.025em",
         }}
       >
         {title}

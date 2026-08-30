@@ -16,11 +16,11 @@ export const InfoCard: React.FC<InfoCardProps> = ({
   return (
     <div
       style={{
-        backgroundColor: theme.background,
-        borderRadius: theme.radius,
+        backgroundColor: theme.muted,
+        borderRadius: `calc(${theme.radius} - 4px)`,
         border: `1px solid ${theme.surfaceBorder}`,
-        padding: "16px",
-        margin: "20px 0",
+        padding: "16px 20px",
+        margin: "24px 0",
       }}
     >
       {title ? (
@@ -30,6 +30,7 @@ export const InfoCard: React.FC<InfoCardProps> = ({
             fontWeight: "600",
             color: theme.foreground,
             margin: "0 0 6px",
+            letterSpacing: "-0.01em",
           }}
         >
           {title}

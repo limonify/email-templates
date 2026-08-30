@@ -3,6 +3,7 @@ import {
   Body,
   Container,
   Head,
+  Hr,
   Html,
   Img,
   Link,
@@ -16,6 +17,7 @@ export interface EmailLayoutProps {
   previewText?: string;
   appName?: string;
   logoUrl?: string;
+  badgeText?: string;
   supportUrl?: string;
   children: React.ReactNode;
   theme: EmailTheme;
@@ -25,6 +27,7 @@ export const EmailLayout: React.FC<EmailLayoutProps> = ({
   previewText,
   appName = "Limonify",
   logoUrl,
+  badgeText,
   supportUrl = "https://limonify.com/support",
   children,
   theme,
@@ -38,80 +41,148 @@ export const EmailLayout: React.FC<EmailLayoutProps> = ({
           backgroundColor: theme.background,
           fontFamily: theme.fontFamily,
           margin: 0,
-          padding: "40px 0",
+          padding: "48px 0",
+          WebkitFontSmoothing: "antialiased",
         }}
       >
         <Container
           style={{
-            maxWidth: "560px",
+            maxWidth: "540px",
             margin: "0 auto",
             padding: "0 20px",
           }}
         >
-          {/* Header Branding */}
-          <Section style={{ marginBottom: "24px", textAlign: "center" }}>
-            {logoUrl ? (
-              <Img
-                src={logoUrl}
-                alt={appName}
-                width="40"
-                height="40"
-                style={{ margin: "0 auto", borderRadius: theme.radius }}
-              />
-            ) : (
-              <Text
-                style={{
-                  fontSize: "20px",
-                  fontWeight: "700",
-                  color: theme.foreground,
-                  margin: 0,
-                  letterSpacing: "-0.025em",
-                }}
-              >
-                {appName}
-              </Text>
-            )}
+          {/* Limonify Header */}
+          <Section style={{ marginBottom: "28px", textAlign: "center" }}>
+            <table style={{ margin: "0 auto" }}>
+              <tbody>
+                <tr>
+                  <td>
+                    {logoUrl ? (
+                      <Img
+                        src={logoUrl}
+                        alt={appName}
+                        width="36"
+                        height="36"
+                        style={{
+                          borderRadius: "10px",
+                          display: "inline-block",
+                          verticalAlign: "middle",
+                        }}
+                      />
+                    ) : (
+                      <div
+                        style={{
+                          display: "inline-block",
+                          width: "36px",
+                          height: "36px",
+                          lineHeight: "36px",
+                          borderRadius: "10px",
+                          backgroundColor: theme.surface,
+                          border: `1px solid ${theme.surfaceBorder}`,
+                          textAlign: "center",
+                          color: theme.accent,
+                          fontWeight: "800",
+                          fontSize: "18px",
+                          verticalAlign: "middle",
+                          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
+                        }}
+                      >
+                        🍋
+                      </div>
+                    )}
+                  </td>
+                  <td style={{ paddingLeft: "10px", verticalAlign: "middle" }}>
+                    <Text
+                      style={{
+                        fontSize: "18px",
+                        fontWeight: "700",
+                        color: theme.foreground,
+                        margin: 0,
+                        letterSpacing: "-0.03em",
+                      }}
+                    >
+                      {appName}
+                    </Text>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </Section>
 
-          {/* Main Card Content */}
+          {/* Limonify Signature Double-Frame Card */}
           <Section
             style={{
-              backgroundColor: theme.surface,
-              borderRadius: theme.radius,
+              backgroundColor: theme.muted,
+              borderRadius: `calc(${theme.radius} + 6px)`,
               border: `1px solid ${theme.surfaceBorder}`,
-              padding: "36px 32px",
-              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
+              padding: "6px",
+              boxShadow:
+                "0 10px 30px -10px rgba(0, 0, 0, 0.12), 0 20px 25px -5px rgba(0, 0, 0, 0.06)",
             }}
           >
-            {children}
+            <div
+              style={{
+                backgroundColor: theme.surface,
+                borderRadius: theme.radius,
+                border: `1px solid ${theme.surfaceBorder}`,
+                padding: "36px 32px",
+              }}
+            >
+              {badgeText ? (
+                <div
+                  style={{
+                    display: "inline-block",
+                    padding: "3px 10px",
+                    borderRadius: "9999px",
+                    fontSize: "11px",
+                    fontWeight: "600",
+                    letterSpacing: "0.04em",
+                    textTransform: "uppercase",
+                    backgroundColor: `${theme.accent}1a`,
+                    color: theme.accent,
+                    marginBottom: "16px",
+                  }}
+                >
+                  {badgeText}
+                </div>
+              ) : null}
+
+              {children}
+            </div>
           </Section>
 
-          {/* Footer */}
-          <Section style={{ marginTop: "32px", textAlign: "center" }}>
+          {/* Limonify Footer */}
+          <Section style={{ marginTop: "36px", textAlign: "center" }}>
             <Text
               style={{
                 fontSize: "12px",
                 color: theme.mutedForeground,
-                lineHeight: "18px",
-                margin: "0 0 8px",
+                lineHeight: "20px",
+                margin: "0 0 10px",
               }}
             >
-              Have questions?{" "}
+              Questions or need assistance?{" "}
               <Link
                 href={supportUrl}
-                style={{ color: theme.primary, textDecoration: "underline" }}
+                style={{
+                  color: theme.foreground,
+                  fontWeight: "500",
+                  textDecoration: "underline",
+                }}
               >
-                Contact our support team
+                Contact Support
               </Link>
             </Text>
             <Text
               style={{
-                fontSize: "12px",
+                fontSize: "11px",
                 color: theme.mutedForeground,
+                opacity: 0.8,
                 margin: 0,
               }}
             >
-              © {new Date().getFullYear()} {appName}. All rights reserved.
+              © {new Date().getFullYear()} {appName}. Crafted with Limonify UI.
             </Text>
           </Section>
         </Container>

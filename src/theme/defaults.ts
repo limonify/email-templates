@@ -2,24 +2,24 @@ import type { EmailTheme } from "./types.js";
 
 export const defaultLimonifyDarkTheme: EmailTheme = {
   name: "limonify-dark",
-  primary: "#facc15", // limon yellow
-  primaryForeground: "#18181b",
-  background: "#09090b",
-  surface: "#18181b",
-  surfaceBorder: "#27272a",
-  foreground: "#fafafa",
-  muted: "#27272a",
-  mutedForeground: "#a1a1aa",
-  accent: "#27272a",
-  accentForeground: "#fafafa",
-  radius: "10px",
+  primary: "#ffffff",
+  primaryForeground: "#090d16",
+  background: "#070a11",
+  surface: "#0e1422",
+  surfaceBorder: "#1c263c",
+  foreground: "#f8fafc",
+  muted: "#131b2e",
+  mutedForeground: "#94a3b8",
+  accent: "#facc15", // limon brand yellow
+  accentForeground: "#090d16",
+  radius: "14px",
   fontFamily:
-    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
 };
 
 export const defaultLimonifyLightTheme: EmailTheme = {
   name: "limonify-light",
-  primary: "#ca8a04", // rich limon yellow
+  primary: "#0f172a",
   primaryForeground: "#ffffff",
   background: "#f8fafc",
   surface: "#ffffff",
@@ -27,9 +27,9 @@ export const defaultLimonifyLightTheme: EmailTheme = {
   foreground: "#0f172a",
   muted: "#f1f5f9",
   mutedForeground: "#64748b",
-  accent: "#f8fafc",
-  accentForeground: "#0f172a",
-  radius: "10px",
+  accent: "#eab308", // limon brand yellow
+  accentForeground: "#ffffff",
+  radius: "14px",
   fontFamily:
-    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
 };
