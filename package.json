@@ -9,6 +9,12 @@
     "limonify-email": "./src/cli.ts",
     "email-templates": "./src/cli.ts"
   },
+  "files": [
+    "src",
+    "index.ts",
+    "README.md",
+    "package.json"
+  ],
   "scripts": {
     "dev": "bun run src/cli.ts",
     "preview": "bun run src/preview/server.ts",

@@ -1,0 +1,22 @@
+# Source repository files
+.git
+.gitignore
+.DS_Store
+CLAUDE.md
+limonify-email.config.json
+
+# Generated templates
+templates/
+
+# Tests and caches
+*.test.*
+__tests__/
+coverage/
+*.tsbuildinfo
+.cache/
+logs/
+*.log
+
+# Editor configs
+.idea
+.vscode
