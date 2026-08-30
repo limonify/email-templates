@@ -45,23 +45,38 @@ export function startPreviewServer(port: number = 3000) {
             appName: "Limonify",
             code: "849201",
             userName: "Alex Morgan",
+            inviterName: "Sarah Connor",
+            workspaceName: "Engineering Core",
+            role: "Admin",
+            inviteUrl: "https://ui.limonify.com/invites/accept",
             resetUrl: "https://ui.limonify.com/reset",
             dashboardUrl: "https://ui.limonify.com/dashboard",
             loginUrl: "https://ui.limonify.com/magic-login",
+            surveyUrl: "https://ui.limonify.com/survey",
+            manageUrl: "https://ui.limonify.com/settings/tokens",
+            upgradeUrl: "https://ui.limonify.com/billing/upgrade",
+            changelogUrl: "https://ui.limonify.com/changelog",
+            version: "v2.4.0",
+            keyName: "Production Deployer Token",
+            keyPrefix: "lmn_live_94f8...",
+            createdAt: "August 30, 2026 at 23:15 UTC",
+            metricName: "API Requests",
+            usagePercent: "88%",
+            currentUsage: "88,420 / 100,000 reqs",
+            monthlyLimit: "100,000 reqs/mo",
+            resetDate: "September 1, 2026",
+            expiryDate: "September 30, 2026",
+            reactivateUrl: "https://ui.limonify.com/billing/reactivate",
             expiresIn:
               locale === "tr"
                 ? "10 dakika"
                 : locale === "de"
                   ? "10 Minuten"
-                  : locale === "es"
-                    ? "10 minutos"
-                    : locale === "fr"
-                      ? "10 minutes"
-                      : "10 minutes",
-            orderId: "#LMN-94820",
+                  : "10 minutes",
+            orderId: "INV-2026-9482",
             amount: "$49.00",
-            planName: "Limonify UI Pro (Annual Plan)",
-            paymentMethod: "Visa ending in 4242",
+            planName: "Limonify Pro (Annual)",
+            paymentMethod: "Visa •••• 4242",
             subtotal: "$40.83",
             tax: "$8.17",
             date:
@@ -71,23 +86,18 @@ export function startPreviewServer(port: number = 3000) {
                   ? "30. August 2026"
                   : "August 30, 2026",
             receiptUrl: "https://ui.limonify.com/invoices/94820",
-            title:
-              locale === "tr"
-                ? "Güvenlik Uyarısı: Yeni Giriş Algılandı"
-                : locale === "de"
-                  ? "Sicherheitswarnung: Neue Anmeldung"
-                  : "Security Alert: New Sign-in Detected",
+            title: locale === "tr" ? "Güvenlik Bildirimi" : "Security notice",
             message:
               locale === "tr"
-                ? "Hesabınıza San Francisco, ABD konumundaki macOS Safari tarayıcısından yeni bir giriş yapıldı."
-                : "A new session was initiated on your account from Safari on macOS in San Francisco, CA. If this was you, no action is needed.",
+                ? "Hesabınıza yeni bir macOS Safari oturumu açıldı. İşlemi siz yapmadıysanız şifrenizi yenileyin."
+                : "A new session was initiated on your account from Safari on macOS in San Francisco, CA.",
             actionUrl: "https://ui.limonify.com/security",
             sessionDetails: {
               device: "MacBook Pro (macOS 15.4)",
               browser: "Safari 18.3",
               location: "San Francisco, CA, United States",
               ipAddress: "192.0.2.14",
-              timestamp: "August 30, 2026 at 23:05 UTC",
+              timestamp: "August 30, 2026 at 23:15 UTC",
             },
           };
         }
@@ -122,7 +132,7 @@ export function startPreviewServer(port: number = 3000) {
   <title>Limonify Email Templates Studio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -134,19 +144,19 @@ export function startPreviewServer(port: number = 3000) {
       overflow: hidden;
     }
     aside {
-      width: 290px;
-      background: #171717;
-      border-right: 1px solid #262626;
+      width: 300px;
+      background: #121212;
+      border-right: 1px solid #222222;
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
     }
     .brand {
-      padding: 18px 20px;
+      padding: 16px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid #262626;
+      border-bottom: 1px solid #222222;
     }
     .brand-left {
       display: flex;
@@ -154,75 +164,73 @@ export function startPreviewServer(port: number = 3000) {
       gap: 10px;
     }
     .brand-icon {
-      width: 32px;
-      height: 32px;
-      background: #262626;
-      border: 1px solid #383838;
-      border-radius: 8px;
+      width: 26px;
+      height: 26px;
+      background: #ffffff;
+      color: #0a0a0a;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
+      font-size: 13px;
+      font-weight: 700;
     }
     .brand-title {
-      font-weight: 700;
-      font-size: 15px;
+      font-weight: 600;
+      font-size: 14px;
       letter-spacing: -0.02em;
     }
     .badge-pill {
       font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 3px 7px;
-      border-radius: 9999px;
-      background: rgba(250, 204, 21, 0.15);
-      color: #facc15;
-      border: 1px solid rgba(250, 204, 21, 0.3);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #222222;
+      color: #a3a3a3;
+      border: 1px solid #333333;
     }
     .templates-list {
       flex: 1;
       overflow-y: auto;
-      padding: 12px;
+      padding: 10px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
     }
     .section-label {
-      font-size: 11px;
-      font-weight: 700;
+      font-size: 10px;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #737373;
-      padding: 8px 10px 4px;
+      letter-spacing: 0.08em;
+      color: #525252;
+      padding: 8px 8px 4px;
     }
     .nav-item {
-      padding: 10px 12px;
-      border-radius: 10px;
-      color: #a3a3a3;
+      padding: 8px 10px;
+      border-radius: 8px;
+      color: #888888;
       text-decoration: none;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 500;
       cursor: pointer;
       display: flex;
       flex-direction: column;
-      gap: 3px;
-      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      gap: 2px;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
       border: 1px solid transparent;
     }
     .nav-item:hover {
-      background: #262626;
+      background: #1c1c1c;
       color: #f8fafc;
-      border-color: #383838;
     }
     .nav-item.active {
-      background: #facc15;
+      background: #ffffff;
       color: #0a0a0a;
-      font-weight: 700;
-      box-shadow: 0 4px 14px rgba(250, 204, 21, 0.25);
+      font-weight: 600;
     }
-    .nav-item.active .desc { color: #423b05; font-weight: 500; }
-    .desc { font-size: 11px; color: #737373; line-height: 14px; }
+    .nav-item.active .desc { color: #525252; }
+    .desc { font-size: 11px; color: #525252; line-height: 14px; }
     main {
       flex: 1;
       display: flex;
@@ -230,13 +238,13 @@ export function startPreviewServer(port: number = 3000) {
       background: #0a0a0a;
     }
     header {
-      height: 64px;
-      border-bottom: 1px solid #262626;
+      height: 56px;
+      border-bottom: 1px solid #222222;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 24px;
-      background: #171717;
+      padding: 0 20px;
+      background: #121212;
     }
     .header-left {
       display: flex;
@@ -244,79 +252,78 @@ export function startPreviewServer(port: number = 3000) {
       gap: 12px;
     }
     .template-title {
-      font-weight: 700;
-      font-size: 15px;
+      font-weight: 600;
+      font-size: 14px;
       letter-spacing: -0.02em;
     }
-    .controls { display: flex; align-items: center; gap: 10px; }
+    .controls { display: flex; align-items: center; gap: 8px; }
     .control-group {
       display: flex;
       align-items: center;
-      background: #262626;
-      border: 1px solid #383838;
-      border-radius: 8px;
+      background: #1c1c1c;
+      border: 1px solid #2e2e2e;
+      border-radius: 6px;
       padding: 2px;
     }
     .btn-toggle {
       background: transparent;
       border: none;
-      color: #a3a3a3;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
+      color: #888888;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 500;
       cursor: pointer;
       transition: all 0.15s;
       font-family: inherit;
     }
     .btn-toggle.active {
-      background: #383838;
-      color: #f8fafc;
+      background: #2e2e2e;
+      color: #ffffff;
     }
     select {
-      background: #262626;
-      border: 1px solid #383838;
+      background: #1c1c1c;
+      border: 1px solid #2e2e2e;
       color: #f8fafc;
-      padding: 7px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 500;
       cursor: pointer;
       outline: none;
       font-family: inherit;
     }
-    select:focus { border-color: #facc15; }
+    select:focus { border-color: #555555; }
     .btn-copy {
-      background: #facc15;
+      background: #ffffff;
       color: #0a0a0a;
       border: none;
-      padding: 7px 14px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
       cursor: pointer;
       transition: all 0.15s;
       font-family: inherit;
     }
     .btn-copy:hover {
-      background: #fde047;
-      box-shadow: 0 4px 12px rgba(250, 204, 21, 0.3);
+      background: #e5e5e5;
     }
     .viewport-container {
       flex: 1;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 32px;
+      padding: 24px;
       overflow: auto;
-      background: radial-gradient(circle at 50% 30%, #1f1f1f 0%, #0a0a0a 100%);
+      background: #0a0a0a;
     }
     iframe {
-      border: 1px solid #262626;
-      border-radius: 16px;
+      border: 1px solid #222222;
+      border-radius: 12px;
       background: #000;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8);
+      transition: width 0.25s ease;
     }
   </style>
 </head>
@@ -324,17 +331,44 @@ export function startPreviewServer(port: number = 3000) {
   <aside>
     <div class="brand">
       <div class="brand-left">
-        <div class="brand-icon">🍋</div>
+        <div class="brand-icon">L</div>
         <div class="brand-title">Limonify Email</div>
       </div>
-      <div class="badge-pill">STUDIO</div>
+      <div class="badge-pill">12 TEMPLATES</div>
     </div>
     <div class="templates-list">
-      <div class="section-label">Core Templates</div>
+      <div class="section-label">Auth & Security</div>
       ${templatesList
+        .slice(0, 4)
         .map(
           (t, i) => `
         <div class="nav-item ${i === 0 ? "active" : ""}" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">
+          <div>${t.name}</div>
+          <div class="desc">${t.description}</div>
+        </div>
+      `,
+        )
+        .join("")}
+
+      <div class="section-label" style="margin-top: 8px;">Billing & Account</div>
+      ${templatesList
+        .slice(4, 8)
+        .map(
+          (t) => `
+        <div class="nav-item" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">
+          <div>${t.name}</div>
+          <div class="desc">${t.description}</div>
+        </div>
+      `,
+        )
+        .join("")}
+
+      <div class="section-label" style="margin-top: 8px;">Product & System</div>
+      ${templatesList
+        .slice(8)
+        .map(
+          (t) => `
+        <div class="nav-item" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">
           <div>${t.name}</div>
           <div class="desc">${t.description}</div>
         </div>
@@ -349,7 +383,6 @@ export function startPreviewServer(port: number = 3000) {
         <div class="template-title" id="current-title">OTP / Verification Code</div>
       </div>
       <div class="controls">
-        <!-- Language Selector -->
         <select id="locale-select" onchange="updatePreview()">
           <option value="en">🇺🇸 English</option>
           <option value="tr">🇹🇷 Türkçe</option>
@@ -370,12 +403,12 @@ export function startPreviewServer(port: number = 3000) {
         </select>
 
         <select id="data-select" onchange="updatePreview()">
-          <option value="true">Live Sample Data</option>
-          <option value="false">Go Template ({{ .Code }})</option>
+          <option value="true">Sample Data</option>
+          <option value="false">Backend Variables ({{ .Var }})</option>
         </select>
 
         <div class="control-group">
-          <button class="btn-toggle active" id="btn-desktop" onclick="setViewport('540px', this)">Desktop</button>
+          <button class="btn-toggle active" id="btn-desktop" onclick="setViewport('520px', this)">Desktop</button>
           <button class="btn-toggle" id="btn-mobile" onclick="setViewport('375px', this)">Mobile</button>
         </div>
 
@@ -383,7 +416,7 @@ export function startPreviewServer(port: number = 3000) {
       </div>
     </header>
     <div class="viewport-container">
-      <iframe id="preview-frame" src="/api/render?template=otp&mode=dark&cardStyle=double-frame&dummy=true&locale=en" width="540px" height="760px"></iframe>
+      <iframe id="preview-frame" src="/api/render?template=otp&mode=dark&cardStyle=double-frame&dummy=true&locale=en" width="520px" height="740px"></iframe>
     </div>
   </main>
 
@@ -432,11 +465,9 @@ export function startPreviewServer(port: number = 3000) {
         await navigator.clipboard.writeText(html);
         const btn = document.querySelector('.btn-copy');
         const oldText = btn.textContent;
-        btn.textContent = '✓ Copied!';
-        btn.style.background = '#22c55e';
+        btn.textContent = 'Copied';
         setTimeout(() => {
           btn.textContent = oldText;
-          btn.style.background = '#facc15';
         }, 1500);
       } catch (err) {
         alert('Failed to copy HTML: ' + err.message);

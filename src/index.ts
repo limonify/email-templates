@@ -19,10 +19,16 @@ export * from "./components/device-session-card.js";
 export * from "./components/gradient-glow.js";
 export * from "./components/info-card.js";
 
-// Templates
+// Templates (12 Core Templates)
 export * from "./templates/otp.js";
 export * from "./templates/password-reset.js";
 export * from "./templates/welcome.js";
 export * from "./templates/notification.js";
 export * from "./templates/payment-completed.js";
 export * from "./templates/magic-link.js";
+export * from "./templates/team-invite.js";
+export * from "./templates/subscription-canceled.js";
+export * from "./templates/api-key-created.js";
+export * from "./templates/usage-limit-warning.js";
+export * from "./templates/feedback-request.js";
+export * from "./templates/product-update.js";

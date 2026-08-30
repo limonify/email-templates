@@ -72,4 +72,64 @@ export const trLocale: EmailLocaleDictionary = {
     securityNoticeText:
       "Bu tek kullanımlık bağlantı {{ .ExpiresIn }} geçerlidir. Talebi siz yapmadıysanız yok sayabilirsiniz.",
   },
+  teamInvite: {
+    badgeText: "Ekip daveti",
+    heading: "Çalışma alanına katılın",
+    description:
+      "{{ .InviterName }}, sizi {{ .AppName }} üzerindeki {{ .WorkspaceName }} çalışma alanına katılmaya davet etti.",
+    roleLabel: "Atanan rol",
+    workspaceLabel: "Çalışma alanı",
+    buttonText: "Daveti kabul et",
+    declineText:
+      "Bu daveti beklemiyorsanız bu e-postayı güvenle yok sayabilirsiniz.",
+  },
+  subscriptionCanceled: {
+    badgeText: "Abonelik",
+    heading: "Abonelik iptal edildi",
+    description:
+      "{{ .PlanName }} aboneliğiniz iptal edildi. Mevcut fatura döneminiz sonuna kadar erişiminiz devam edecektir.",
+    expiryLabel: "Erişim bitiş tarihi",
+    planLabel: "Önceki plan",
+    reactivateButtonText: "Aboneliği yeniden başlat",
+    feedbackText:
+      "Geliştirmemiz gereken konuları bilmek isteriz. Düşüncelerinizi bizimle paylaşırsanız seviniriz.",
+  },
+  apiKeyCreated: {
+    badgeText: "Güvenlik",
+    heading: "Yeni API anahtarı oluşturuldu",
+    description:
+      "Hesabınız için yeni bir API anahtarı oluşturuldu. Bu işlemi siz yapmadıysanız anahtarı derhal iptal edin.",
+    keyNameLabel: "Anahtar adı",
+    keyPrefixLabel: "Anahtar ön eki",
+    createdLabel: "Oluşturulma tarihi",
+    revokeButtonText: "API anahtarlarını yönet",
+    securityNotice:
+      "API anahtarlarınızı asla genel repolara veya herkese açık yerlere eklemeyin.",
+  },
+  usageLimitWarning: {
+    badgeText: "Kullanım uyarısı",
+    heading: "Kota limit uyarısı",
+    description:
+      "{{ .AppName }} üzerindeki aylık {{ .MetricName }} kotanızın %{{ .UsagePercent }}'ine ulaştınız.",
+    usageLabel: "Mevcut kullanım",
+    limitLabel: "Aylık limit",
+    resetDateLabel: "Kota sıfırlanma tarihi",
+    upgradeButtonText: "Planı yükselt",
+  },
+  feedbackRequest: {
+    badgeText: "Geri bildirim",
+    heading: "Deneyiminiz nasıldı?",
+    description:
+      "Merhaba {{ .UserName }}, şu ana kadarki {{ .AppName }} deneyiminiz hakkındaki görüşlerinizi duymak isteriz.",
+    buttonText: "Geri bildirim paylaş (2 dk)",
+    footerText:
+      "Geri bildirimleriniz ürün yol haritamızı doğrudan şekillendirmektedir. Teşekkür ederiz.",
+  },
+  productUpdate: {
+    badgeText: "Güncelleme",
+    heading: "{{ .AppName }} {{ .Version }} ile Yenilikler",
+    description:
+      "Bu sürümde yayınlanan en son özellikler, iyileştirmeler ve güncellemeler:",
+    buttonText: "Tüm sürüm notlarını oku",
+  },
 };

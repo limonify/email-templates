@@ -70,4 +70,54 @@ export interface EmailLocaleDictionary {
     securityNoticeTitle: string;
     securityNoticeText: string;
   };
+  teamInvite: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    roleLabel: string;
+    workspaceLabel: string;
+    buttonText: string;
+    declineText: string;
+  };
+  subscriptionCanceled: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    expiryLabel: string;
+    planLabel: string;
+    reactivateButtonText: string;
+    feedbackText: string;
+  };
+  apiKeyCreated: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    keyNameLabel: string;
+    keyPrefixLabel: string;
+    createdLabel: string;
+    revokeButtonText: string;
+    securityNotice: string;
+  };
+  usageLimitWarning: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    usageLabel: string;
+    limitLabel: string;
+    resetDateLabel: string;
+    upgradeButtonText: string;
+  };
+  feedbackRequest: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    buttonText: string;
+    footerText: string;
+  };
+  productUpdate: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    buttonText: string;
+  };
 }

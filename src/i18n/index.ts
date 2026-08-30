@@ -27,9 +27,6 @@ export const LOCALES_REGISTRY: Record<
 // In-memory registry of custom translations/overrides
 const customOverrides: Record<string, DeepPartial<EmailLocaleDictionary>> = {};
 
-/**
- * Register or override a locale dictionary programmatically or from config
- */
 export function registerCustomLocale(
   locale: string,
   dict: DeepPartial<EmailLocaleDictionary>,
@@ -53,9 +50,6 @@ export function registerCustomLocale(
   }
 }
 
-/**
- * Automatically load any custom locale json files from a directory (e.g. ./locales/tr.json)
- */
 export function loadCustomLocalesFromDir(
   dirPath: string = path.join(process.cwd(), "locales"),
 ) {
@@ -197,6 +191,68 @@ export function getTemplatePropsForLocale(
         buttonText: dict.magicLink.buttonText,
         securityNoticeTitle: dict.magicLink.securityNoticeTitle,
         securityNoticeText: dict.magicLink.securityNoticeText,
+        supportText: dict.layout.supportText,
+      };
+    case "team-invite":
+      return {
+        badgeText: dict.teamInvite.badgeText,
+        heading: dict.teamInvite.heading,
+        description: dict.teamInvite.description,
+        roleLabel: dict.teamInvite.roleLabel,
+        workspaceLabel: dict.teamInvite.workspaceLabel,
+        buttonText: dict.teamInvite.buttonText,
+        declineText: dict.teamInvite.declineText,
+        supportText: dict.layout.supportText,
+      };
+    case "subscription-canceled":
+      return {
+        badgeText: dict.subscriptionCanceled.badgeText,
+        heading: dict.subscriptionCanceled.heading,
+        description: dict.subscriptionCanceled.description,
+        planLabel: dict.subscriptionCanceled.planLabel,
+        expiryLabel: dict.subscriptionCanceled.expiryLabel,
+        reactivateButtonText: dict.subscriptionCanceled.reactivateButtonText,
+        feedbackText: dict.subscriptionCanceled.feedbackText,
+        supportText: dict.layout.supportText,
+      };
+    case "api-key-created":
+      return {
+        badgeText: dict.apiKeyCreated.badgeText,
+        heading: dict.apiKeyCreated.heading,
+        description: dict.apiKeyCreated.description,
+        keyNameLabel: dict.apiKeyCreated.keyNameLabel,
+        keyPrefixLabel: dict.apiKeyCreated.keyPrefixLabel,
+        createdLabel: dict.apiKeyCreated.createdLabel,
+        revokeButtonText: dict.apiKeyCreated.revokeButtonText,
+        securityNotice: dict.apiKeyCreated.securityNotice,
+        supportText: dict.layout.supportText,
+      };
+    case "usage-limit-warning":
+      return {
+        badgeText: dict.usageLimitWarning.badgeText,
+        heading: dict.usageLimitWarning.heading,
+        description: dict.usageLimitWarning.description,
+        usageLabel: dict.usageLimitWarning.usageLabel,
+        limitLabel: dict.usageLimitWarning.limitLabel,
+        resetDateLabel: dict.usageLimitWarning.resetDateLabel,
+        upgradeButtonText: dict.usageLimitWarning.upgradeButtonText,
+        supportText: dict.layout.supportText,
+      };
+    case "feedback-request":
+      return {
+        badgeText: dict.feedbackRequest.badgeText,
+        heading: dict.feedbackRequest.heading,
+        description: dict.feedbackRequest.description,
+        buttonText: dict.feedbackRequest.buttonText,
+        footerText: dict.feedbackRequest.footerText,
+        supportText: dict.layout.supportText,
+      };
+    case "product-update":
+      return {
+        badgeText: dict.productUpdate.badgeText,
+        heading: dict.productUpdate.heading,
+        description: dict.productUpdate.description,
+        buttonText: dict.productUpdate.buttonText,
         supportText: dict.layout.supportText,
       };
     default:

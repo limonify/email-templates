@@ -14,6 +14,12 @@ import { WelcomeEmail } from "../templates/welcome.js";
 import { NotificationEmail } from "../templates/notification.js";
 import { PaymentCompletedEmail } from "../templates/payment-completed.js";
 import { MagicLinkEmail } from "../templates/magic-link.js";
+import { TeamInviteEmail } from "../templates/team-invite.js";
+import { SubscriptionCanceledEmail } from "../templates/subscription-canceled.js";
+import { ApiKeyCreatedEmail } from "../templates/api-key-created.js";
+import { UsageLimitWarningEmail } from "../templates/usage-limit-warning.js";
+import { FeedbackRequestEmail } from "../templates/feedback-request.js";
+import { ProductUpdateEmail } from "../templates/product-update.js";
 
 export type TemplateId =
   | "otp"
@@ -21,7 +27,13 @@ export type TemplateId =
   | "welcome"
   | "notification"
   | "payment-completed"
-  | "magic-link";
+  | "magic-link"
+  | "team-invite"
+  | "subscription-canceled"
+  | "api-key-created"
+  | "usage-limit-warning"
+  | "feedback-request"
+  | "product-update";
 
 export interface TemplateMetadata {
   id: TemplateId;
@@ -35,7 +47,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   otp: {
     id: "otp",
     name: "OTP / Verification Code",
-    description: "2FA and one-time verification code template",
+    description: "Sign in and 2FA authentication code",
     filename: "otp.html",
     component: (props) => React.createElement(OTPEmail, props),
   },
@@ -48,31 +60,73 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   welcome: {
     id: "welcome",
-    name: "Welcome / Onboarding",
-    description: "Welcome new users and guide them to getting started",
+    name: "Welcome & Onboarding",
+    description: "New account confirmation with setup checklist",
     filename: "welcome.html",
     component: (props) => React.createElement(WelcomeEmail, props),
   },
   notification: {
     id: "notification",
-    name: "Account Notification / Alert",
-    description: "General system announcements, security alerts, and updates",
+    name: "Security Alert / Notification",
+    description: "Session alert with device & IP details",
     filename: "notification.html",
     component: (props) => React.createElement(NotificationEmail, props),
   },
   "payment-completed": {
     id: "payment-completed",
-    name: "Payment Completed & Invoice Receipt",
-    description: "Order summary, item breakdown, and invoice download link",
+    name: "Payment Receipt / Invoice",
+    description: "Itemized invoice summary with download action",
     filename: "payment-completed.html",
     component: (props) => React.createElement(PaymentCompletedEmail, props),
   },
   "magic-link": {
     id: "magic-link",
-    name: "Magic Link / Passwordless Login",
-    description: "One-click passwordless authentication link",
+    name: "Magic Link Sign In",
+    description: "One-click passwordless login link",
     filename: "magic-link.html",
     component: (props) => React.createElement(MagicLinkEmail, props),
+  },
+  "team-invite": {
+    id: "team-invite",
+    name: "Team / Workspace Invitation",
+    description: "Invite member to team or workspace with role assignment",
+    filename: "team-invite.html",
+    component: (props) => React.createElement(TeamInviteEmail, props),
+  },
+  "subscription-canceled": {
+    id: "subscription-canceled",
+    name: "Subscription Canceled",
+    description: "Cancellation notice with access expiry date and reactivation",
+    filename: "subscription-canceled.html",
+    component: (props) => React.createElement(SubscriptionCanceledEmail, props),
+  },
+  "api-key-created": {
+    id: "api-key-created",
+    name: "API Key Created Alert",
+    description: "New API token notice with prefix and revocation button",
+    filename: "api-key-created.html",
+    component: (props) => React.createElement(ApiKeyCreatedEmail, props),
+  },
+  "usage-limit-warning": {
+    id: "usage-limit-warning",
+    name: "Usage Quota Warning",
+    description: "Monthly quota threshold alert with progress meter",
+    filename: "usage-limit-warning.html",
+    component: (props) => React.createElement(UsageLimitWarningEmail, props),
+  },
+  "feedback-request": {
+    id: "feedback-request",
+    name: "Feedback / NPS Survey",
+    description: "Customer satisfaction survey request with 1-click rating",
+    filename: "feedback-request.html",
+    component: (props) => React.createElement(FeedbackRequestEmail, props),
+  },
+  "product-update": {
+    id: "product-update",
+    name: "Product Update / Changelog",
+    description: "Release announcement with feature tags and changelog link",
+    filename: "product-update.html",
+    component: (props) => React.createElement(ProductUpdateEmail, props),
   },
 };
 

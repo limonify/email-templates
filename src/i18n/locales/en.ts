@@ -73,4 +73,64 @@ export const enLocale: EmailLocaleDictionary = {
     securityNoticeText:
       "This single-use link will expire in {{ .ExpiresIn }}. If you did not request this email, you can safely ignore it.",
   },
+  teamInvite: {
+    badgeText: "Team invite",
+    heading: "Join workspace",
+    description:
+      "{{ .InviterName }} has invited you to join the {{ .WorkspaceName }} workspace on {{ .AppName }}.",
+    roleLabel: "Assigned role",
+    workspaceLabel: "Workspace",
+    buttonText: "Accept invitation",
+    declineText:
+      "If you were not expecting this invitation, you can safely ignore this email.",
+  },
+  subscriptionCanceled: {
+    badgeText: "Subscription",
+    heading: "Subscription canceled",
+    description:
+      "Your subscription for {{ .PlanName }} has been canceled. Your access will remain active until the end of your current billing period.",
+    expiryLabel: "Access expires",
+    planLabel: "Previous plan",
+    reactivateButtonText: "Reactivate subscription",
+    feedbackText:
+      "We would love to know how we can improve. If you have a moment, please share your thoughts with us.",
+  },
+  apiKeyCreated: {
+    badgeText: "Security",
+    heading: "New API token created",
+    description:
+      "A new API token was created for your account. If you did not create this token, revoke it immediately.",
+    keyNameLabel: "Token name",
+    keyPrefixLabel: "Token prefix",
+    createdLabel: "Created at",
+    revokeButtonText: "Manage API tokens",
+    securityNotice:
+      "Never share your API keys or commit them to public repositories.",
+  },
+  usageLimitWarning: {
+    badgeText: "Usage alert",
+    heading: "Quota limit alert",
+    description:
+      "You have reached {{ .UsagePercent }} of your monthly {{ .MetricName }} quota on {{ .AppName }}.",
+    usageLabel: "Current usage",
+    limitLabel: "Monthly limit",
+    resetDateLabel: "Quota resets on",
+    upgradeButtonText: "Upgrade plan",
+  },
+  feedbackRequest: {
+    badgeText: "Feedback",
+    heading: "How has your experience been?",
+    description:
+      "Hi {{ .UserName }}, we would love to hear your feedback on your experience with {{ .AppName }} so far.",
+    buttonText: "Share feedback (2 mins)",
+    footerText:
+      "Your feedback directly shapes our product roadmap. Thank you for your time.",
+  },
+  productUpdate: {
+    badgeText: "Changelog",
+    heading: "What's new in {{ .AppName }} {{ .Version }}",
+    description:
+      "Here are the latest features, improvements, and updates shipped in this release:",
+    buttonText: "Read full release notes",
+  },
 };
