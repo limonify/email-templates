@@ -6,8 +6,8 @@
   "main": "./dist/index.js",
   "types": "./src/index.ts",
   "bin": {
-    "limonify-email": "dist/cli.js",
-    "email-templates": "dist/cli.js"
+    "limonify-email": "./dist/cli.js",
+    "email-templates": "./dist/cli.js"
   },
   "files": [
     "dist",
@@ -20,7 +20,6 @@
   "scripts": {
     "dev": "bun run src/cli.ts",
     "build": "bun build src/cli.ts --outfile dist/cli.js --target node && bun build src/index.ts --outfile dist/index.js --target node",
-    "prepublishOnly": "bun run build",
     "preview": "bun run src/preview/server.ts",
     "start": "bun run src/cli.ts",
     "test": "bun test",
