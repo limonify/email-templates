@@ -1,0 +1,48 @@
+{
+  "name": "@limonify/email-templates",
+  "version": "0.1.0",
+  "description": "Limonify UI design system compatible email templates generator with theme parser for Go, Node, Python backends",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "bin": {
+    "limonify-email": "./src/cli.ts",
+    "email-templates": "./src/cli.ts"
+  },
+  "scripts": {
+    "dev": "bun run src/cli.ts",
+    "start": "bun run src/cli.ts",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "limonify",
+    "email",
+    "email-templates",
+    "react-email",
+    "golang-templates",
+    "html-email",
+    "design-system"
+  ],
+  "author": "limonify",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^26.4.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "prettier": "^3.9.6",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.7.0",
+    "@react-email/components": "^1.0.12",
+    "@react-email/render": "^2.1.0",
+    "colord": "^2.10.0",
+    "commander": "^15.0.0",
+    "picocolors": "^1.1.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  }
+}
