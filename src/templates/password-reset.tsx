@@ -7,6 +7,10 @@ import type { EmailTheme } from "../theme/types.js";
 
 export interface PasswordResetEmailProps {
   appName?: string;
+  logoUrl?: string;
+  logoWidth?: number;
+  logoHeight?: number;
+  supportUrl?: string;
   userName?: string;
   resetUrl?: string;
   expiresIn?: string;
@@ -15,6 +19,10 @@ export interface PasswordResetEmailProps {
 
 export const PasswordResetEmail: React.FC<PasswordResetEmailProps> = ({
   appName = "{{ .AppName }}",
+  logoUrl,
+  logoWidth,
+  logoHeight,
+  supportUrl,
   userName = "{{ .UserName }}",
   resetUrl = "{{ .ResetURL }}",
   expiresIn = "{{ .ExpiresIn }}",
@@ -24,6 +32,10 @@ export const PasswordResetEmail: React.FC<PasswordResetEmailProps> = ({
     <EmailLayout
       previewText="Reset your password"
       appName={appName}
+      logoUrl={logoUrl}
+      logoWidth={logoWidth}
+      logoHeight={logoHeight}
+      supportUrl={supportUrl}
       badgeText="Account Security"
       theme={theme}
     >

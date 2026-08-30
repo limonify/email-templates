@@ -13,6 +13,7 @@ import type { EmailTheme, TemplateEngine } from "./theme/types.js";
 import {
   TEMPLATES_REGISTRY,
   type TemplateId,
+  type BrandingConfig,
   renderTemplateToHtml,
 } from "./generator/render.js";
 
@@ -157,7 +158,42 @@ async function runInteractiveCli() {
     process.exit(0);
   }
 
-  // 4. Output Directory
+  // 4. Branding & Logo Configuration
+  const defaultAppName =
+    engine === "go"
+      ? "{{ .AppName }}"
+      : engine === "handlebars"
+        ? "{{ appName }}"
+        : "Limonify";
+  const appName = await p.text({
+    message: "App / Brand Name:",
+    placeholder: defaultAppName,
+    defaultValue: defaultAppName,
+  });
+
+  if (p.isCancel(appName)) {
+    p.cancel("Operation cancelled.");
+    process.exit(0);
+  }
+
+  const logoUrl = await p.text({
+    message: "Logo Image URL (Optional, leave empty for Limonify brand badge):",
+    placeholder: "https://example.com/logo.png",
+  });
+
+  if (p.isCancel(logoUrl)) {
+    p.cancel("Operation cancelled.");
+    process.exit(0);
+  }
+
+  const branding: BrandingConfig = {
+    appName: appName as string,
+    logoUrl: (logoUrl as string)?.trim() || undefined,
+    logoWidth: 36,
+    logoHeight: 36,
+  };
+
+  // 5. Output Directory
   const outputDir = await p.text({
     message: "Output directory for generated templates:",
     placeholder: "./templates/emails",
@@ -169,7 +205,7 @@ async function runInteractiveCli() {
     process.exit(0);
   }
 
-  // 5. Generate Files
+  // 6. Generate Files
   const s = p.spinner();
   s.start("Compiling responsive email templates to HTML...");
 
@@ -182,7 +218,12 @@ async function runInteractiveCli() {
 
   for (const templateId of selectedTemplates as TemplateId[]) {
     const meta = TEMPLATES_REGISTRY[templateId];
-    const html = await renderTemplateToHtml(templateId, theme, engine);
+    const html = await renderTemplateToHtml(
+      templateId,
+      theme,
+      engine,
+      branding,
+    );
     const filePath = path.join(targetDir, meta.filename);
     fs.writeFileSync(filePath, html, "utf8");
     generatedFiles.push(meta.filename);

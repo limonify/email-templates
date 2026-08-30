@@ -6,6 +6,10 @@ import type { EmailTheme } from "../theme/types.js";
 
 export interface PaymentCompletedEmailProps {
   appName?: string;
+  logoUrl?: string;
+  logoWidth?: number;
+  logoHeight?: number;
+  supportUrl?: string;
   userName?: string;
   orderId?: string;
   amount?: string;
@@ -17,6 +21,10 @@ export interface PaymentCompletedEmailProps {
 
 export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
   appName = "{{ .AppName }}",
+  logoUrl,
+  logoWidth,
+  logoHeight,
+  supportUrl,
   userName = "{{ .UserName }}",
   orderId = "{{ .OrderID }}",
   amount = "{{ .Amount }}",
@@ -29,6 +37,10 @@ export const PaymentCompletedEmail: React.FC<PaymentCompletedEmailProps> = ({
     <EmailLayout
       previewText={`Payment Receipt (${orderId})`}
       appName={appName}
+      logoUrl={logoUrl}
+      logoWidth={logoWidth}
+      logoHeight={logoHeight}
+      supportUrl={supportUrl}
       badgeText="Payment Confirmed"
       theme={theme}
     >

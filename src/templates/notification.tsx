@@ -7,6 +7,10 @@ import type { EmailTheme } from "../theme/types.js";
 
 export interface NotificationEmailProps {
   appName?: string;
+  logoUrl?: string;
+  logoWidth?: number;
+  logoHeight?: number;
+  supportUrl?: string;
   userName?: string;
   title?: string;
   message?: string;
@@ -17,6 +21,10 @@ export interface NotificationEmailProps {
 
 export const NotificationEmail: React.FC<NotificationEmailProps> = ({
   appName = "{{ .AppName }}",
+  logoUrl,
+  logoWidth,
+  logoHeight,
+  supportUrl,
   userName = "{{ .UserName }}",
   title = "{{ .Title }}",
   message = "{{ .Message }}",
@@ -28,6 +36,10 @@ export const NotificationEmail: React.FC<NotificationEmailProps> = ({
     <EmailLayout
       previewText={title}
       appName={appName}
+      logoUrl={logoUrl}
+      logoWidth={logoWidth}
+      logoHeight={logoHeight}
+      supportUrl={supportUrl}
       badgeText="System Notification"
       theme={theme}
     >

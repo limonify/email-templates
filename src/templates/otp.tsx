@@ -6,6 +6,10 @@ import type { EmailTheme } from "../theme/types.js";
 
 export interface OTPEmailProps {
   appName?: string;
+  logoUrl?: string;
+  logoWidth?: number;
+  logoHeight?: number;
+  supportUrl?: string;
   code?: string;
   expiresIn?: string;
   theme: EmailTheme;
@@ -13,6 +17,10 @@ export interface OTPEmailProps {
 
 export const OTPEmail: React.FC<OTPEmailProps> = ({
   appName = "{{ .AppName }}",
+  logoUrl,
+  logoWidth,
+  logoHeight,
+  supportUrl,
   code = "{{ .Code }}",
   expiresIn = "{{ .ExpiresIn }}",
   theme,
@@ -21,6 +29,10 @@ export const OTPEmail: React.FC<OTPEmailProps> = ({
     <EmailLayout
       previewText={`Your verification code: ${code}`}
       appName={appName}
+      logoUrl={logoUrl}
+      logoWidth={logoWidth}
+      logoHeight={logoHeight}
+      supportUrl={supportUrl}
       badgeText="Security Verification"
       theme={theme}
     >

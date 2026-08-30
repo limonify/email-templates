@@ -7,6 +7,10 @@ import type { EmailTheme } from "../theme/types.js";
 
 export interface MagicLinkEmailProps {
   appName?: string;
+  logoUrl?: string;
+  logoWidth?: number;
+  logoHeight?: number;
+  supportUrl?: string;
   loginUrl?: string;
   expiresIn?: string;
   theme: EmailTheme;
@@ -14,6 +18,10 @@ export interface MagicLinkEmailProps {
 
 export const MagicLinkEmail: React.FC<MagicLinkEmailProps> = ({
   appName = "{{ .AppName }}",
+  logoUrl,
+  logoWidth,
+  logoHeight,
+  supportUrl,
   loginUrl = "{{ .LoginURL }}",
   expiresIn = "{{ .ExpiresIn }}",
   theme,
@@ -22,6 +30,10 @@ export const MagicLinkEmail: React.FC<MagicLinkEmailProps> = ({
     <EmailLayout
       previewText={`Your ${appName} sign-in link`}
       appName={appName}
+      logoUrl={logoUrl}
+      logoWidth={logoWidth}
+      logoHeight={logoHeight}
+      supportUrl={supportUrl}
       badgeText="Instant Sign In"
       theme={theme}
     >

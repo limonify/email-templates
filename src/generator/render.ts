@@ -18,12 +18,22 @@ export type TemplateId =
   | "payment-completed"
   | "magic-link";
 
+export interface BrandingConfig {
+  appName?: string;
+  logoUrl?: string;
+  logoWidth?: number;
+  logoHeight?: number;
+  supportUrl?: string;
+}
+
 export interface TemplateMetadata {
   id: TemplateId;
   name: string;
   description: string;
   filename: string;
-  component: (props: { theme: EmailTheme }) => React.ReactElement;
+  component: (
+    props: { theme: EmailTheme } & BrandingConfig,
+  ) => React.ReactElement;
 }
 
 export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
@@ -75,12 +85,15 @@ export async function renderTemplateToHtml(
   templateId: TemplateId,
   theme: EmailTheme,
   engine: TemplateEngine = "go",
+  branding: BrandingConfig = {},
 ): Promise<string> {
   const meta = TEMPLATES_REGISTRY[templateId];
   if (!meta) {
     throw new Error(`Unknown template ID: ${templateId}`);
   }
 
-  const rawHtml = await render(meta.component({ theme }), { pretty: true });
+  const rawHtml = await render(meta.component({ theme, ...branding }), {
+    pretty: true,
+  });
   return adaptVariables(rawHtml, engine);
 }

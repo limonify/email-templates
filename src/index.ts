@@ -6,6 +6,8 @@ export * from "./generator/adapters.js";
 
 // Component & template exports
 export * from "./components/email-layout.js";
+export * from "./components/brand-logo.js";
+export * from "./components/badge.js";
 export * from "./components/button.js";
 export * from "./components/code-box.js";
 export * from "./components/info-card.js";

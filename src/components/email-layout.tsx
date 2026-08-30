@@ -3,20 +3,21 @@ import {
   Body,
   Container,
   Head,
-  Hr,
   Html,
-  Img,
   Link,
   Preview,
   Section,
   Text,
 } from "@react-email/components";
+import { BrandLogo } from "./brand-logo.js";
 import type { EmailTheme } from "../theme/types.js";
 
 export interface EmailLayoutProps {
   previewText?: string;
   appName?: string;
   logoUrl?: string;
+  logoWidth?: number;
+  logoHeight?: number;
   badgeText?: string;
   supportUrl?: string;
   children: React.ReactNode;
@@ -27,6 +28,8 @@ export const EmailLayout: React.FC<EmailLayoutProps> = ({
   previewText,
   appName = "Limonify",
   logoUrl,
+  logoWidth,
+  logoHeight,
   badgeText,
   supportUrl = "https://limonify.com/support",
   children,
@@ -54,60 +57,13 @@ export const EmailLayout: React.FC<EmailLayoutProps> = ({
         >
           {/* Limonify Header */}
           <Section style={{ marginBottom: "28px", textAlign: "center" }}>
-            <table style={{ margin: "0 auto" }}>
-              <tbody>
-                <tr>
-                  <td>
-                    {logoUrl ? (
-                      <Img
-                        src={logoUrl}
-                        alt={appName}
-                        width="36"
-                        height="36"
-                        style={{
-                          borderRadius: "10px",
-                          display: "inline-block",
-                          verticalAlign: "middle",
-                        }}
-                      />
-                    ) : (
-                      <div
-                        style={{
-                          display: "inline-block",
-                          width: "36px",
-                          height: "36px",
-                          lineHeight: "36px",
-                          borderRadius: "10px",
-                          backgroundColor: theme.surface,
-                          border: `1px solid ${theme.surfaceBorder}`,
-                          textAlign: "center",
-                          color: theme.accent,
-                          fontWeight: "800",
-                          fontSize: "18px",
-                          verticalAlign: "middle",
-                          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
-                        }}
-                      >
-                        🍋
-                      </div>
-                    )}
-                  </td>
-                  <td style={{ paddingLeft: "10px", verticalAlign: "middle" }}>
-                    <Text
-                      style={{
-                        fontSize: "18px",
-                        fontWeight: "700",
-                        color: theme.foreground,
-                        margin: 0,
-                        letterSpacing: "-0.03em",
-                      }}
-                    >
-                      {appName}
-                    </Text>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <BrandLogo
+              appName={appName}
+              logoUrl={logoUrl}
+              logoWidth={logoWidth}
+              logoHeight={logoHeight}
+              theme={theme}
+            />
           </Section>
 
           {/* Limonify Signature Double-Frame Card */}

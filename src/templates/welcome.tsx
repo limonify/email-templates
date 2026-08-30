@@ -6,6 +6,10 @@ import type { EmailTheme } from "../theme/types.js";
 
 export interface WelcomeEmailProps {
   appName?: string;
+  logoUrl?: string;
+  logoWidth?: number;
+  logoHeight?: number;
+  supportUrl?: string;
   userName?: string;
   dashboardUrl?: string;
   theme: EmailTheme;
@@ -13,6 +17,10 @@ export interface WelcomeEmailProps {
 
 export const WelcomeEmail: React.FC<WelcomeEmailProps> = ({
   appName = "{{ .AppName }}",
+  logoUrl,
+  logoWidth,
+  logoHeight,
+  supportUrl,
   userName = "{{ .UserName }}",
   dashboardUrl = "{{ .DashboardURL }}",
   theme,
@@ -21,6 +29,10 @@ export const WelcomeEmail: React.FC<WelcomeEmailProps> = ({
     <EmailLayout
       previewText={`Welcome to ${appName}!`}
       appName={appName}
+      logoUrl={logoUrl}
+      logoWidth={logoWidth}
+      logoHeight={logoHeight}
+      supportUrl={supportUrl}
       badgeText="Welcome Aboard"
       theme={theme}
     >
