@@ -26,26 +26,38 @@ import { AccountDeletionEmail } from "../templates/account-deletion.js";
 import { TwoFactorDisabledEmail } from "../templates/two-factor-disabled.js";
 import { WeeklyDigestEmail } from "../templates/weekly-digest.js";
 import { OrderShippedEmail } from "../templates/order-shipped.js";
+import { DeploySucceededEmail } from "../templates/deploy-succeeded.js";
+import { DeployFailedEmail } from "../templates/deploy-failed.js";
+import { CommentMentionEmail } from "../templates/comment-mention.js";
+import { EmailChangeEmail } from "../templates/email-change.js";
+import { CartAbandonmentEmail } from "../templates/cart-abandonment.js";
+import { IncidentReportEmail } from "../templates/incident-report.js";
 
 export type TemplateId =
   | "otp"
   | "password-reset"
-  | "welcome"
-  | "notification"
-  | "payment-completed"
   | "magic-link"
-  | "team-invite"
-  | "subscription-canceled"
+  | "email-change"
+  | "notification"
   | "api-key-created"
-  | "usage-limit-warning"
-  | "feedback-request"
-  | "product-update"
+  | "two-factor-disabled"
+  | "payment-completed"
   | "payment-failed"
   | "trial-ending"
+  | "subscription-canceled"
+  | "team-invite"
+  | "comment-mention"
   | "account-deletion"
-  | "two-factor-disabled"
+  | "welcome"
+  | "usage-limit-warning"
   | "weekly-digest"
-  | "order-shipped";
+  | "deploy-succeeded"
+  | "deploy-failed"
+  | "incident-report"
+  | "order-shipped"
+  | "cart-abandonment"
+  | "feedback-request"
+  | "product-update";
 
 export interface TemplateMetadata {
   id: TemplateId;
@@ -76,6 +88,13 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
     description: "One-click passwordless login link",
     filename: "magic-link.html",
     component: (props) => React.createElement(MagicLinkEmail, props),
+  },
+  "email-change": {
+    id: "email-change",
+    name: "Email Change Confirmation",
+    description: "Verification link to confirm new primary email address",
+    filename: "email-change.html",
+    component: (props) => React.createElement(EmailChangeEmail, props),
   },
   notification: {
     id: "notification",
@@ -119,6 +138,13 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
     filename: "trial-ending.html",
     component: (props) => React.createElement(TrialEndingEmail, props),
   },
+  "subscription-canceled": {
+    id: "subscription-canceled",
+    name: "Subscription Canceled",
+    description: "Cancellation notice with access expiry date and reactivation",
+    filename: "subscription-canceled.html",
+    component: (props) => React.createElement(SubscriptionCanceledEmail, props),
+  },
   "team-invite": {
     id: "team-invite",
     name: "Team / Workspace Invitation",
@@ -126,12 +152,12 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
     filename: "team-invite.html",
     component: (props) => React.createElement(TeamInviteEmail, props),
   },
-  "subscription-canceled": {
-    id: "subscription-canceled",
-    name: "Subscription Canceled",
-    description: "Cancellation notice with access expiry date and reactivation",
-    filename: "subscription-canceled.html",
-    component: (props) => React.createElement(SubscriptionCanceledEmail, props),
+  "comment-mention": {
+    id: "comment-mention",
+    name: "Comment / Mention Notification",
+    description: "Alert when tagged in a discussion or issue thread",
+    filename: "comment-mention.html",
+    component: (props) => React.createElement(CommentMentionEmail, props),
   },
   "account-deletion": {
     id: "account-deletion",
@@ -161,12 +187,40 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
     filename: "weekly-digest.html",
     component: (props) => React.createElement(WeeklyDigestEmail, props),
   },
+  "deploy-succeeded": {
+    id: "deploy-succeeded",
+    name: "Deployment Succeeded",
+    description: "Production release notice with branch, commit, and duration",
+    filename: "deploy-succeeded.html",
+    component: (props) => React.createElement(DeploySucceededEmail, props),
+  },
+  "deploy-failed": {
+    id: "deploy-failed",
+    name: "Deployment Failed Alert",
+    description: "CI/CD build failure notice with error snippet and log link",
+    filename: "deploy-failed.html",
+    component: (props) => React.createElement(DeployFailedEmail, props),
+  },
+  "incident-report": {
+    id: "incident-report",
+    name: "Incident / Status Alert",
+    description: "System operational status update and affected systems",
+    filename: "incident-report.html",
+    component: (props) => React.createElement(IncidentReportEmail, props),
+  },
   "order-shipped": {
     id: "order-shipped",
     name: "Order Shipped / Tracking",
     description: "Delivery confirmation with tracking number and carrier",
     filename: "order-shipped.html",
     component: (props) => React.createElement(OrderShippedEmail, props),
+  },
+  "cart-abandonment": {
+    id: "cart-abandonment",
+    name: "Abandoned Cart Reminder",
+    description: "Reminder for unpurchased items with checkout link",
+    filename: "cart-abandonment.html",
+    component: (props) => React.createElement(CartAbandonmentEmail, props),
   },
   "feedback-request": {
     id: "feedback-request",

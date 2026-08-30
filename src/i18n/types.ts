@@ -167,4 +167,50 @@ export interface EmailLocaleDictionary {
     estDeliveryLabel: string;
     buttonText: string;
   };
+  deploySucceeded: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    branchLabel: string;
+    commitLabel: string;
+    durationLabel: string;
+    buttonText: string;
+  };
+  deployFailed: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    branchLabel: string;
+    commitLabel: string;
+    errorLabel: string;
+    buttonText: string;
+  };
+  commentMention: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    buttonText: string;
+  };
+  emailChange: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    buttonText: string;
+    securityNotice: string;
+  };
+  cartAbandonment: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    totalLabel: string;
+    buttonText: string;
+  };
+  incidentReport: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    statusLabel: string;
+    affectedLabel: string;
+    buttonText: string;
+  };
 }

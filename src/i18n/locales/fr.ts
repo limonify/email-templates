@@ -183,4 +183,55 @@ export const frLocale: EmailLocaleDictionary = {
     estDeliveryLabel: "Livraison estimée",
     buttonText: "Suivre la livraison",
   },
+  deploySucceeded: {
+    badgeText: "Déployé",
+    heading: "Déploiement en production réussi",
+    description:
+      "Votre dernier commit a été compilé et déployé en production avec succès.",
+    branchLabel: "Branche",
+    commitLabel: "Commit",
+    durationLabel: "Durée de compilation",
+    buttonText: "Voir le déploiement",
+  },
+  deployFailed: {
+    badgeText: "Échec de compilation",
+    heading: "Échec du déploiement",
+    description: "Le déploiement a échoué pendant l’étape de compilation.",
+    branchLabel: "Branche",
+    commitLabel: "Commit",
+    errorLabel: "Statut de sortie",
+    buttonText: "Examiner les logs",
+  },
+  commentMention: {
+    badgeText: "Mention",
+    heading: "{{ .AuthorName }} vous a mentionné",
+    description:
+      "{{ .AuthorName }} vous a tagué dans une discussion sur {{ .TargetName }} :",
+    buttonText: "Répondre dans le fil",
+  },
+  emailChange: {
+    badgeText: "Mise à jour d’e-mail",
+    heading: "Confirmez votre nouvelle adresse e-mail",
+    description:
+      "Nous avons reçu une demande pour modifier votre adresse e-mail vers {{ .NewEmail }}.",
+    buttonText: "Confirmer le changement",
+    securityNotice:
+      "Si vous n’avez pas fait cette demande, ignorez cet e-mail.",
+  },
+  cartAbandonment: {
+    badgeText: "Panier sauvegardé",
+    heading: "Vous avez laissé des articles dans votre panier",
+    description: "Vos articles sont réservés pour une durée limitée.",
+    totalLabel: "Total du panier",
+    buttonText: "Finaliser la commande",
+  },
+  incidentReport: {
+    badgeText: "Alerte statut",
+    heading: "{{ .IncidentTitle }}",
+    description:
+      "Nous enquêtons actuellement sur un incident impactant les services {{ .AppName }}.",
+    statusLabel: "Statut actuel",
+    affectedLabel: "Services impactés",
+    buttonText: "Voir la page de statut",
+  },
 };

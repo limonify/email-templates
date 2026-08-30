@@ -314,6 +314,64 @@ export function getTemplatePropsForLocale(
         buttonText: dict.orderShipped.buttonText,
         supportText: dict.layout.supportText,
       };
+    case "deploy-succeeded":
+      return {
+        badgeText: dict.deploySucceeded.badgeText,
+        heading: dict.deploySucceeded.heading,
+        description: dict.deploySucceeded.description,
+        branchLabel: dict.deploySucceeded.branchLabel,
+        commitLabel: dict.deploySucceeded.commitLabel,
+        durationLabel: dict.deploySucceeded.durationLabel,
+        buttonText: dict.deploySucceeded.buttonText,
+        supportText: dict.layout.supportText,
+      };
+    case "deploy-failed":
+      return {
+        badgeText: dict.deployFailed.badgeText,
+        heading: dict.deployFailed.heading,
+        description: dict.deployFailed.description,
+        branchLabel: dict.deployFailed.branchLabel,
+        commitLabel: dict.deployFailed.commitLabel,
+        errorLabel: dict.deployFailed.errorLabel,
+        buttonText: dict.deployFailed.buttonText,
+        supportText: dict.layout.supportText,
+      };
+    case "comment-mention":
+      return {
+        badgeText: dict.commentMention.badgeText,
+        heading: dict.commentMention.heading,
+        description: dict.commentMention.description,
+        buttonText: dict.commentMention.buttonText,
+        supportText: dict.layout.supportText,
+      };
+    case "email-change":
+      return {
+        badgeText: dict.emailChange.badgeText,
+        heading: dict.emailChange.heading,
+        description: dict.emailChange.description,
+        buttonText: dict.emailChange.buttonText,
+        securityNotice: dict.emailChange.securityNotice,
+        supportText: dict.layout.supportText,
+      };
+    case "cart-abandonment":
+      return {
+        badgeText: dict.cartAbandonment.badgeText,
+        heading: dict.cartAbandonment.heading,
+        description: dict.cartAbandonment.description,
+        totalLabel: dict.cartAbandonment.totalLabel,
+        buttonText: dict.cartAbandonment.buttonText,
+        supportText: dict.layout.supportText,
+      };
+    case "incident-report":
+      return {
+        badgeText: dict.incidentReport.badgeText,
+        heading: dict.incidentReport.heading,
+        description: dict.incidentReport.description,
+        statusLabel: dict.incidentReport.statusLabel,
+        affectedLabel: dict.incidentReport.affectedLabel,
+        buttonText: dict.incidentReport.buttonText,
+        supportText: dict.layout.supportText,
+      };
     default:
       return {};
   }

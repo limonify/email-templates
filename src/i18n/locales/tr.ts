@@ -188,4 +188,57 @@ export const trLocale: EmailLocaleDictionary = {
     estDeliveryLabel: "Tahmini teslimat",
     buttonText: "Kargoyu takip et",
   },
+  deploySucceeded: {
+    badgeText: "Yayınlandı",
+    heading: "Canlıya alma başarılı",
+    description:
+      "Son commit işleminiz başarıyla derlendi ve canlı ortama dağıtıldı.",
+    branchLabel: "Branch",
+    commitLabel: "Commit",
+    durationLabel: "Derleme süresi",
+    buttonText: "Dağıtımı incele",
+  },
+  deployFailed: {
+    badgeText: "Hata",
+    heading: "Dağıtım derlemesi başarısız",
+    description:
+      "Projeniz derleme adımında hata verdi. Hatayı çözmek için logları inceleyin.",
+    branchLabel: "Branch",
+    commitLabel: "Commit",
+    errorLabel: "Hata kodu",
+    buttonText: "Derleme loglarını incele",
+  },
+  commentMention: {
+    badgeText: "Mention",
+    heading: "{{ .AuthorName }} sizden bahsetti",
+    description:
+      "{{ .AuthorName }}, {{ .TargetName }} üzerindeki bir tartışmada sizden bahsetti:",
+    buttonText: "Yanıta git",
+  },
+  emailChange: {
+    badgeText: "E-posta güncelleme",
+    heading: "Yeni e-posta adresinizi onaylayın",
+    description:
+      "{{ .AppName }} hesabınızın birincil e-posta adresini {{ .NewEmail }} olarak değiştirme talebi aldık.",
+    buttonText: "E-posta değişikliğini onayla",
+    securityNotice:
+      "Bu talebi siz yapmadıysanız bu e-postayı yok sayabilirsiniz.",
+  },
+  cartAbandonment: {
+    badgeText: "Kayıtlı sepet",
+    heading: "Sepetinizde ürünler kaldı",
+    description:
+      "Sepetinizdeki ürünler sınırlı bir süre için adınıza ayrılmıştır. Stoklar bitmeden siparişinizi tamamlayın.",
+    totalLabel: "Sepet tutarı",
+    buttonText: "Siparişi tamamla",
+  },
+  incidentReport: {
+    badgeText: "Sistem durumu",
+    heading: "{{ .IncidentTitle }}",
+    description:
+      "{{ .AppName }} servislerini etkileyen bir durum incelenmektedir.",
+    statusLabel: "Mevcut durum",
+    affectedLabel: "Etkilenen servisler",
+    buttonText: "Canlı durum sayfasını aç",
+  },
 };

@@ -177,4 +177,54 @@ export const esLocale: EmailLocaleDictionary = {
     estDeliveryLabel: "Entrega estimada",
     buttonText: "Rastrear envío",
   },
+  deploySucceeded: {
+    badgeText: "Desplegado",
+    heading: "Despliegue en producción exitoso",
+    description: "Tu último commit se ha compilado y desplegado con éxito.",
+    branchLabel: "Rama",
+    commitLabel: "Commit",
+    durationLabel: "Tiempo de compilación",
+    buttonText: "Ver despliegue",
+  },
+  deployFailed: {
+    badgeText: "Fallo de compilación",
+    heading: "Error en el despliegue",
+    description: "El despliegue ha fallado durante la fase de compilación.",
+    branchLabel: "Rama",
+    commitLabel: "Commit",
+    errorLabel: "Estado de error",
+    buttonText: "Ver registros de error",
+  },
+  commentMention: {
+    badgeText: "Mención",
+    heading: "{{ .AuthorName }} te ha mencionado",
+    description:
+      "{{ .AuthorName }} te ha etiquetado en una conversación en {{ .TargetName }}:",
+    buttonText: "Responder en el hilo",
+  },
+  emailChange: {
+    badgeText: "Cambio de correo",
+    heading: "Confirma tu nueva dirección de correo",
+    description:
+      "Hemos recibido una solicitud para cambiar tu correo a {{ .NewEmail }}.",
+    buttonText: "Confirmar nuevo correo",
+    securityNotice: "Si no solicitaste este cambio, ignora este mensaje.",
+  },
+  cartAbandonment: {
+    badgeText: "Carrito guardado",
+    heading: "Olvidaste productos en tu carrito",
+    description:
+      "Los artículos de tu carrito están reservados por tiempo limitado.",
+    totalLabel: "Total del carrito",
+    buttonText: "Finalizar compra",
+  },
+  incidentReport: {
+    badgeText: "Aviso de estado",
+    heading: "{{ .IncidentTitle }}",
+    description:
+      "Estamos investigando una incidencia que afecta a los servicios de {{ .AppName }}.",
+    statusLabel: "Estado actual",
+    affectedLabel: "Servicios afectados",
+    buttonText: "Ver página de estado",
+  },
 };

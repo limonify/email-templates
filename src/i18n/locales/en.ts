@@ -189,4 +189,57 @@ export const enLocale: EmailLocaleDictionary = {
     estDeliveryLabel: "Estimated delivery",
     buttonText: "Track shipment",
   },
+  deploySucceeded: {
+    badgeText: "Deployed",
+    heading: "Production deployment successful",
+    description:
+      "Your latest commit has been successfully built and deployed to production.",
+    branchLabel: "Branch",
+    commitLabel: "Commit",
+    durationLabel: "Build time",
+    buttonText: "View deployment",
+  },
+  deployFailed: {
+    badgeText: "Build failed",
+    heading: "Deployment build failed",
+    description:
+      "Your deployment failed during the build step. Inspect the error logs below to resolve the issue.",
+    branchLabel: "Branch",
+    commitLabel: "Commit",
+    errorLabel: "Build exit status",
+    buttonText: "Inspect build logs",
+  },
+  commentMention: {
+    badgeText: "Mention",
+    heading: "{{ .AuthorName }} mentioned you",
+    description:
+      "{{ .AuthorName }} tagged you in a discussion on {{ .TargetName }}:",
+    buttonText: "Reply in thread",
+  },
+  emailChange: {
+    badgeText: "Email update",
+    heading: "Confirm your new email address",
+    description:
+      "We received a request to update the primary email on your {{ .AppName }} account to {{ .NewEmail }}.",
+    buttonText: "Confirm email change",
+    securityNotice:
+      "If you did not make this request, ignore this email and your address will remain unchanged.",
+  },
+  cartAbandonment: {
+    badgeText: "Saved cart",
+    heading: "You left something behind",
+    description:
+      "The items in your cart are reserved for a limited time. Complete your order before they sell out.",
+    totalLabel: "Cart total",
+    buttonText: "Complete checkout",
+  },
+  incidentReport: {
+    badgeText: "Service alert",
+    heading: "{{ .IncidentTitle }}",
+    description:
+      "We are currently tracking an operational incident affecting {{ .AppName }} services.",
+    statusLabel: "Current status",
+    affectedLabel: "Impacted services",
+    buttonText: "View live status page",
+  },
 };

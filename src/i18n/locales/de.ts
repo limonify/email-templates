@@ -185,4 +185,57 @@ export const deLocale: EmailLocaleDictionary = {
     estDeliveryLabel: "Voraussichtliche Lieferung",
     buttonText: "Sendung verfolgen",
   },
+  deploySucceeded: {
+    badgeText: "Bereitgestellt",
+    heading: "Produktions-Deployment erfolgreich",
+    description:
+      "Ihr neuester Commit wurde erfolgreich gebaut und bereitgestellt.",
+    branchLabel: "Branch",
+    commitLabel: "Commit",
+    durationLabel: "Bauzeit",
+    buttonText: "Deployment ansehen",
+  },
+  deployFailed: {
+    badgeText: "Baufehler",
+    heading: "Deployment fehlgeschlagen",
+    description:
+      "Ihr Build ist während des Bereitstellungsschritts fehlgeschlagen.",
+    branchLabel: "Branch",
+    commitLabel: "Commit",
+    errorLabel: "Fehlercode",
+    buttonText: "Build-Logs ansehen",
+  },
+  commentMention: {
+    badgeText: "Erwähnung",
+    heading: "{{ .AuthorName }} hat Sie erwähnt",
+    description:
+      "{{ .AuthorName }} hat Sie in einer Diskussion auf {{ .TargetName }} markiert:",
+    buttonText: "Auf Diskussion antworten",
+  },
+  emailChange: {
+    badgeText: "E-Mail-Update",
+    heading: "Neue E-Mail-Adresse bestätigen",
+    description:
+      "Wir haben eine Anfrage erhalten, Ihre E-Mail auf {{ .NewEmail }} zu ändern.",
+    buttonText: "E-Mail-Änderung bestätigen",
+    securityNotice:
+      "Wenn Sie diese Anfrage nicht gestellt haben, ignorieren Sie diese E-Mail.",
+  },
+  cartAbandonment: {
+    badgeText: "Gespeicherter Warenkorb",
+    heading: "Sie haben Artikel im Warenkorb",
+    description:
+      "Die Artikel in Ihrem Warenkorb sind für kurze Zeit reserviert.",
+    totalLabel: "Warenkorbwert",
+    buttonText: "Bestellung abschließen",
+  },
+  incidentReport: {
+    badgeText: "Systemstatus",
+    heading: "{{ .IncidentTitle }}",
+    description:
+      "Wir untersuchen derzeit einen Vorfall bei den {{ .AppName }}-Diensten.",
+    statusLabel: "Aktueller Status",
+    affectedLabel: "Betroffene Dienste",
+    buttonText: "Statusseite ansehen",
+  },
 };

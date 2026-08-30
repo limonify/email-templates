@@ -49,12 +49,24 @@ export function startPreviewServer(port: number = 3000) {
             code: "849201",
             userName: "Alex Morgan",
             inviterName: "Sarah Connor",
+            authorName: "Sarah Connor",
+            targetName: "Feature / Native Navigation #42",
+            commentBody:
+              "@alex Could you check the OKLCH token parser on Safari mobile? The preview looks sharp.",
+            newEmail: "alex.morgan@company.io",
             workspaceName: "Engineering Core",
+            projectName: "limonify-ui-native",
             role: "Admin",
             inviteUrl: "https://ui.limonify.com/invites/accept",
             resetUrl: "https://ui.limonify.com/reset",
             dashboardUrl: "https://ui.limonify.com/dashboard",
             loginUrl: "https://ui.limonify.com/magic-login",
+            confirmUrl: "https://ui.limonify.com/email/confirm?token=94820",
+            threadUrl: "https://ui.limonify.com/discussions/42#reply",
+            deployUrl: "https://ui.limonify.com/deployments/dpl_94f8a2",
+            logsUrl: "https://ui.limonify.com/deployments/dpl_failed_94/logs",
+            statusUrl: "https://status.limonify.com/incidents/inc_9482",
+            checkoutUrl: "https://ui.limonify.com/checkout?cart=c_94820",
             surveyUrl: "https://ui.limonify.com/survey",
             manageUrl: "https://ui.limonify.com/settings/tokens",
             upgradeUrl: "https://ui.limonify.com/billing/upgrade",
@@ -66,8 +78,20 @@ export function startPreviewServer(port: number = 3000) {
             changelogUrl: "https://ui.limonify.com/changelog",
             version: "v2.4.0",
             daysLeft: "3",
+            cartTotal: "$199.00",
             scheduledDate: "September 30, 2026",
             retryDate: "September 2, 2026",
+            incidentTitle: "Investigating elevated API latency in EU region",
+            status: "Investigating",
+            affectedServices: "API Gateway, Webhooks (eu-central-1)",
+            branch: "main",
+            commitHash: "8af2614",
+            commitMessage:
+              "feat: add OKLCH mathematical color parser and 24 email templates",
+            duration: "38s",
+            exitStatus: "Command failed with exit code 1 (tsc)",
+            errorSnippet:
+              "error TS2322: Type 'string' is not assignable to type 'number'.\n  src/components/table.tsx:42:15",
             keyName: "Production Deployer Token",
             keyPrefix: "lmn_live_94f8...",
             createdAt: "August 30, 2026 at 23:15 UTC",
@@ -164,7 +188,7 @@ export function startPreviewServer(port: number = 3000) {
       overflow: hidden;
     }
     aside {
-      width: 295px;
+      width: 300px;
       background: #121212;
       border-right: 1px solid #222222;
       display: flex;
@@ -348,12 +372,12 @@ export function startPreviewServer(port: number = 3000) {
         <img class="brand-img" src="https://limeui.limonify.com/lime-ui.png?v=5" alt="Limonify UI" />
         <div class="brand-title">Limonify Email</div>
       </div>
-      <div class="badge-pill">18 TEMPLATES</div>
+      <div class="badge-pill">24 TEMPLATES</div>
     </div>
     <div class="templates-list">
-      <div class="section-label">Authentication & Security (6)</div>
+      <div class="section-label">Authentication & Security (7)</div>
       ${templatesList
-        .slice(0, 6)
+        .slice(0, 7)
         .map(
           (t, i) => `
         <div class="nav-item ${i === 0 ? "active" : ""}" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">
@@ -364,9 +388,22 @@ export function startPreviewServer(port: number = 3000) {
         )
         .join("")}
 
+      <div class="section-label" style="margin-top: 8px;">Developer & DevOps (3)</div>
+      ${templatesList
+        .slice(17, 20)
+        .map(
+          (t) => `
+        <div class="nav-item" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">
+          <div>${t.name}</div>
+          <div class="desc">${t.description}</div>
+        </div>
+      `,
+        )
+        .join("")}
+
       <div class="section-label" style="margin-top: 8px;">Billing & Subscriptions (4)</div>
       ${templatesList
-        .slice(6, 10)
+        .slice(7, 11)
         .map(
           (t) => `
         <div class="nav-item" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">
@@ -377,9 +414,9 @@ export function startPreviewServer(port: number = 3000) {
         )
         .join("")}
 
-      <div class="section-label" style="margin-top: 8px;">Team & Workspace (2)</div>
+      <div class="section-label" style="margin-top: 8px;">Team & Collaboration (3)</div>
       ${templatesList
-        .slice(10, 12)
+        .slice(11, 14)
         .map(
           (t) => `
         <div class="nav-item" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">
@@ -390,9 +427,9 @@ export function startPreviewServer(port: number = 3000) {
         )
         .join("")}
 
-      <div class="section-label" style="margin-top: 8px;">Product, Digest & Shipping (4)</div>
+      <div class="section-label" style="margin-top: 8px;">Product & Analytics (3)</div>
       ${templatesList
-        .slice(12, 16)
+        .slice(14, 17)
         .map(
           (t) => `
         <div class="nav-item" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">
@@ -403,9 +440,9 @@ export function startPreviewServer(port: number = 3000) {
         )
         .join("")}
 
-      <div class="section-label" style="margin-top: 8px;">Growth & Updates (2)</div>
+      <div class="section-label" style="margin-top: 8px;">E-Commerce & Updates (4)</div>
       ${templatesList
-        .slice(16)
+        .slice(20)
         .map(
           (t) => `
         <div class="nav-item" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">
