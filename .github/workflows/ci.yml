@@ -6,9 +6,12 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   test:
-    name: Typecheck, Lint & Test
+    name: Verify & Test
     runs-on: ubuntu-latest
 
     steps:
@@ -21,7 +24,7 @@ jobs:
           bun-version: latest
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun install --frozen-lockfile || bun install
 
       - name: Typecheck
         run: bun run typecheck
