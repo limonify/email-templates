@@ -1,7 +1,7 @@
 {
   "name": "@limonify/email-templates",
-  "version": "0.1.0",
-  "description": "Limonify UI design system compatible email templates generator with theme parser for Go, Node, Python backends",
+  "version": "1.0.0",
+  "description": "Design-system-first email template suite for Go, Node, and Python backends — crafted with @limonify/ui tokens, OKLCH parser, and multi-language support",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -13,6 +13,7 @@
     "src",
     "index.ts",
     "README.md",
+    "LICENSE",
     "package.json"
   ],
   "scripts": {
@@ -21,8 +22,17 @@
     "start": "bun run src/cli.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/limonify/email-templates.git"
+  },
+  "bugs": {
+    "url": "https://github.com/limonify/email-templates/issues"
+  },
+  "homepage": "https://ui.limonify.com",
   "keywords": [
     "limonify",
     "email",
@@ -30,8 +40,14 @@
     "react-email",
     "golang-templates",
     "html-email",
-    "design-system"
+    "design-system",
+    "i18n",
+    "newsletter",
+    "transactional-email"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "limonify",
   "license": "MIT",
   "devDependencies": {
