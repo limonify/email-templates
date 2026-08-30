@@ -1,64 +1,66 @@
-import * as React from 'react'
-import { Heading, Text } from '@react-email/components'
-import { EmailLayout } from '../components/email-layout.js'
-import { EmailButton } from '../components/button.js'
-import type { EmailTheme } from '../theme/types.js'
+import * as React from "react";
+import { Heading, Text } from "@react-email/components";
+import { EmailLayout } from "../components/email-layout.js";
+import { EmailButton } from "../components/button.js";
+import type { EmailTheme } from "../theme/types.js";
 
 export interface WelcomeEmailProps {
-  appName?: string
-  userName?: string
-  dashboardUrl?: string
-  theme: EmailTheme
+  appName?: string;
+  userName?: string;
+  dashboardUrl?: string;
+  theme: EmailTheme;
 }
 
 export const WelcomeEmail: React.FC<WelcomeEmailProps> = ({
-  appName = '{{ .AppName }}',
-  userName = '{{ .UserName }}',
-  dashboardUrl = '{{ .DashboardURL }}',
+  appName = "{{ .AppName }}",
+  userName = "{{ .UserName }}",
+  dashboardUrl = "{{ .DashboardURL }}",
   theme,
 }) => {
   return (
     <EmailLayout
-      previewText={`${appName}'a hoş geldiniz!`}
+      previewText={`Welcome to ${appName}!`}
       appName={appName}
       theme={theme}
     >
       <Heading
         style={{
-          fontSize: '22px',
-          fontWeight: '700',
+          fontSize: "22px",
+          fontWeight: "700",
           color: theme.foreground,
-          margin: '0 0 12px',
-          letterSpacing: '-0.02em',
+          margin: "0 0 12px",
+          letterSpacing: "-0.02em",
         }}
       >
-        Aramıza Hoş Geldiniz! 🎉
+        Welcome Aboard! 🎉
       </Heading>
       <Text
         style={{
-          fontSize: '14px',
+          fontSize: "14px",
           color: theme.mutedForeground,
-          lineHeight: '22px',
-          margin: '0 0 16px',
+          lineHeight: "22px",
+          margin: "0 0 16px",
         }}
       >
-        Merhaba {userName}, {appName} ailesine katıldığınız için çok mutluyuz. Hesabınız başarıyla oluşturuldu ve kullanıma hazır.
+        Hi {userName}, we're excited to have you with us. Your {appName} account
+        is ready and set up for you.
       </Text>
 
       <EmailButton href={dashboardUrl} theme={theme}>
-        Panele Git ve Başla
+        Go to Dashboard & Get Started
       </EmailButton>
 
       <Text
         style={{
-          fontSize: '13px',
+          fontSize: "13px",
           color: theme.mutedForeground,
-          lineHeight: '20px',
-          margin: '20px 0 0',
+          lineHeight: "20px",
+          margin: "20px 0 0",
         }}
       >
-        Herhangi bir sorunuz olursa destek ekibimize dilediğiniz zaman ulaşabilirsiniz. Keyifli kullanımlar dileriz!
+        If you have any questions, our support team is always here to help.
+        Enjoy your experience!
       </Text>
     </EmailLayout>
-  )
-}
+  );
+};

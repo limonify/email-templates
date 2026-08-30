@@ -1,44 +1,44 @@
 # @limonify/email-templates
 
-> Limonify UI tasarım sistemiyle tam uyumlu, CSS tema dosyanızı doğrudan okuyup Go, Node.js ve Python backend projeleriniz için saf HTML e-posta şablonları üreten modern CLI aracı.
+> Modern, design-system-first email template generator for Go, Node.js, and Python backends — styled with Limonify UI design tokens and automatic CSS theme parsing.
 
 ---
 
-## 🚀 Hızlı Başlangıç
+## 🚀 Quick Start
 
-Kurulum gerektirmeden doğrudan çalıştırın:
+Run instantly without installing:
 
 ```bash
-# Bun ile
+# Using Bun
 bunx @limonify/email-templates
 
-# veya NPM ile
+# Using NPM
 npx @limonify/email-templates
 ```
 
 ---
 
-## ✨ Özellikler
+## ✨ Features
 
-- **🎨 CSS Değişkeni / Tema Entegrasyonu**: Web projenizin `styles.css` (Tailwind / CSS Variables) dosyasını okur, renk kodlarını (OKLCH, HEX, RGB, HSL) e-posta istemcileriyle uyumlu HEX kodlarına dönüştürür.
-- **⚡ Popüler Backend Motorları**:
+- **🎨 Automatic CSS Theme Parser**: Provide your web app's `styles.css` (Tailwind / CSS Variables), and the generator automatically converts color formats (OKLCH, HEX, RGB, HSL) into cross-client inline HEX styles.
+- **⚡ Backend Template Engines**:
   - **Go template** (`{{ .AppName }}`, `{{ .Code }}`, `{{ .ResetURL }}`)
   - **Handlebars / Mustache / Jinja** (`{{ appName }}`, `{{ code }}`)
   - **Raw Placeholders** (`__APP_NAME__`, `__CODE__`)
-- **📱 E-posta İstemci Uyumluluğu**: Gmail, Apple Mail, Outlook ve mobil istemcilerde tam uyumlu responsive HTML tabloları üretir.
-- **🛠️ Hazır Şablonlar**:
-  - 🔑 **OTP / Doğrulama Kodu**: 2FA ve e-posta doğrulama.
-  - 🔄 **Şifre Sıfırlama**: Güvenli şifre sıfırlama bağlantısı.
-  - 🎉 **Hoş Geldiniz (Welcome)**: Yeni kullanıcı karşılama ve onboarding.
-  - 🔔 **Hesap Bildirimi**: Güvenlik ve sistem bilgilendirmeleri.
-  - 💳 **Ödeme Onayı & Fatura**: Sipariş detayları tablosu ve makbuz indirme.
-  - ✨ **Magic Link**: Şifresiz tek tıkla oturum açma bağlantısı.
+- **📱 100% Cross-Client Compatibility**: Generates responsive, table-based HTML tested across Gmail, Apple Mail, Outlook, and mobile clients.
+- **🛠️ Built-in Templates**:
+  - 🔑 **OTP / Verification Code**: 2FA and one-time sign-in code.
+  - 🔄 **Password Reset**: Secure password reset request with action button.
+  - 🎉 **Welcome & Onboarding**: New account onboarding message.
+  - 🔔 **Account Notification**: General alerts, security notices, and status updates.
+  - 💳 **Payment Completed & Invoice**: Order summary table with invoice download button.
+  - ✨ **Magic Link**: One-click passwordless authentication link.
 
 ---
 
-## 🐹 Go Backend Entegrasyon Örneği
+## 🐹 Go Backend Integration Example
 
-Oluşturulan `otp.html` şablonunu Go standart kütüphanesiyle (`html/template`) kullanın:
+Use the generated `otp.html` template directly with Go's standard `html/template` library:
 
 ```go
 package main
@@ -64,7 +64,7 @@ func main() {
 	data := OTPEmailData{
 		AppName:   "Limonify",
 		Code:      "849201",
-		ExpiresIn: "10 dakika",
+		ExpiresIn: "10 minutes",
 	}
 
 	var body bytes.Buffer
@@ -72,26 +72,28 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Println("E-posta HTML Hazır:", body.Len(), "bytes")
+	fmt.Println("Rendered Email HTML Size:", body.Len(), "bytes")
 }
 ```
 
 ---
 
-## 📦 TypeScript / Programatik Kullanım
+## 📦 TypeScript / Programmatic Usage
+
+You can also use the package programmatically:
 
 ```ts
-import { parseCssFile, renderTemplateToHtml } from '@limonify/email-templates'
+import { parseCssFile, renderTemplateToHtml } from "@limonify/email-templates";
 
-// 1. CSS temasını ayrıştır
-const theme = parseCssFile('./src/styles.css', 'dark')
+// 1. Parse your web app's theme
+const theme = parseCssFile("./src/styles.css", "dark");
 
-// 2. HTML çıktısı üret
-const html = await renderTemplateToHtml('otp', theme, 'go')
+// 2. Render to pure HTML
+const html = await renderTemplateToHtml("otp", theme, "go");
 ```
 
 ---
 
-## 📄 Lisans
+## 📄 License
 
 MIT © [limonify](https://ui.limonify.com)

@@ -1,86 +1,86 @@
-import * as React from 'react'
-import { render } from '@react-email/render'
-import type { EmailTheme, TemplateEngine } from '../theme/types.js'
-import { adaptVariables } from './adapters.js'
+import * as React from "react";
+import { render } from "@react-email/render";
+import type { EmailTheme, TemplateEngine } from "../theme/types.js";
+import { adaptVariables } from "./adapters.js";
 
-import { OTPEmail } from '../templates/otp.js'
-import { PasswordResetEmail } from '../templates/password-reset.js'
-import { WelcomeEmail } from '../templates/welcome.js'
-import { NotificationEmail } from '../templates/notification.js'
-import { PaymentCompletedEmail } from '../templates/payment-completed.js'
-import { MagicLinkEmail } from '../templates/magic-link.js'
+import { OTPEmail } from "../templates/otp.js";
+import { PasswordResetEmail } from "../templates/password-reset.js";
+import { WelcomeEmail } from "../templates/welcome.js";
+import { NotificationEmail } from "../templates/notification.js";
+import { PaymentCompletedEmail } from "../templates/payment-completed.js";
+import { MagicLinkEmail } from "../templates/magic-link.js";
 
 export type TemplateId =
-  | 'otp'
-  | 'password-reset'
-  | 'welcome'
-  | 'notification'
-  | 'payment-completed'
-  | 'magic-link'
+  | "otp"
+  | "password-reset"
+  | "welcome"
+  | "notification"
+  | "payment-completed"
+  | "magic-link";
 
 export interface TemplateMetadata {
-  id: TemplateId
-  name: string
-  description: string
-  filename: string
-  component: (props: { theme: EmailTheme }) => React.ReactElement
+  id: TemplateId;
+  name: string;
+  description: string;
+  filename: string;
+  component: (props: { theme: EmailTheme }) => React.ReactElement;
 }
 
 export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   otp: {
-    id: 'otp',
-    name: 'OTP / Doğrulama Kodu',
-    description: '2FA ve tek kullanımlık e-posta onay kodu şablonu',
-    filename: 'otp.html',
+    id: "otp",
+    name: "OTP / Verification Code",
+    description: "2FA and one-time verification code template",
+    filename: "otp.html",
     component: (props) => React.createElement(OTPEmail, props),
   },
-  'password-reset': {
-    id: 'password-reset',
-    name: 'Şifre Sıfırlama (Password Reset)',
-    description: 'Şifremi unuttum ve sıfırlama butonu şablonu',
-    filename: 'password-reset.html',
+  "password-reset": {
+    id: "password-reset",
+    name: "Password Reset",
+    description: "Password reset request with secure action button",
+    filename: "password-reset.html",
     component: (props) => React.createElement(PasswordResetEmail, props),
   },
   welcome: {
-    id: 'welcome',
-    name: 'Hoş Geldiniz (Welcome / Onboarding)',
-    description: 'Yeni kayıt olan kullanıcılara karşılama şablonu',
-    filename: 'welcome.html',
+    id: "welcome",
+    name: "Welcome / Onboarding",
+    description: "Welcome new users and guide them to getting started",
+    filename: "welcome.html",
     component: (props) => React.createElement(WelcomeEmail, props),
   },
   notification: {
-    id: 'notification',
-    name: 'Hesap Bildirimi (Notification / Alert)',
-    description: 'Sistem uyarıları, güvenlik ve hesap bilgilendirme şablonu',
-    filename: 'notification.html',
+    id: "notification",
+    name: "Account Notification / Alert",
+    description: "General system announcements, security alerts, and updates",
+    filename: "notification.html",
     component: (props) => React.createElement(NotificationEmail, props),
   },
-  'payment-completed': {
-    id: 'payment-completed',
-    name: 'Ödeme Onayı & Fatura (Payment Receipt)',
-    description: 'Sipariş özeti ve fatura indirme şablonu',
-    filename: 'payment-completed.html',
+  "payment-completed": {
+    id: "payment-completed",
+    name: "Payment Completed & Invoice Receipt",
+    description: "Order summary, item breakdown, and invoice download link",
+    filename: "payment-completed.html",
     component: (props) => React.createElement(PaymentCompletedEmail, props),
   },
-  'magic-link': {
-    id: 'magic-link',
-    name: 'Sihirli Bağlantı (Magic Link Login)',
-    description: 'Şifresiz doğrudan tek tıkla giriş şablonu',
-    filename: 'magic-link.html',
+  "magic-link": {
+    id: "magic-link",
+    name: "Magic Link / Passwordless Login",
+    description: "One-click passwordless authentication link",
+    filename: "magic-link.html",
     component: (props) => React.createElement(MagicLinkEmail, props),
   },
-}
+};
 
 export async function renderTemplateToHtml(
   templateId: TemplateId,
   theme: EmailTheme,
-  engine: TemplateEngine = 'go'
+  engine: TemplateEngine = "go",
 ): Promise<string> {
-  const meta = TEMPLATES_REGISTRY[templateId]
+  const meta = TEMPLATES_REGISTRY[templateId];
   if (!meta) {
-    throw new Error(`Bilinmeyen şablon ID: ${templateId}`)
+    throw new Error(`Unknown template ID: ${templateId}`);
   }
 
-  const rawHtml = await render(meta.component({ theme }), { pretty: true })
-  return adaptVariables(rawHtml, engine)
+  const rawHtml = await render(meta.component({ theme }), { pretty: true });
+  return adaptVariables(rawHtml, engine);
 }
