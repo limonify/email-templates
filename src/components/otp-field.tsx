@@ -1,15 +1,34 @@
 import * as React from "react";
-import { Text } from "@react-email/components";
 import type { EmailTheme } from "../theme/types.js";
 
 export interface OTPFieldProps {
   code: string;
+  slotWidth?: string | number;
+  slotHeight?: string | number;
+  digitSize?: string;
+  slotSpacing?: string | number;
+  slotRadius?: string;
   theme: EmailTheme;
 }
 
-export const OTPField: React.FC<OTPFieldProps> = ({ code, theme }) => {
+export const OTPField: React.FC<OTPFieldProps> = ({
+  code,
+  slotWidth = "42px",
+  slotHeight = "46px",
+  digitSize = "20px",
+  slotSpacing = "6px",
+  slotRadius = "8px",
+  theme,
+}) => {
   const cleanCode = code.replace(/\s+/g, "");
   const isDigits = /^\d{6}$/.test(cleanCode);
+
+  const resolvedSlotWidth =
+    typeof slotWidth === "number" ? `${slotWidth}px` : slotWidth;
+  const resolvedSlotHeight =
+    typeof slotHeight === "number" ? `${slotHeight}px` : slotHeight;
+  const resolvedSpacing =
+    typeof slotSpacing === "number" ? `${slotSpacing}px` : slotSpacing;
 
   if (isDigits) {
     const digits = cleanCode.split("");
@@ -17,7 +36,7 @@ export const OTPField: React.FC<OTPFieldProps> = ({ code, theme }) => {
       <table
         style={{
           margin: "20px 0",
-          borderSpacing: "6px",
+          borderSpacing: resolvedSpacing,
           borderCollapse: "separate",
         }}
       >
@@ -27,18 +46,18 @@ export const OTPField: React.FC<OTPFieldProps> = ({ code, theme }) => {
               <td
                 key={idx}
                 style={{
-                  width: "42px",
-                  height: "46px",
+                  width: resolvedSlotWidth,
+                  height: resolvedSlotHeight,
                   textAlign: "center",
                   verticalAlign: "middle",
                   backgroundColor: theme.surface,
-                  borderRadius: "8px",
+                  borderRadius: slotRadius,
                   border: `1px solid ${theme.surfaceBorder}`,
                 }}
               >
                 <span
                   style={{
-                    fontSize: "20px",
+                    fontSize: digitSize,
                     fontWeight: "600",
                     color: theme.foreground,
                     fontFamily:
@@ -61,7 +80,7 @@ export const OTPField: React.FC<OTPFieldProps> = ({ code, theme }) => {
     <div
       style={{
         backgroundColor: theme.surface,
-        borderRadius: "8px",
+        borderRadius: slotRadius,
         border: `1px solid ${theme.surfaceBorder}`,
         padding: "14px 20px",
         margin: "20px 0",

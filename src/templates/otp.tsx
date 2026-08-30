@@ -13,6 +13,11 @@ export interface OTPEmailProps extends Partial<Omit<EmailLayoutProps, 'children'
   expiresIn?: string
   expirationText?: string
   securityNotice?: string
+  slotWidth?: string | number
+  slotHeight?: string | number
+  digitSize?: string
+  slotSpacing?: string | number
+  slotRadius?: string
 }
 
 export const OTPEmail: React.FC<OTPEmailProps> = ({
@@ -24,12 +29,28 @@ export const OTPEmail: React.FC<OTPEmailProps> = ({
   expiresIn = '{{ .ExpiresIn }}',
   expirationText,
   securityNotice,
+  headingSize,
+  headingWeight,
+  headingLetterSpacing,
+  bodySize,
+  bodyLineHeight,
+  slotWidth,
+  slotHeight,
+  digitSize,
+  slotSpacing,
+  slotRadius,
   theme,
   ...layoutProps
 }) => {
   const resolvedExpiration = expirationText || `This code expires in ${expiresIn}.`
   const resolvedNotice =
     securityNotice || 'If you did not request this verification code, you can safely ignore this email.'
+
+  const resolvedHeadingSize = headingSize || theme.headingSize || '18px'
+  const resolvedHeadingWeight = (headingWeight || theme.headingWeight || '600') as any
+  const resolvedHeadingSpacing = headingLetterSpacing || theme.headingLetterSpacing || '-0.025em'
+  const resolvedBodySize = bodySize || theme.bodySize || '13px'
+  const resolvedBodyLineHeight = bodyLineHeight || theme.bodyLineHeight || '20px'
 
   return (
     <EmailLayout
@@ -45,11 +66,11 @@ export const OTPEmail: React.FC<OTPEmailProps> = ({
       {heading ? (
         <Heading
           style={{
-            fontSize: '18px',
-            fontWeight: '600',
+            fontSize: resolvedHeadingSize,
+            fontWeight: resolvedHeadingWeight,
             color: theme.foreground,
             margin: '0 0 8px',
-            letterSpacing: '-0.025em',
+            letterSpacing: resolvedHeadingSpacing,
             fontFamily: theme.fontFamily,
           }}
         >
@@ -60,9 +81,9 @@ export const OTPEmail: React.FC<OTPEmailProps> = ({
       {description ? (
         <Text
           style={{
-            fontSize: '13px',
+            fontSize: resolvedBodySize,
             color: theme.mutedForeground,
-            lineHeight: '20px',
+            lineHeight: resolvedBodyLineHeight,
             margin: '0 0 12px',
             fontFamily: theme.fontFamily,
           }}
@@ -71,7 +92,15 @@ export const OTPEmail: React.FC<OTPEmailProps> = ({
         </Text>
       ) : null}
 
-      <OTPField code={code} theme={theme} />
+      <OTPField
+        code={code}
+        slotWidth={slotWidth}
+        slotHeight={slotHeight}
+        digitSize={digitSize}
+        slotSpacing={slotSpacing}
+        slotRadius={slotRadius}
+        theme={theme}
+      />
 
       <Text
         style={{

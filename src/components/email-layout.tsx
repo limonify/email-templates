@@ -16,8 +16,20 @@ export interface EmailLayoutProps {
   previewText?: string;
   appName?: string;
   logoUrl?: string;
-  logoWidth?: number;
-  logoHeight?: number;
+  logoWidth?: number | string;
+  logoHeight?: number | string;
+  logoRadius?: number | string;
+  brandNameSize?: string;
+  brandNameWeight?: string | number;
+  showBrandName?: boolean;
+  containerWidth?: string;
+  cardPadding?: string;
+  cardRadius?: string;
+  headingSize?: string;
+  headingWeight?: string | number;
+  headingLetterSpacing?: string;
+  bodySize?: string;
+  bodyLineHeight?: string;
   badgeText?: string;
   supportUrl?: string;
   supportText?: string;
@@ -37,6 +49,18 @@ export const EmailLayout: React.FC<EmailLayoutProps> = ({
   logoUrl,
   logoWidth,
   logoHeight,
+  logoRadius,
+  brandNameSize,
+  brandNameWeight,
+  showBrandName = true,
+  containerWidth,
+  cardPadding,
+  cardRadius,
+  headingSize,
+  headingWeight,
+  headingLetterSpacing,
+  bodySize,
+  bodyLineHeight,
   badgeText,
   supportUrl = "https://limonify.com/support",
   supportText = "Need help or have questions?",
@@ -52,11 +76,15 @@ export const EmailLayout: React.FC<EmailLayoutProps> = ({
   const isDark =
     theme.background === "#0a0a0a" || theme.background.startsWith("#0");
   const outerBg = isDark ? "#141414" : "#f4f4f5";
-  const outerBorder = isDark ? "#262626" : "#e4e4e7";
+  const outerBorder = isDark ? "#222222" : "#e4e4e7";
   const innerBg = isDark ? "#0a0a0a" : "#ffffff";
   const innerBorder = isDark ? "#1f1f1f" : "#e5e5e5";
 
   const resolvedCardStyle = theme.cardStyle || cardStyle;
+  const resolvedContainerWidth =
+    containerWidth || theme.containerWidth || "520px";
+  const resolvedCardPadding = cardPadding || theme.cardPadding || "30px 28px";
+  const resolvedInnerRadius = cardRadius || theme.radius || "9px";
 
   return (
     <Html>
@@ -73,7 +101,7 @@ export const EmailLayout: React.FC<EmailLayoutProps> = ({
       >
         <Container
           style={{
-            maxWidth: "520px",
+            maxWidth: resolvedContainerWidth,
             margin: "0 auto",
             padding: "0 16px",
           }}
@@ -85,6 +113,10 @@ export const EmailLayout: React.FC<EmailLayoutProps> = ({
               logoUrl={logoUrl}
               logoWidth={logoWidth}
               logoHeight={logoHeight}
+              logoRadius={logoRadius}
+              brandNameSize={brandNameSize}
+              brandNameWeight={brandNameWeight}
+              showBrandName={showBrandName}
               theme={theme}
             />
           </Section>
@@ -102,9 +134,9 @@ export const EmailLayout: React.FC<EmailLayoutProps> = ({
               <div
                 style={{
                   backgroundColor: innerBg,
-                  borderRadius: "9px",
+                  borderRadius: resolvedInnerRadius,
                   border: `1px solid ${innerBorder}`,
-                  padding: "30px 28px",
+                  padding: resolvedCardPadding,
                 }}
               >
                 {children}
@@ -114,9 +146,9 @@ export const EmailLayout: React.FC<EmailLayoutProps> = ({
             <Section
               style={{
                 backgroundColor: innerBg,
-                borderRadius: "10px",
+                borderRadius: resolvedInnerRadius,
                 border: `1px solid ${innerBorder}`,
-                padding: "30px 28px",
+                padding: resolvedCardPadding,
               }}
             >
               {children}

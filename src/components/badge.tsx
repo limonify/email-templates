@@ -4,6 +4,9 @@ import type { EmailTheme } from "../theme/types.js";
 export interface EmailBadgeProps {
   children: React.ReactNode;
   variant?: "neutral" | "success" | "warning" | "error" | "outline";
+  size?: "sm" | "md";
+  fontSize?: string;
+  padding?: string;
   dot?: boolean;
   theme: EmailTheme;
 }
@@ -11,6 +14,9 @@ export interface EmailBadgeProps {
 export const EmailBadge: React.FC<EmailBadgeProps> = ({
   children,
   variant = "neutral",
+  size = "md",
+  fontSize,
+  padding,
   dot = false,
   theme,
 }) => {
@@ -59,6 +65,10 @@ export const EmailBadge: React.FC<EmailBadgeProps> = ({
   };
 
   const s = getStyle();
+  const resolvedFontSize =
+    fontSize || (size === "sm" ? "10px" : theme.badgeFontSize || "11px");
+  const resolvedPadding =
+    padding || (size === "sm" ? "2px 6px" : theme.badgePadding || "3px 8px");
 
   return (
     <table
@@ -72,11 +82,11 @@ export const EmailBadge: React.FC<EmailBadgeProps> = ({
         <tr>
           <td
             style={{
-              padding: "3px 8px",
+              padding: resolvedPadding,
               borderRadius: "6px",
               backgroundColor: s.bg,
               border: `1px solid ${s.border}`,
-              fontSize: "11px",
+              fontSize: resolvedFontSize,
               fontWeight: "500",
               letterSpacing: "0.02em",
               color: s.text,

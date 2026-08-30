@@ -13,6 +13,20 @@ export interface EmailTheme {
   radius: string;
   fontFamily: string;
   cardStyle?: "double-frame" | "single" | "minimal";
+
+  // Sizing & Typography Overrides
+  containerWidth?: string;
+  cardPadding?: string;
+  headingSize?: string;
+  headingWeight?: string | number;
+  headingLetterSpacing?: string;
+  bodySize?: string;
+  bodyLineHeight?: string;
+  buttonFontSize?: string;
+  buttonPadding?: string;
+  buttonRadius?: string;
+  badgeFontSize?: string;
+  badgePadding?: string;
 }
 
 export type TemplateEngine = "go" | "handlebars" | "raw" | "custom";
@@ -27,6 +41,10 @@ export interface BrandingConfig {
   logoUrl?: string;
   logoWidth?: number;
   logoHeight?: number;
+  logoRadius?: number | string;
+  brandNameSize?: string;
+  brandNameWeight?: string | number;
+  showBrandName?: boolean;
   supportUrl?: string;
   supportText?: string;
   unsubscribeUrl?: string;
@@ -50,20 +68,5 @@ export interface LimonifyEmailConfig {
   >;
   outputDir?: string;
   branding?: BrandingConfig;
-  templates?: {
-    otp?: Partial<import("../templates/otp.js").OTPEmailProps>;
-    passwordReset?: Partial<
-      import("../templates/password-reset.js").PasswordResetEmailProps
-    >;
-    welcome?: Partial<import("../templates/welcome.js").WelcomeEmailProps>;
-    notification?: Partial<
-      import("../templates/notification.js").NotificationEmailProps
-    >;
-    paymentCompleted?: Partial<
-      import("../templates/payment-completed.js").PaymentCompletedEmailProps
-    >;
-    magicLink?: Partial<
-      import("../templates/magic-link.js").MagicLinkEmailProps
-    >;
-  };
+  templates?: Record<string, Record<string, any>>;
 }
