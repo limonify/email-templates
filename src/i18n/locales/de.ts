@@ -238,4 +238,22 @@ export const deLocale: EmailLocaleDictionary = {
     affectedLabel: "Betroffene Dienste",
     buttonText: "Statusseite ansehen",
   },
+  dailyNewsletter: {
+    badgeText: "Tagesüberblick",
+    heading: "Täglicher Technologie-Überblick",
+    description:
+      "Ihre tägliche Zusammenfassung aus Softwarearchitektur und Open Source.",
+    topStoryLabel: "Top-Thema",
+    readMoreText: "Artikel lesen",
+    curatedLabel: "Ausgewählte Highlights",
+    footerNote:
+      "Sie erhalten diesen Tagesüberblick als Abonnent von Limonify Daily.",
+  },
+  announcement: {
+    badgeText: "Mitteilung",
+    heading: "Wichtige Mitteilung: {{ .Subject }}",
+    description:
+      "Hallo {{ .UserName }}, wir haben eine wichtige Ankündigung bezüglich {{ .AppName }}:",
+    buttonText: "Mehr erfahren",
+  },
 };

@@ -242,4 +242,22 @@ export const enLocale: EmailLocaleDictionary = {
     affectedLabel: "Impacted services",
     buttonText: "View live status page",
   },
+  dailyNewsletter: {
+    badgeText: "Daily Briefing",
+    heading: "Daily Tech & Engineering Briefing",
+    description:
+      "Your daily curated digest of software architecture, open-source releases, and engineering trends.",
+    topStoryLabel: "Top Story",
+    readMoreText: "Read article",
+    curatedLabel: "Curated Highlights",
+    footerNote:
+      "You are receiving this daily briefing because you subscribed to Limonify Daily.",
+  },
+  announcement: {
+    badgeText: "Announcement",
+    heading: "Important Update: {{ .Subject }}",
+    description:
+      "Hi {{ .UserName }}, we have an important announcement regarding {{ .AppName }}:",
+    buttonText: "Learn more",
+  },
 };

@@ -1,14 +1,19 @@
-#!/usr/bin/env node
-import fs from "node:fs";
-import path from "node:path";
+#!/usr/bin/env bun
+import { Command } from "commander";
 import * as p from "@clack/prompts";
 import pc from "picocolors";
-import { Command } from "commander";
-import { parseCssFile, parseCssTheme } from "./theme/parser.js";
+import path from "node:path";
+import fs from "node:fs";
+import {
+  TEMPLATES_REGISTRY,
+  type TemplateId,
+  renderTemplateToHtml,
+} from "./generator/render.js";
 import {
   defaultLimonifyDarkTheme,
   defaultLimonifyLightTheme,
 } from "./theme/defaults.js";
+import { parseCssTheme } from "./theme/parser.js";
 import type {
   EmailTheme,
   TemplateEngine,
@@ -16,413 +21,309 @@ import type {
   LimonifyEmailConfig,
 } from "./theme/types.js";
 import {
-  TEMPLATES_REGISTRY,
-  type TemplateId,
-  renderTemplateToHtml,
-} from "./generator/render.js";
-import {
   findConfigFile,
   loadConfigFile,
   createStarterConfigFile,
 } from "./config/loader.js";
-import { startPreviewServer } from "./preview/server.js";
 import {
   LOCALES_REGISTRY,
-  registerCustomLocale,
   loadCustomLocalesFromDir,
-  type SupportedLocale,
+  registerCustomLocale,
 } from "./i18n/index.js";
-
-async function runInteractiveCli(options: {
-  config?: string;
-  init?: boolean;
-  preview?: boolean;
-  port?: string;
-}) {
-  // Load any project-level custom ./locales/*.json files
-  loadCustomLocalesFromDir();
-
-  if (options.preview) {
-    const port = options.port ? parseInt(options.port, 10) : 3000;
-    startPreviewServer(port);
-    return;
-  }
-
-  console.clear();
-  p.intro(
-    `${pc.bgYellow(pc.black(" @limonify/email-templates "))} ${pc.dim("v0.1.0")}`,
-  );
-
-  if (options.init) {
-    const target = path.join(process.cwd(), "limonify-email.config.json");
-    createStarterConfigFile(target);
-    p.log.success(`Configuration file created at: ${pc.bold(target)}`);
-    p.outro(
-      pc.bold(
-        pc.yellow(
-          "Edit this file to customize all template texts, variables, and themes! ✨",
-        ),
-      ),
-    );
-    process.exit(0);
-  }
-
-  // Check for existing config file
-  const existingConfigPath = options.config || findConfigFile();
-  let loadedConfig: LimonifyEmailConfig | null = null;
-
-  if (existingConfigPath) {
-    const useConfig = await p.confirm({
-      message: `Found configuration file at ${pc.cyan(existingConfigPath)}. Use settings from this file?`,
-      initialValue: true,
-    });
-
-    if (p.isCancel(useConfig)) {
-      p.cancel("Operation cancelled.");
-      process.exit(0);
-    }
-
-    if (useConfig) {
-      loadedConfig = loadConfigFile(existingConfigPath);
-      // Register custom translations from config if present
-      if (loadedConfig.translations) {
-        for (const [loc, dict] of Object.entries(loadedConfig.translations)) {
-          registerCustomLocale(loc, dict);
-        }
-      }
-      if (loadedConfig.localesDir) {
-        loadCustomLocalesFromDir(
-          path.resolve(process.cwd(), loadedConfig.localesDir),
-        );
-      }
-      p.log.success(
-        "Configuration and custom translations loaded successfully.",
-      );
-    }
-  }
-
-  // 1. Template selection
-  const templateChoices = Object.values(TEMPLATES_REGISTRY).map((tmpl) => ({
-    value: tmpl.id,
-    label: tmpl.name,
-    hint: tmpl.description,
-  }));
-
-  const selectedTemplates = await p.multiselect({
-    message: "Which email templates would you like to generate?",
-    options: templateChoices,
-    required: true,
-  });
-
-  if (p.isCancel(selectedTemplates)) {
-    p.cancel("Operation cancelled.");
-    process.exit(0);
-  }
-
-  // 2. Language / i18n selection
-  const localeChoices = Object.entries(LOCALES_REGISTRY).map(
-    ([code, meta]) => ({
-      value: code,
-      label: `${meta.flag} ${meta.name} (${code})`,
-    }),
-  );
-
-  const initialLocales = loadedConfig?.locales || ["en"];
-
-  const selectedLocales = (await p.multiselect({
-    message: "Which languages / locales would you like to generate?",
-    options: localeChoices,
-    initialValues: initialLocales,
-    required: true,
-  })) as string[];
-
-  if (p.isCancel(selectedLocales)) {
-    p.cancel("Operation cancelled.");
-    process.exit(0);
-  }
-
-  // 3. Theme source selection
-  let theme: EmailTheme = defaultLimonifyDarkTheme;
-
-  if (loadedConfig?.themeCssPath) {
-    theme = parseCssFile(
-      loadedConfig.themeCssPath,
-      loadedConfig.mode || "dark",
-    );
-    if (loadedConfig.theme) {
-      theme = { ...theme, ...loadedConfig.theme };
-    }
-  } else {
-    const themeSource = await p.select({
-      message: "Where should we extract your theme & colors from?",
-      options: [
-        {
-          value: "file",
-          label: "Specify CSS File Path",
-          hint: "e.g. ./src/styles.css or globals.css",
-        },
-        {
-          value: "paste",
-          label: "Paste CSS Variables Directly",
-          hint: ":root { --primary: #... }",
-        },
-        {
-          value: "default-dark",
-          label: "Limonify Dark (Default Dark Theme)",
-          hint: "Deep neutral background with white button",
-        },
-        {
-          value: "default-light",
-          label: "Limonify Light (Default Light Theme)",
-          hint: "Crisp light background with dark button",
-        },
-      ],
-    });
-
-    if (p.isCancel(themeSource)) {
-      p.cancel("Operation cancelled.");
-      process.exit(0);
-    }
-
-    if (themeSource === "default-dark") {
-      theme = defaultLimonifyDarkTheme;
-    } else if (themeSource === "default-light") {
-      theme = defaultLimonifyLightTheme;
-    } else if (themeSource === "file") {
-      const cssPath = await p.text({
-        message: "Enter the path to your CSS file:",
-        placeholder: "./styles.css",
-        defaultValue: "./styles.css",
-        validate: (val) => {
-          if (!val || !fs.existsSync(val)) return `File not found: ${val}`;
-        },
-      });
-
-      if (p.isCancel(cssPath)) {
-        p.cancel("Operation cancelled.");
-        process.exit(0);
-      }
-
-      const mode = await p.select({
-        message: "Which theme mode would you like to parse?",
-        options: [
-          { value: "dark", label: "Dark Mode" },
-          { value: "light", label: "Light Mode" },
-        ],
-      });
-
-      if (p.isCancel(mode)) {
-        p.cancel("Operation cancelled.");
-        process.exit(0);
-      }
-
-      try {
-        theme = parseCssFile(cssPath as string, mode as "light" | "dark");
-        p.log.success(
-          `CSS parsed: ${pc.bold(theme.primary)} (primary), ${pc.bold(theme.background)} (background)`,
-        );
-      } catch (err: any) {
-        p.log.error(`CSS parsing error: ${err.message}`);
-        theme = defaultLimonifyDarkTheme;
-      }
-    } else if (themeSource === "paste") {
-      const cssContent = await p.text({
-        message: "Paste your CSS variables or block:",
-        placeholder: ":root { --primary: #facc15; --background: #0a0a0a; }",
-      });
-
-      if (p.isCancel(cssContent)) {
-        p.cancel("Operation cancelled.");
-        process.exit(0);
-      }
-
-      theme = parseCssTheme(cssContent as string, "dark");
-      p.log.success(`CSS parsed: ${pc.bold(theme.primary)} (primary)`);
-    }
-  }
-
-  // 4. Card Style Selection
-  const cardStyle = (await p.select({
-    message: "Card Visual Style:",
-    options: [
-      {
-        value: "double-frame",
-        label: "Limonify Double-Frame Card (Recommended)",
-        hint: "Outer subtle frame + inner card",
-      },
-      {
-        value: "single",
-        label: "Single Solid Card",
-        hint: "Standard border card",
-      },
-      {
-        value: "minimal",
-        label: "Minimal / Flat",
-        hint: "Borderless clean text canvas",
-      },
-    ],
-    initialValue: loadedConfig?.theme?.cardStyle || "double-frame",
-  })) as "double-frame" | "single" | "minimal";
-
-  if (p.isCancel(cardStyle)) {
-    p.cancel("Operation cancelled.");
-    process.exit(0);
-  }
-
-  theme.cardStyle = cardStyle;
-
-  // 5. Target Engine Selection
-  const engine = (await p.select({
-    message: "What is your target backend template engine / variable format?",
-    options: [
-      {
-        value: "go",
-        label: "Go template",
-        hint: "{{ .AppName }}, {{ .Code }}",
-      },
-      {
-        value: "handlebars",
-        label: "Handlebars / Mustache / Jinja",
-        hint: "{{ appName }}, {{ code }}",
-      },
-      {
-        value: "raw",
-        label: "Raw Placeholder",
-        hint: "__APP_NAME__, __CODE__",
-      },
-    ],
-    initialValue: loadedConfig?.engine || "go",
-  })) as TemplateEngine;
-
-  if (p.isCancel(engine)) {
-    p.cancel("Operation cancelled.");
-    process.exit(0);
-  }
-
-  // 6. Branding Configuration
-  const defaultAppName =
-    loadedConfig?.branding?.appName ||
-    (engine === "go"
-      ? "{{ .AppName }}"
-      : engine === "handlebars"
-        ? "{{ appName }}"
-        : "Limonify");
-  const appName = await p.text({
-    message: "App / Brand Name:",
-    placeholder: defaultAppName,
-    defaultValue: defaultAppName,
-  });
-
-  if (p.isCancel(appName)) {
-    p.cancel("Operation cancelled.");
-    process.exit(0);
-  }
-
-  const logoUrl = await p.text({
-    message: "Logo Image URL (Optional, leave empty for Limonify brand badge):",
-    placeholder: "https://example.com/logo.png",
-    defaultValue: loadedConfig?.branding?.logoUrl || "",
-  });
-
-  if (p.isCancel(logoUrl)) {
-    p.cancel("Operation cancelled.");
-    process.exit(0);
-  }
-
-  const branding: BrandingConfig = {
-    appName: appName as string,
-    logoUrl: (logoUrl as string)?.trim() || undefined,
-    logoWidth: loadedConfig?.branding?.logoWidth || 36,
-    logoHeight: loadedConfig?.branding?.logoHeight || 36,
-    supportUrl:
-      loadedConfig?.branding?.supportUrl || "https://limonify.com/support",
-    copyrightText: loadedConfig?.branding?.copyrightText,
-    socialLinks: loadedConfig?.branding?.socialLinks,
-  };
-
-  // 7. Output Directory
-  const outputDir = await p.text({
-    message: "Output directory for generated templates:",
-    placeholder: "./templates/emails",
-    defaultValue: loadedConfig?.outputDir || "./templates/emails",
-  });
-
-  if (p.isCancel(outputDir)) {
-    p.cancel("Operation cancelled.");
-    process.exit(0);
-  }
-
-  // 8. Generate Files (Multi-language aware)
-  const s = p.spinner();
-  s.start("Compiling localized email templates to HTML...");
-
-  const baseTargetDir = path.resolve(process.cwd(), outputDir as string);
-  const generatedFiles: string[] = [];
-  const isMultiLocale = selectedLocales.length > 1;
-
-  for (const locale of selectedLocales) {
-    const localeDir = isMultiLocale
-      ? path.join(baseTargetDir, locale)
-      : baseTargetDir;
-    if (!fs.existsSync(localeDir)) {
-      fs.mkdirSync(localeDir, { recursive: true });
-    }
-
-    for (const templateId of selectedTemplates as TemplateId[]) {
-      const meta = TEMPLATES_REGISTRY[templateId];
-      const customProps = (loadedConfig?.templates as any)?.[templateId] || {};
-      const html = await renderTemplateToHtml(
-        templateId,
-        theme,
-        engine,
-        branding,
-        customProps,
-        locale,
-      );
-      const filePath = path.join(localeDir, meta.filename);
-      fs.writeFileSync(filePath, html, "utf8");
-      const displayRelPath = path.relative(process.cwd(), filePath);
-      generatedFiles.push(displayRelPath);
-    }
-  }
-
-  s.stop(
-    pc.green(
-      `✓ Successfully generated ${generatedFiles.length} localized template file(s)!`,
-    ),
-  );
-
-  p.note(
-    generatedFiles.map((file) => `  ${pc.cyan("→")} ${file}`).join("\n"),
-    "Generated Localized Templates",
-  );
-
-  p.outro(
-    pc.bold(pc.yellow("Ready with Limonify Localized Email Templates! ✨")),
-  );
-}
+import { startPreviewServer } from "./preview/server.js";
 
 const program = new Command();
-program
-  .name("limonify-email")
-  .description("Limonify UI compatible dynamic HTML email templates generator")
-  .version("0.1.0")
-  .option("-c, --config <path>", "Path to custom limonify-email.config.json")
-  .option("--init", "Generate a starter limonify-email.config.json file")
-  .option("-p, --preview", "Start the live interactive preview web server")
-  .option("--port <number>", "Port for the preview server (default: 3000)")
-  .action((options) => runInteractiveCli(options));
 
 program
-  .command("preview")
-  .description("Start the live interactive preview web server")
-  .option(
-    "--port <number>",
-    "Port for the preview server (default: 3000)",
-    "3000",
+  .name("@limonify/email-templates")
+  .description(
+    "Production-grade, design-system-first email templates generator for Go and backend engines",
   )
-  .action((options) => {
-    startPreviewServer(parseInt(options.port, 10));
+  .version("1.0.0")
+  .option("-c, --config <path>", "Path to custom limonify-email.config.json")
+  .option("-o, --output <dir>", "Output directory for generated templates")
+  .option(
+    "--init",
+    "Generate starter limonify-email.config.json file in current working directory",
+  )
+  .option(
+    "--theme-css <path>",
+    "Path to your tailwind/CSS stylesheet with :root and .dark variables",
+  )
+  .option("--mode <mode>", "Color mode: dark or light", "dark")
+  .option("--engine <engine>", "Target template engine: go, handlebars, raw")
+  .option(
+    "--all",
+    "Generate all templates automatically without interactive prompts",
+  )
+  .option("--locales <locales...>", "Locales to generate (e.g. en tr de es fr)")
+  .action(async (options) => {
+    // 0. Handle --init directly
+    if (options.init) {
+      const target = path.join(process.cwd(), "limonify-email.config.json");
+      createStarterConfigFile(target);
+      console.log(
+        pc.green(
+          `\n✔ Created ${pc.bold("limonify-email.config.json")} in current working directory.\n`,
+        ),
+      );
+      process.exit(0);
+    }
+
+    // 0.1 Discover custom ./locales directory
+    loadCustomLocalesFromDir(path.join(process.cwd(), "locales"));
+
+    // Discover config file if present
+    const discoveredConfigPath =
+      options.config || findConfigFile(process.cwd());
+    let loadedConfig: LimonifyEmailConfig | null = null;
+
+    if (discoveredConfigPath) {
+      try {
+        loadedConfig = loadConfigFile(discoveredConfigPath);
+        // Register any custom translations in config
+        if (loadedConfig.translations) {
+          for (const [locale, dict] of Object.entries(
+            loadedConfig.translations,
+          )) {
+            registerCustomLocale(locale, dict);
+          }
+        }
+      } catch (err: any) {
+        console.error(pc.red(`\n✖ ${err.message}\n`));
+      }
+    }
+
+    // Header Intro
+    console.clear();
+    p.intro(
+      pc.bgYellow(pc.black(pc.bold(" @limonify/email-templates "))) +
+        pc.gray(" — High-craft Design System Emails"),
+    );
+
+    if (discoveredConfigPath) {
+      p.note(
+        `Loaded configuration from ${pc.cyan(path.relative(process.cwd(), discoveredConfigPath))}`,
+        "Config Detected",
+      );
+    }
+
+    // 1. Template selection
+    const templateChoices = Object.values(TEMPLATES_REGISTRY).map((tmpl) => ({
+      value: tmpl.id,
+      label: tmpl.name,
+      hint: tmpl.description,
+    }));
+
+    let selectedTemplateIds: TemplateId[] = [];
+    if (options.all) {
+      selectedTemplateIds = Object.keys(TEMPLATES_REGISTRY) as TemplateId[];
+    } else {
+      const selected = await p.multiselect({
+        message: "Which email templates would you like to generate?",
+        options: templateChoices as any,
+        required: true,
+      });
+
+      if (p.isCancel(selected)) {
+        p.cancel("Operation cancelled.");
+        process.exit(0);
+      }
+      selectedTemplateIds = selected as TemplateId[];
+    }
+
+    // 2. Language / i18n selection
+    const localeChoices = Object.entries(LOCALES_REGISTRY).map(
+      ([code, meta]) => ({
+        value: code,
+        label: `${meta.flag} ${meta.name} (${code})`,
+      }),
+    );
+
+    const initialLocales: string[] = options.locales ||
+      loadedConfig?.locales || ["en", "tr"];
+
+    let selectedLocales: string[] = [];
+    if (options.all || options.locales) {
+      selectedLocales = initialLocales;
+    } else {
+      const selected = await p.multiselect({
+        message: "Which languages / locales would you like to generate?",
+        options: localeChoices as any,
+        initialValues: initialLocales.filter(
+          (l: string) => LOCALES_REGISTRY[l],
+        ),
+        required: true,
+      });
+
+      if (p.isCancel(selected)) {
+        p.cancel("Operation cancelled.");
+        process.exit(0);
+      }
+      selectedLocales = selected as string[];
+    }
+
+    // 3. Engine selection
+    let engine: TemplateEngine =
+      (options.engine as TemplateEngine) || loadedConfig?.engine || "go";
+    if (!options.all && !options.engine && !loadedConfig?.engine) {
+      const selectedEngine = await p.select({
+        message: "Select target template syntax / engine:",
+        options: [
+          {
+            value: "go",
+            label: "Go (html/template)",
+            hint: "{{ .AppName }}, {{ .Code }}",
+          },
+          {
+            value: "handlebars",
+            label: "Handlebars / Mustache",
+            hint: "{{ appName }}, {{ code }}",
+          },
+          {
+            value: "raw",
+            label: "Raw Tokens / Unmodified",
+            hint: "React Email clean compiled HTML",
+          },
+        ],
+        initialValue: "go",
+      });
+
+      if (p.isCancel(selectedEngine)) {
+        p.cancel("Operation cancelled.");
+        process.exit(0);
+      }
+      engine = selectedEngine as TemplateEngine;
+    }
+
+    // 4. Mode Selection
+    let mode: "dark" | "light" =
+      (options.mode as "dark" | "light") || loadedConfig?.mode || "dark";
+    if (!options.all && !options.mode && !loadedConfig?.mode) {
+      const selectedMode = await p.select({
+        message: "Default color appearance for email clients:",
+        options: [
+          {
+            value: "dark",
+            label: "Dark Mode (Deep neutral / #0a0a0a surface)",
+          },
+          { value: "light", label: "Light Mode (Clean crisp white surface)" },
+        ],
+        initialValue: "dark",
+      });
+
+      if (p.isCancel(selectedMode)) {
+        p.cancel("Operation cancelled.");
+        process.exit(0);
+      }
+      mode = selectedMode as "dark" | "light";
+    }
+
+    // 5. Output directory
+    let outputDir =
+      options.output || loadedConfig?.outputDir || "./templates/emails";
+    if (!options.all && !options.output && !loadedConfig?.outputDir) {
+      const enteredDir = await p.text({
+        message: "Where should the generated HTML templates be saved?",
+        defaultValue: "./templates/emails",
+        placeholder: "./templates/emails",
+      });
+
+      if (p.isCancel(enteredDir)) {
+        p.cancel("Operation cancelled.");
+        process.exit(0);
+      }
+      outputDir = enteredDir as string;
+    }
+
+    // 6. Theme CSS integration (optional)
+    let theme: EmailTheme =
+      mode === "light"
+        ? { ...defaultLimonifyLightTheme }
+        : { ...defaultLimonifyDarkTheme };
+
+    const themeCssPath = options.themeCss || loadedConfig?.themeCssPath;
+    if (themeCssPath && fs.existsSync(themeCssPath)) {
+      try {
+        const cssContent = fs.readFileSync(themeCssPath, "utf8");
+        theme = parseCssTheme(cssContent, mode);
+      } catch (err: any) {
+        p.log.warn(
+          `Could not parse CSS theme from ${themeCssPath}: ${err.message}`,
+        );
+      }
+    }
+
+    if (loadedConfig?.theme) {
+      theme = { ...theme, ...loadedConfig.theme };
+    }
+
+    // Branding config
+    const branding: BrandingConfig = {
+      appName: "{{ .AppName }}",
+      logoUrl: "https://limeui.limonify.com/lime-ui.png?v=5",
+      logoWidth: 26,
+      logoHeight: 26,
+      ...loadedConfig?.branding,
+    };
+
+    // 7. Generation execution
+    const s = p.spinner();
+    const totalFiles = selectedTemplateIds.length * selectedLocales.length;
+    s.start(`Generating ${totalFiles} localized HTML template files...`);
+
+    const generatedFiles: string[] = [];
+    const resolvedOutputDir = path.resolve(process.cwd(), outputDir);
+
+    for (const locale of selectedLocales) {
+      const localeDir =
+        selectedLocales.length > 1
+          ? path.join(resolvedOutputDir, locale)
+          : resolvedOutputDir;
+      fs.mkdirSync(localeDir, { recursive: true });
+
+      for (const templateId of selectedTemplateIds) {
+        const meta = TEMPLATES_REGISTRY[templateId];
+        const customProps =
+          (loadedConfig?.templates as any)?.[templateId] || {};
+
+        const html = await renderTemplateToHtml(
+          templateId,
+          theme,
+          engine,
+          branding,
+          customProps,
+          locale,
+        );
+
+        const filePath = path.join(localeDir, meta.filename);
+        fs.writeFileSync(filePath, html, "utf8");
+        generatedFiles.push(path.relative(process.cwd(), filePath));
+      }
+    }
+
+    s.stop(`Successfully generated ${totalFiles} email template files.`);
+
+    p.note(
+      generatedFiles.map((f) => `  ${pc.green("✔")} ${f}`).join("\n"),
+      "Generated Files",
+    );
+
+    p.outro(
+      pc.bold(
+        `🚀 Ready! Run ${pc.cyan("bunx @limonify/email-templates preview")} to test in your browser.`,
+      ),
+    );
+  });
+
+// Add preview subcommand
+program
+  .command("preview")
+  .description("Start the live interactive preview studio")
+  .option("-p, --port <port>", "Port to listen on", "3000")
+  .action((cmdOptions) => {
+    const port = Number.parseInt(cmdOptions.port || "3000", 10);
+    startPreviewServer(port);
   });
 
 program.parse(process.argv);

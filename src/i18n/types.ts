@@ -213,4 +213,19 @@ export interface EmailLocaleDictionary {
     affectedLabel: string;
     buttonText: string;
   };
+  dailyNewsletter: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    topStoryLabel: string;
+    readMoreText: string;
+    curatedLabel: string;
+    footerNote: string;
+  };
+  announcement: {
+    badgeText: string;
+    heading: string;
+    description: string;
+    buttonText: string;
+  };
 }

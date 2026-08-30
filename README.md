@@ -48,40 +48,40 @@ bunx @limonify/email-templates preview
 
 ---
 
-## 📦 24 Production-Grade Templates
+## 📦 26 Production-Grade Templates
 
-| Category                       | Template Name              | Template ID             | Description                                                 |
-| :----------------------------- | :------------------------- | :---------------------- | :---------------------------------------------------------- |
-| **Authentication & Security**  | OTP / 2FA Verification     | `otp`                   | Segmented 6-digit PIN input with expiration notice          |
-|                                | Password Reset             | `password-reset`        | Secure password reset request with action button            |
-|                                | Magic Link Sign In         | `magic-link`            | One-click passwordless authentication link                  |
-|                                | Email Change Confirmation  | `email-change`          | Verification link to confirm new primary email address      |
-|                                | Security / Session Alert   | `notification`          | Session details card with IP, device, and location          |
-|                                | API Key Created            | `api-key-created`       | New token alert with prefix and revocation action           |
-|                                | 2FA Disabled Alert         | `two-factor-disabled`   | Critical security alert when 2FA is removed from account    |
-| **Developer & DevOps (CI/CD)** | Deployment Succeeded       | `deploy-succeeded`      | Production release notice with branch, commit, and duration |
-|                                | Deployment Failed Alert    | `deploy-failed`         | CI/CD build failure alert with error terminal code block    |
-|                                | Incident / Status Alert    | `incident-report`       | Operational incident update with impacted systems           |
-| **Billing & Subscriptions**    | Payment Receipt / Invoice  | `payment-completed`     | Itemized invoice breakdown with PDF download action         |
-|                                | Payment Failed / Dunning   | `payment-failed`        | Declined renewal payment notice with update billing action  |
-|                                | Trial Ending Reminder      | `trial-ending`          | Free trial expiration countdown and upgrade notice          |
-|                                | Subscription Canceled      | `subscription-canceled` | Cancellation notice with access period and reactivation     |
-| **Team & Collaboration**       | Team / Workspace Invite    | `team-invite`           | Member invitation with role assignment and accept button    |
-|                                | Comment / Mention Alert    | `comment-mention`       | Discussion mention with quote bubble and reply action       |
-|                                | Account Deletion Scheduled | `account-deletion`      | 30-day grace period notice with restore account button      |
-| **Product & Analytics**        | Welcome & Onboarding       | `welcome`               | New account onboarding with setup checklist                 |
-|                                | Usage Quota Warning        | `usage-limit-warning`   | Monthly quota limit alert (80%/100%) with progress meter    |
-|                                | Weekly Analytics Digest    | `weekly-digest`         | 7-day performance metrics and activity 2x2 grid             |
-|                                | Product Update / Changelog | `product-update`        | Release announcement with categorized feature tags          |
-| **E-Commerce & Orders**        | Order Shipped / Tracking   | `order-shipped`         | Delivery confirmation with tracking number and carrier      |
-|                                | Abandoned Cart Reminder    | `cart-abandonment`      | Reserved items reminder with complete checkout button       |
-|                                | Feedback / NPS Survey      | `feedback-request`      | Customer satisfaction feedback with 1-click survey          |
+| Category                       | Template Name              | Template ID             | Description                                                     |
+| :----------------------------- | :------------------------- | :---------------------- | :-------------------------------------------------------------- |
+| **Authentication & Security**  | OTP / 2FA Verification     | `otp`                   | Segmented 6-digit PIN input with expiration notice              |
+|                                | Password Reset             | `password-reset`        | Secure password reset request with action button                |
+|                                | Magic Link Sign In         | `magic-link`            | One-click passwordless authentication link                      |
+|                                | Email Change Confirmation  | `email-change`          | Verification link to confirm new primary email address          |
+|                                | Security / Session Alert   | `notification`          | Session details card with IP, device, and location              |
+|                                | General Announcement       | `announcement`          | Broadcast notifications, policy updates, and general notices    |
+|                                | API Key Created            | `api-key-created`       | New token alert with prefix and revocation action               |
+|                                | 2FA Disabled Alert         | `two-factor-disabled`   | Critical security alert when 2FA is removed from account        |
+| **Developer & DevOps (CI/CD)** | Deployment Succeeded       | `deploy-succeeded`      | Production release notice with branch, commit, and duration     |
+|                                | Deployment Failed Alert    | `deploy-failed`         | CI/CD build failure alert with error terminal code block        |
+|                                | Incident / Status Alert    | `incident-report`       | Operational incident update with impacted systems               |
+| **Newsletters & Content**      | Daily Tech Briefing        | `daily-newsletter`      | Morning curated tech newsletter with top story and reading time |
+|                                | Weekly Analytics Digest    | `weekly-digest`         | 7-day performance metrics and activity 2x2 grid                 |
+|                                | Product Update / Changelog | `product-update`        | Release announcement with categorized feature tags              |
+| **Billing & Subscriptions**    | Payment Receipt / Invoice  | `payment-completed`     | Itemized invoice breakdown with PDF download action             |
+|                                | Payment Failed / Dunning   | `payment-failed`        | Declined renewal payment notice with update billing action      |
+|                                | Trial Ending Reminder      | `trial-ending`          | Free trial expiration countdown and upgrade notice              |
+|                                | Subscription Canceled      | `subscription-canceled` | Cancellation notice with access period and reactivation         |
+| **Team & Collaboration**       | Team / Workspace Invite    | `team-invite`           | Member invitation with role assignment and accept button        |
+|                                | Comment / Mention Alert    | `comment-mention`       | Discussion mention with quote bubble and reply action           |
+|                                | Account Deletion Scheduled | `account-deletion`      | 30-day grace period notice with restore account button          |
+| **Product & Growth**           | Welcome & Onboarding       | `welcome`               | New account onboarding with setup checklist                     |
+|                                | Usage Quota Warning        | `usage-limit-warning`   | Monthly quota limit alert (80%/100%) with progress meter        |
+|                                | Feedback / NPS Survey      | `feedback-request`      | Customer satisfaction feedback with 1-click survey              |
+| **E-Commerce & Orders**        | Order Shipped / Tracking   | `order-shipped`         | Delivery confirmation with tracking number and carrier          |
+|                                | Abandoned Cart Reminder    | `cart-abandonment`      | Reserved items reminder with complete checkout button           |
 
 ---
 
 ## 🐹 Go Backend Integration
-
-The recommended, zero-overhead Go integration using standard library `embed.FS` and `html/template`:
 
 ```go
 package main
@@ -131,7 +131,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Type-safe data for OTP template
 	data := map[string]any{
 		"AppName":   "Limonify",
 		"Code":      "849201",
@@ -143,7 +142,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Rendered HTML:", len(html), "bytes")
+	fmt.Println("Rendered HTML length:", len(html), "bytes")
 }
 ```
 
@@ -158,27 +157,18 @@ import {
   registerCustomLocale,
 } from "@limonify/email-templates";
 
-// 1. (Optional) Register custom translations or overrides
-registerCustomLocale("it", {
-  otp: {
-    heading: "Codice di verifica",
-    expirationText: "Scade in {{ .ExpiresIn }}",
-  },
-});
-
-// 2. Render localized template to static HTML
+// Render localized template to static HTML
 const html = await renderTemplateToHtml(
-  "team-invite",
+  "daily-newsletter",
   defaultLimonifyDarkTheme,
   "handlebars", // or 'go' | 'raw'
   {
-    appName: "Limonify",
+    appName: "Limonify Daily",
     logoUrl: "https://limeui.limonify.com/lime-ui.png?v=5",
   },
   {
-    inviterName: "Sarah Connor",
-    workspaceName: "Engineering",
-    role: "Admin",
+    issueNumber: "#142",
+    date: "Monday, August 31, 2026",
   },
   "en", // locale
 );
@@ -223,41 +213,6 @@ Example `locales/it.json`:
         "heading": "Benvenuto in {{ .AppName }}"
       }
     }
-  }
-}
-```
-
-> **Smart Fallback**: Any template or translation key omitted in your custom locale automatically falls back to standard English.
-
----
-
-## ⚙️ Configuration Reference (`limonify-email.config.json`)
-
-Generate a starter configuration file with `bunx @limonify/email-templates --init`:
-
-```json
-{
-  "themeCssPath": "./src/styles.css",
-  "mode": "dark",
-  "engine": "go",
-  "locales": ["en", "tr", "de", "es", "fr"],
-  "outputDir": "./templates/emails",
-  "theme": {
-    "cardStyle": "double-frame",
-    "radius": "14px"
-  },
-  "branding": {
-    "appName": "{{ .AppName }}",
-    "logoUrl": "https://limeui.limonify.com/lime-ui.png?v=5",
-    "logoWidth": 26,
-    "logoHeight": 26,
-    "supportUrl": "https://example.com/support",
-    "supportText": "Have questions?",
-    "copyrightText": "© 2026 Limonify. All rights reserved.",
-    "socialLinks": [
-      { "platform": "github", "url": "https://github.com/limonify" },
-      { "platform": "twitter", "url": "https://twitter.com/limonify" }
-    ]
   }
 }
 ```

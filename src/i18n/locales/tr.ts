@@ -241,4 +241,22 @@ export const trLocale: EmailLocaleDictionary = {
     affectedLabel: "Etkilenen servisler",
     buttonText: "Canlı durum sayfasını aç",
   },
+  dailyNewsletter: {
+    badgeText: "Günlük Bülten",
+    heading: "Günlük Yazılım & Teknoloji Bülteni",
+    description:
+      "Yazılım mimarisi, açık kaynak ve teknoloji dünyasından günün öne çıkan gelişmeleri.",
+    topStoryLabel: "Günün Manşeti",
+    readMoreText: "Yazıyı oku",
+    curatedLabel: "Öne Çıkan Gelişmeler",
+    footerNote:
+      "Bu bülteni Limonify Daily bültenine abone olduğunuz için almaktasınız.",
+  },
+  announcement: {
+    badgeText: "Duyuru",
+    heading: "Önemli Güncelleme: {{ .Subject }}",
+    description:
+      "Merhaba {{ .UserName }}, {{ .AppName }} ile ilgili önemli bir duyurumuz bulunmaktadır:",
+    buttonText: "Detayları incele",
+  },
 };

@@ -372,6 +372,25 @@ export function getTemplatePropsForLocale(
         buttonText: dict.incidentReport.buttonText,
         supportText: dict.layout.supportText,
       };
+    case "daily-newsletter":
+      return {
+        badgeText: dict.dailyNewsletter.badgeText,
+        heading: dict.dailyNewsletter.heading,
+        description: dict.dailyNewsletter.description,
+        topStoryLabel: dict.dailyNewsletter.topStoryLabel,
+        readMoreText: dict.dailyNewsletter.readMoreText,
+        curatedLabel: dict.dailyNewsletter.curatedLabel,
+        footerNote: dict.dailyNewsletter.footerNote,
+        supportText: dict.layout.supportText,
+      };
+    case "announcement":
+      return {
+        badgeText: dict.announcement.badgeText,
+        heading: dict.announcement.heading,
+        description: dict.announcement.description,
+        buttonText: dict.announcement.buttonText,
+        supportText: dict.layout.supportText,
+      };
     default:
       return {};
   }

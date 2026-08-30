@@ -32,6 +32,8 @@ import { CommentMentionEmail } from "../templates/comment-mention.js";
 import { EmailChangeEmail } from "../templates/email-change.js";
 import { CartAbandonmentEmail } from "../templates/cart-abandonment.js";
 import { IncidentReportEmail } from "../templates/incident-report.js";
+import { DailyNewsletterEmail } from "../templates/daily-newsletter.js";
+import { AnnouncementEmail } from "../templates/announcement.js";
 
 export type TemplateId =
   | "otp"
@@ -39,6 +41,7 @@ export type TemplateId =
   | "magic-link"
   | "email-change"
   | "notification"
+  | "announcement"
   | "api-key-created"
   | "two-factor-disabled"
   | "payment-completed"
@@ -51,6 +54,7 @@ export type TemplateId =
   | "welcome"
   | "usage-limit-warning"
   | "weekly-digest"
+  | "daily-newsletter"
   | "deploy-succeeded"
   | "deploy-failed"
   | "incident-report"
@@ -102,6 +106,13 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
     description: "Session alert with device & IP details",
     filename: "notification.html",
     component: (props) => React.createElement(NotificationEmail, props),
+  },
+  announcement: {
+    id: "announcement",
+    name: "General Announcement / Broadcast",
+    description: "Platform announcements, policy updates, and general notices",
+    filename: "announcement.html",
+    component: (props) => React.createElement(AnnouncementEmail, props),
   },
   "api-key-created": {
     id: "api-key-created",
@@ -186,6 +197,13 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
     description: "7-day performance metrics and activity summary",
     filename: "weekly-digest.html",
     component: (props) => React.createElement(WeeklyDigestEmail, props),
+  },
+  "daily-newsletter": {
+    id: "daily-newsletter",
+    name: "Daily Tech Newsletter / Briefing",
+    description: "Curated daily briefing with top story and highlight links",
+    filename: "daily-newsletter.html",
+    component: (props) => React.createElement(DailyNewsletterEmail, props),
   },
   "deploy-succeeded": {
     id: "deploy-succeeded",

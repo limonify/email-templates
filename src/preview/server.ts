@@ -57,6 +57,13 @@ export function startPreviewServer(port: number = 3000) {
             workspaceName: "Engineering Core",
             projectName: "limonify-ui-native",
             role: "Admin",
+            subject: "Scheduled Infrastructure Upgrade",
+            message:
+              "We are rolling out zero-downtime distributed edge clusters across Frankfurt and North America to improve latency by up to 2x.",
+            actionUrl: "https://ui.limonify.com/infrastructure/upgrades",
+            noticeTitle: "Scheduled Maintenance Window",
+            noticeText:
+              "Upgrades will occur on Sunday, Sept 6 between 02:00 and 02:30 UTC with zero expected downtime.",
             inviteUrl: "https://ui.limonify.com/invites/accept",
             resetUrl: "https://ui.limonify.com/reset",
             dashboardUrl: "https://ui.limonify.com/dashboard",
@@ -79,6 +86,11 @@ export function startPreviewServer(port: number = 3000) {
             version: "v2.4.0",
             daysLeft: "3",
             cartTotal: "$199.00",
+            issueNumber: "#142",
+            date:
+              locale === "tr"
+                ? "Pazartesi, 31 Ağustos 2026"
+                : "Monday, August 31, 2026",
             scheduledDate: "September 30, 2026",
             retryDate: "September 2, 2026",
             incidentTitle: "Investigating elevated API latency in EU region",
@@ -87,7 +99,7 @@ export function startPreviewServer(port: number = 3000) {
             branch: "main",
             commitHash: "8af2614",
             commitMessage:
-              "feat: add OKLCH mathematical color parser and 24 email templates",
+              "feat: add OKLCH mathematical color parser and 26 email templates",
             duration: "38s",
             exitStatus: "Command failed with exit code 1 (tsc)",
             errorSnippet:
@@ -118,19 +130,8 @@ export function startPreviewServer(port: number = 3000) {
             paymentMethod: "Visa •••• 4242",
             subtotal: "$40.83",
             tax: "$8.17",
-            date:
-              locale === "tr"
-                ? "30 Ağustos 2026"
-                : locale === "de"
-                  ? "30. August 2026"
-                  : "August 30, 2026",
             receiptUrl: "https://ui.limonify.com/invoices/94820",
             title: locale === "tr" ? "Güvenlik Bildirimi" : "Security notice",
-            message:
-              locale === "tr"
-                ? "Hesabınıza yeni bir macOS Safari oturumu açıldı. İşlemi siz yapmadıysanız şifrenizi yenileyin."
-                : "A new session was initiated on your account from Safari on macOS in San Francisco, CA.",
-            actionUrl: "https://ui.limonify.com/security",
             sessionDetails: {
               device: "MacBook Pro (macOS 15.4)",
               browser: "Safari 18.3",
@@ -372,12 +373,12 @@ export function startPreviewServer(port: number = 3000) {
         <img class="brand-img" src="https://limeui.limonify.com/lime-ui.png?v=5" alt="Limonify UI" />
         <div class="brand-title">Limonify Email</div>
       </div>
-      <div class="badge-pill">24 TEMPLATES</div>
+      <div class="badge-pill">26 TEMPLATES</div>
     </div>
     <div class="templates-list">
-      <div class="section-label">Authentication & Security (7)</div>
+      <div class="section-label">Authentication & Security (8)</div>
       ${templatesList
-        .slice(0, 7)
+        .slice(0, 8)
         .map(
           (t, i) => `
         <div class="nav-item ${i === 0 ? "active" : ""}" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">
@@ -390,7 +391,7 @@ export function startPreviewServer(port: number = 3000) {
 
       <div class="section-label" style="margin-top: 8px;">Developer & DevOps (3)</div>
       ${templatesList
-        .slice(17, 20)
+        .slice(19, 22)
         .map(
           (t) => `
         <div class="nav-item" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">
@@ -403,7 +404,7 @@ export function startPreviewServer(port: number = 3000) {
 
       <div class="section-label" style="margin-top: 8px;">Billing & Subscriptions (4)</div>
       ${templatesList
-        .slice(7, 11)
+        .slice(8, 12)
         .map(
           (t) => `
         <div class="nav-item" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">
@@ -416,7 +417,7 @@ export function startPreviewServer(port: number = 3000) {
 
       <div class="section-label" style="margin-top: 8px;">Team & Collaboration (3)</div>
       ${templatesList
-        .slice(11, 14)
+        .slice(12, 15)
         .map(
           (t) => `
         <div class="nav-item" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">
@@ -427,9 +428,10 @@ export function startPreviewServer(port: number = 3000) {
         )
         .join("")}
 
-      <div class="section-label" style="margin-top: 8px;">Product & Analytics (3)</div>
+      <div class="section-label" style="margin-top: 8px;">Newsletters & Digests (3)</div>
       ${templatesList
-        .slice(14, 17)
+        .slice(17, 19)
+        .concat([templatesList[15]])
         .map(
           (t) => `
         <div class="nav-item" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">
@@ -440,9 +442,9 @@ export function startPreviewServer(port: number = 3000) {
         )
         .join("")}
 
-      <div class="section-label" style="margin-top: 8px;">E-Commerce & Updates (4)</div>
+      <div class="section-label" style="margin-top: 8px;">E-Commerce & Feedback (5)</div>
       ${templatesList
-        .slice(20)
+        .slice(22)
         .map(
           (t) => `
         <div class="nav-item" data-id="${t.id}" onclick="selectTemplate('${t.id}', this)">

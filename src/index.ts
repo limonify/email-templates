@@ -19,12 +19,13 @@ export * from "./components/device-session-card.js";
 export * from "./components/gradient-glow.js";
 export * from "./components/info-card.js";
 
-// Templates (24 Production-Grade SaaS Templates)
+// Templates (26 Production-Grade SaaS & Newsletter Templates)
 export * from "./templates/otp.js";
 export * from "./templates/password-reset.js";
 export * from "./templates/magic-link.js";
 export * from "./templates/email-change.js";
 export * from "./templates/notification.js";
+export * from "./templates/announcement.js";
 export * from "./templates/api-key-created.js";
 export * from "./templates/two-factor-disabled.js";
 export * from "./templates/payment-completed.js";
@@ -37,6 +38,7 @@ export * from "./templates/account-deletion.js";
 export * from "./templates/welcome.js";
 export * from "./templates/usage-limit-warning.js";
 export * from "./templates/weekly-digest.js";
+export * from "./templates/daily-newsletter.js";
 export * from "./templates/deploy-succeeded.js";
 export * from "./templates/deploy-failed.js";
 export * from "./templates/incident-report.js";

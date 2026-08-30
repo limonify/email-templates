@@ -234,4 +234,22 @@ export const frLocale: EmailLocaleDictionary = {
     affectedLabel: "Services impactés",
     buttonText: "Voir la page de statut",
   },
+  dailyNewsletter: {
+    badgeText: "Briefing Quotidien",
+    heading: "Briefing Quotidien Tech & Ingénierie",
+    description:
+      "Votre sélection quotidienne d’architecture logicielle et d’open-source.",
+    topStoryLabel: "À la Une",
+    readMoreText: "Lire l’article",
+    curatedLabel: "Actualités Marquantes",
+    footerNote:
+      "Vous recevez cette lettre d’information car vous êtes abonné à Limonify Daily.",
+  },
+  announcement: {
+    badgeText: "Annonce",
+    heading: "Mise à jour importante : {{ .Subject }}",
+    description:
+      "Bonjour {{ .UserName }}, nous avons une annonce importante concernant {{ .AppName }} :",
+    buttonText: "En savoir plus",
+  },
 };
