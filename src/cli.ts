@@ -25,8 +25,20 @@ import {
   loadConfigFile,
   createStarterConfigFile,
 } from "./config/loader.js";
+import { startPreviewServer } from "./preview/server.js";
 
-async function runInteractiveCli(options: { config?: string; init?: boolean }) {
+async function runInteractiveCli(options: {
+  config?: string;
+  init?: boolean;
+  preview?: boolean;
+  port?: string;
+}) {
+  if (options.preview) {
+    const port = options.port ? parseInt(options.port, 10) : 3000;
+    startPreviewServer(port);
+    return;
+  }
+
   console.clear();
   p.intro(
     `${pc.bgYellow(pc.black(" @limonify/email-templates "))} ${pc.dim("v0.1.0")}`,
@@ -347,6 +359,20 @@ program
   .version("0.1.0")
   .option("-c, --config <path>", "Path to custom limonify-email.config.json")
   .option("--init", "Generate a starter limonify-email.config.json file")
+  .option("-p, --preview", "Start the live interactive preview web server")
+  .option("--port <number>", "Port for the preview server (default: 3000)")
   .action((options) => runInteractiveCli(options));
+
+program
+  .command("preview")
+  .description("Start the live interactive preview web server")
+  .option(
+    "--port <number>",
+    "Port for the preview server (default: 3000)",
+    "3000",
+  )
+  .action((options) => {
+    startPreviewServer(parseInt(options.port, 10));
+  });
 
 program.parse(process.argv);
