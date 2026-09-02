@@ -1,6 +1,6 @@
 {
   "name": "@limonify/email-templates",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Design-system-first email template suite for Go, Node, and Python backends — crafted with @limonify/ui tokens, OKLCH parser, and multi-language support",
   "type": "module",
   "main": "./dist/index.js",
