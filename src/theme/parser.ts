@@ -62,42 +62,96 @@ export function parseCssColorToHex(str: string): string | null {
   return null;
 }
 
+function isBaseSelector(selector: string): boolean {
+  return (
+    selector === ":root" ||
+    selector === ".light" ||
+    /^\[data-theme=["']?light["']?\]$/.test(selector)
+  );
+}
+
+function isDarkSelector(selector: string): boolean {
+  return (
+    selector === ".dark" || /^\[data-theme=["']?dark["']?\]$/.test(selector)
+  );
+}
+
+/**
+ * Collect `--var: value` declarations from every rule whose selector list is
+ * accepted. Selectors are matched exactly, so a compiled Tailwind rule like
+ * `.dark\:bg-red:is(.dark *)` never passes for `.dark`.
+ */
+function collectVars(
+  css: string,
+  accept: (selectors: string[]) => boolean,
+): Map<string, string> {
+  const vars = new Map<string, string>();
+  // `[^{}]*` cannot cross a brace, so group 1 is always the text between the
+  // previous brace and this one - i.e. the selector of a leaf rule.
+  const blockRegex = /([^{}]*)\{([^{}]*)\}/g;
+  let block: RegExpExecArray | null;
+
+  while ((block = blockRegex.exec(css)) !== null) {
+    const selectors = (block[1] ?? "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    if (!accept(selectors)) continue;
+
+    // The trailing `;` is optional - minified stylesheets drop it on the
+    // last declaration of a block.
+    const varRegex = /--([a-zA-Z0-9_-]+)\s*:\s*([^;]+)(?:;|$)/g;
+    let decl: RegExpExecArray | null;
+    while ((decl = varRegex.exec(block[2] ?? "")) !== null) {
+      const key = decl[1]?.trim();
+      // Values may wrap across lines (e.g. a long --font-sans stack).
+      const val = decl[2]?.replace(/\s+/g, " ").trim();
+      if (key && val) {
+        vars.set(key, val);
+      }
+    }
+  }
+
+  return vars;
+}
+
+/**
+ * Normalise a CSS length for inline email styles. rem is unreliable across
+ * mail clients, so it is pinned to px at the 16px root default.
+ */
+function toEmailLength(value: string, fallbackValue: string): string {
+  const trimmed = value.trim();
+
+  const rem = trimmed.match(/^([\d.]+)rem$/i);
+  if (rem?.[1]) return `${Math.round(parseFloat(rem[1]) * 16)}px`;
+  if (/^[\d.]+px$/i.test(trimmed)) return trimmed;
+  if (/^[\d.]+$/.test(trimmed)) return `${trimmed}px`;
+
+  // calc(), clamp(), var() chains and friends cannot be resolved statically.
+  return fallbackValue;
+}
+
 export function parseCssTheme(
   cssContent: string,
   mode: "light" | "dark" = "dark",
 ): EmailTheme {
   const fallback =
     mode === "dark" ? defaultLimonifyDarkTheme : defaultLimonifyLightTheme;
-  const vars = new Map<string, string>();
 
-  // Capture target block: .dark vs :root / .light
-  let targetBlock = cssContent;
+  // Comments first: a stylesheet header that documents an override with
+  // `:root { --color-primary: ... }` would otherwise be read as the real
+  // token block, and every token would silently fall back.
+  const css = cssContent.replace(/\/\*[\s\S]*?\*\//g, "");
 
+  // `:root` / `.light` carries the full token set; `.dark` only redefines what
+  // differs. Dark mode is therefore the base with the dark block layered over
+  // it - reading `.dark` alone drops root-only tokens like --radius.
+  const vars = collectVars(css, (selectors) => selectors.some(isBaseSelector));
   if (mode === "dark") {
-    const darkMatch =
-      cssContent.match(/\.dark\s*\{([^}]+)\}/) ||
-      cssContent.match(/\[data-theme=["']dark["']\]\s*\{([^}]+)\}/);
-    if (darkMatch && darkMatch[1]) {
-      targetBlock = darkMatch[1];
-    }
-  } else {
-    const rootMatch =
-      cssContent.match(/:root\s*\{([^}]+)\}/) ||
-      cssContent.match(/\.light\s*\{([^}]+)\}/) ||
-      cssContent.match(/\[data-theme=["']light["']\]\s*\{([^}]+)\}/);
-    if (rootMatch && rootMatch[1]) {
-      targetBlock = rootMatch[1];
-    }
-  }
-
-  // Regex to extract --var-name: value;
-  const varRegex = /--([a-zA-Z0-9_-]+)\s*:\s*([^;]+);/g;
-  let match: RegExpExecArray | null;
-
-  while ((match = varRegex.exec(targetBlock)) !== null) {
-    const key = match[1]?.trim();
-    const val = match[2]?.trim();
-    if (key && val) {
+    const darkVars = collectVars(css, (selectors) =>
+      selectors.some(isDarkSelector),
+    );
+    for (const [key, val] of darkVars) {
       vars.set(key, val);
     }
   }
@@ -114,8 +168,8 @@ export function parseCssTheme(
     return defaultHex;
   };
 
-  const radius =
-    vars.get("radius") || vars.get("border-radius") || fallback.radius;
+  const radius = vars.get("radius") || vars.get("border-radius");
+  const fontSans = vars.get("font-sans");
 
   return {
     name: `limonify-${mode}`,
@@ -151,10 +205,18 @@ export function parseCssTheme(
       fallback.mutedForeground,
     ),
     accent: toHex(["accent", "brand", "secondary"], fallback.accent),
-    accentForeground: toHex(["accent-foreground"], fallback.accentForeground),
-    radius:
-      radius.includes("px") || radius.includes("rem") ? radius : `${radius}px`,
-    fontFamily: vars.get("font-sans") || fallback.fontFamily,
+    accentForeground: toHex(
+      ["accent-foreground", "secondary-foreground"],
+      fallback.accentForeground,
+    ),
+    radius: radius ? toEmailLength(radius, fallback.radius) : fallback.radius,
+    // Compiled stylesheets quote family names with `"`, which would be
+    // escaped to `&quot;` inside an inline style attribute - normalise to `'`.
+    // A bare `var(...)` is an unresolvable self-reference, not a stack.
+    fontFamily:
+      fontSans && !fontSans.startsWith("var(")
+        ? fontSans.replace(/"/g, "'")
+        : fallback.fontFamily,
     cardStyle: "double-frame",
   };
 }

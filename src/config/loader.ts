@@ -40,8 +40,9 @@ export function createStarterConfigFile(
     locales: ["en", "tr"],
     outputDir: "./templates/emails",
     theme: {
+      // No `radius` here on purpose: it would override --radius from
+      // themeCssPath and pull the card off the design system's scale.
       cardStyle: "double-frame",
-      radius: "10px",
       containerWidth: "520px",
       headingSize: "18px",
       headingWeight: "600",
