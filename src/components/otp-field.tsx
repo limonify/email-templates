@@ -45,6 +45,9 @@ export const OTPField: React.FC<OTPFieldProps> = ({
             {digits.map((digit, idx) => (
               <td
                 key={idx}
+                // Six 42px slots plus spacing need ~294px; the media query in
+                // EmailLayout shrinks them so they still fit a 320px screen.
+                className="lm-otp-slot"
                 style={{
                   width: resolvedSlotWidth,
                   height: resolvedSlotHeight,
@@ -56,6 +59,7 @@ export const OTPField: React.FC<OTPFieldProps> = ({
                 }}
               >
                 <span
+                  className="lm-otp-digit"
                   style={{
                     fontSize: digitSize,
                     fontWeight: "600",
@@ -78,6 +82,7 @@ export const OTPField: React.FC<OTPFieldProps> = ({
   // Dynamic template variable {{ .Code }}
   return (
     <div
+      className="lm-wrap"
       style={{
         backgroundColor: theme.surface,
         borderRadius: slotRadius,
@@ -86,6 +91,11 @@ export const OTPField: React.FC<OTPFieldProps> = ({
         margin: "20px 0",
         textAlign: "left",
         display: "inline-block",
+        // A template variable such as `{{ .Code }}` is wider than a six-digit
+        // code and has no break opportunity of its own.
+        maxWidth: "100%",
+        overflowWrap: "anywhere",
+        wordBreak: "break-word",
       }}
     >
       <span

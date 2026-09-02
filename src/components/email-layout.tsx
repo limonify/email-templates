@@ -43,6 +43,29 @@ export interface EmailLayoutProps {
   theme: EmailTheme;
 }
 
+/**
+ * Long unbreakable strings - a file path in a stack trace, an API key, a
+ * tracking number, a signed URL - set the min-content width of the table they
+ * sit in, which forces the whole message wider than the screen. `anywhere` is
+ * what shrinks min-content; `break-word` only wraps once the box is already
+ * too small, so it does not stop the overflow. Both properties inherit, so
+ * declaring them on the card covers everything inside it.
+ */
+const WRAP_STYLE = {
+  overflowWrap: "anywhere",
+  wordBreak: "break-word",
+} as const;
+
+const RESPONSIVE_CSS = `
+.lm-wrap{overflow-wrap:anywhere;word-break:break-word}
+@media only screen and (max-width:480px){
+.lm-body{padding:20px 0 !important}
+.lm-container{padding:0 10px !important}
+.lm-card{padding:20px 16px !important}
+.lm-otp-slot{width:34px !important;height:40px !important}
+.lm-otp-digit{font-size:17px !important;letter-spacing:0 !important}
+}`.replace(/\n/g, "");
+
 export const EmailLayout: React.FC<EmailLayoutProps> = ({
   previewText,
   appName = "Limonify",
@@ -88,9 +111,18 @@ export const EmailLayout: React.FC<EmailLayoutProps> = ({
 
   return (
     <Html>
-      <Head />
+      <Head>
+        {/* Without this, Gmail on Android and several webmail clients lay the
+            message out at desktop width and then zoom out, shrinking the text. */}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <style
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: RESPONSIVE_CSS }}
+        />
+      </Head>
       {previewText ? <Preview>{previewText}</Preview> : null}
       <Body
+        className="lm-body"
         style={{
           backgroundColor: theme.background,
           fontFamily: theme.fontFamily,
@@ -100,6 +132,7 @@ export const EmailLayout: React.FC<EmailLayoutProps> = ({
         }}
       >
         <Container
+          className="lm-container"
           style={{
             maxWidth: resolvedContainerWidth,
             margin: "0 auto",
@@ -132,11 +165,13 @@ export const EmailLayout: React.FC<EmailLayoutProps> = ({
               }}
             >
               <div
+                className="lm-card lm-wrap"
                 style={{
                   backgroundColor: innerBg,
                   borderRadius: resolvedInnerRadius,
                   border: `1px solid ${innerBorder}`,
                   padding: resolvedCardPadding,
+                  ...WRAP_STYLE,
                 }}
               >
                 {children}
@@ -144,21 +179,31 @@ export const EmailLayout: React.FC<EmailLayoutProps> = ({
             </Section>
           ) : resolvedCardStyle === "single" ? (
             <Section
+              className="lm-card lm-wrap"
               style={{
                 backgroundColor: innerBg,
                 borderRadius: resolvedInnerRadius,
                 border: `1px solid ${innerBorder}`,
                 padding: resolvedCardPadding,
+                ...WRAP_STYLE,
               }}
             >
               {children}
             </Section>
           ) : (
-            <Section style={{ padding: "8px 0" }}>{children}</Section>
+            <Section
+              className="lm-wrap"
+              style={{ padding: "8px 0", ...WRAP_STYLE }}
+            >
+              {children}
+            </Section>
           )}
 
           {/* Footer Section */}
-          <Section style={{ marginTop: "28px", textAlign: "left" }}>
+          <Section
+            className="lm-wrap"
+            style={{ marginTop: "28px", textAlign: "left", ...WRAP_STYLE }}
+          >
             {supportUrl ? (
               <Text
                 style={{
