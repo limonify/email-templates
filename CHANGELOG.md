@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.1](https://github.com/limonify/email-templates/compare/email-templates-v1.1.0...email-templates-v1.1.1) (2026-09-02)
+
+
+### Bug Fixes
+
+* **layout:** stop templates overflowing on narrow screens ([1ba6ee8](https://github.com/limonify/email-templates/commit/1ba6ee86b11ead2a02753e6e617aa3dae943a733))
+* **theme:** follow [@import](https://github.com/import) and default to the app-level palette ([bd9d3c1](https://github.com/limonify/email-templates/commit/bd9d3c1933e19836bbbec0fc0fffd046a839f251))
+* **theme:** read real @limonify/ui tokens instead of falling back ([fbaf4e8](https://github.com/limonify/email-templates/commit/fbaf4e818db530a8a2460191de37fe7babcba00a))
+
 ## [1.1.0](https://github.com/limonify/email-templates/compare/email-templates-v1.0.3...email-templates-v1.1.0) (2026-08-30)
 
 
