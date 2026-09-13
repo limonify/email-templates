@@ -34,6 +34,7 @@ jobs:
           registry-url: "https://registry.npmjs.org"
 
       - name: Sync package.json version from Release Tag
+        working-directory: packages/email-templates
         run: |
           TAG="${{ github.event.release.tag_name || github.ref_name }}"
           VERSION="${TAG#v}"
@@ -47,14 +48,16 @@ jobs:
 
       - name: Run verification checks
         run: |
-          bun run typecheck
+          bun run --filter @limonify/email-templates typecheck
           bun run format:check
-          bun test
+          bun run --filter @limonify/email-templates test
 
       - name: Build standalone bundle
+        working-directory: packages/email-templates
         run: bun run build
 
       - name: Publish to NPM
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        working-directory: packages/email-templates
         run: npm publish --access public

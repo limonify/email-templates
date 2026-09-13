@@ -6,13 +6,12 @@
     "moduleResolution": "Bundler",
     "moduleDetection": "force",
     "jsx": "react-jsx",
+    "jsxImportSource": "react",
     "strict": true,
     "skipLibCheck": true,
-    "jsxImportSource": "react",
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
-    "types": ["@types/bun", "@types/node"]
-  },
-  "include": ["src/**/*", "bin/**/*"]
+    "noEmit": true
+  }
 }

@@ -47,15 +47,17 @@ jobs:
         run: bun install --frozen-lockfile || bun install
 
       - name: Build standalone bundle
+        working-directory: packages/email-templates
         run: bun run build
 
       - name: Run verification checks
         run: |
-          bun run typecheck
+          bun run --filter @limonify/email-templates typecheck
           bun run format:check
-          bun test
+          bun run --filter @limonify/email-templates test
 
       - name: Publish to NPM
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        working-directory: packages/email-templates
         run: npm publish --access public

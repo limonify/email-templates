@@ -26,11 +26,21 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile || bun install
 
-      - name: Typecheck
-        run: bun run typecheck
-
       - name: Check code formatting
         run: bun run format:check
 
-      - name: Run test suite
+      - name: Typecheck package
+        run: bun run --filter @limonify/email-templates typecheck
+
+      - name: Run package test suite
+        working-directory: packages/email-templates
         run: bun test
+
+      - name: Verify browser-safe entry has no node dependencies
+        run: bun run --filter @limonify/email-templates check:web
+
+      - name: Typecheck studio app
+        run: bun run --filter @limonify/studio typecheck
+
+      - name: Build studio app
+        run: bun run --filter @limonify/studio build

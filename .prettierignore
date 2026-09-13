@@ -1,8 +1,10 @@
 node_modules
 dist
+**/dist
 out
 coverage
 CHANGELOG.md
 templates/
+apps/*/src/routeTree.gen.ts
 bun.lock
 .github/
