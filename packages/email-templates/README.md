@@ -22,6 +22,7 @@
 - ⚡ **Zero-Runtime Overhead in Production**: Pre-compiled localized templates (`/en/otp.html`, `/tr/otp.html`) allow Go, Python, and Node.js backends to render in `<1 ms` without runtime template compilation.
 - 🌐 **Built-in Multi-Language (i18n)**: Out-of-the-box translations for **5 languages** (English, Turkish, German, Spanish, French) + 1-step custom language additions via `./locales/*.json`.
 - 🖥️ **Live Interactive Preview Studio**: Built-in visual dashboard (`bun run preview`) with Dark/Light toggle, language switcher, mobile/desktop viewports, and 1-click HTML copy.
+- 🧩 **Drag & Drop Editor**: Compose your own templates from the same blocks the built-ins are made of, save them as JSON, and render them with the CLI — see [Custom templates](#-custom-templates-json-documents).
 
 ---
 
@@ -217,6 +218,59 @@ Example `locales/it.json`:
   }
 }
 ```
+
+---
+
+## 🧩 Custom Templates (JSON Documents)
+
+The 26 built-in templates cover the common transactional and newsletter cases.
+Anything else is authored in the **Email Studio** editor
+(`bun run dev` in the monorepo root, then `/editor`): drag blocks onto the
+email, edit them in the inspector, and export the result as a `.json` document.
+
+**Blocks** (all read their colors, radii and type scale from your theme tokens,
+so a custom template stays visually identical to the built-ins):
+
+| Group   | Blocks                                                                                                                   |
+| ------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Content | Heading, Paragraph, Badge, Image, Image + text, Gallery, Columns, Info card, Link list, Bullet list, Quote, Social links |
+| Actions | Button, Button group                                                                                                     |
+| Data    | OTP code, Code box, Steps, Device session, Summary table, Progress meter                                                 |
+| Layout  | Divider, Spacer, Accent glow, Raw HTML                                                                                   |
+
+That document is the source of truth — render it to HTML exactly as the editor
+previewed it:
+
+```bash
+# One document to stdout
+bunx @limonify/email-templates doc ./templates/order-recap.json
+
+# Write a file, targeting a specific engine
+bunx @limonify/email-templates doc ./templates/order-recap.json \
+  -o ./templates/emails/en/order-recap.html --engine go
+
+# A whole directory of documents
+bunx @limonify/email-templates doc ./templates/*.json -o ./templates/emails/en
+```
+
+Programmatically, the same renderer is exported from the package:
+
+```ts
+import { parseDocument, renderDocumentToHtml } from "@limonify/email-templates";
+
+const doc = parseDocument(
+  JSON.parse(await Bun.file("order-recap.json").text()),
+);
+const html = await renderDocumentToHtml(doc, { engine: "go" });
+```
+
+Documents use the shared `EmailLayout` shell, so branding, card style, footer
+and dark/light behaviour match the built-in templates. Any text field may
+contain backend placeholders (`{{ .UserName }}`); `--engine` rewrites them for
+Handlebars or raw tokens just like the built-ins.
+
+> Importing from a browser? Use the `@limonify/email-templates/web` entry point,
+> which excludes everything that touches the filesystem.
 
 ---
 

@@ -13,7 +13,7 @@ import {
   defaultLimonifyDarkTheme,
   defaultLimonifyLightTheme,
 } from "./theme/defaults.js";
-import { parseCssTheme } from "./theme/parser.js";
+import { parseCssFile } from "./theme/parser-node.js";
 import type {
   EmailTheme,
   TemplateEngine,
@@ -25,14 +25,17 @@ import {
   loadConfigFile,
   createStarterConfigFile,
 } from "./config/loader.js";
-import {
-  LOCALES_REGISTRY,
-  loadCustomLocalesFromDir,
-  registerCustomLocale,
-} from "./i18n/index.js";
+import { LOCALES_REGISTRY, registerCustomLocale } from "./i18n/index.js";
+import { loadCustomLocalesFromDir } from "./i18n/load-dir.js";
 import { startPreviewServer } from "./preview/server.js";
+import { parseDocument } from "./document/presets.js";
+import { renderDocumentToHtml } from "./document/render.js";
 
 const program = new Command();
+
+// Without this, the root `-o, --output` option swallows the same flag when it
+// appears after a subcommand name (`doc file.json -o out.html`).
+program.enablePositionalOptions();
 
 program
   .name("@limonify/email-templates")
@@ -245,8 +248,10 @@ program
     const themeCssPath = options.themeCss || loadedConfig?.themeCssPath;
     if (themeCssPath && fs.existsSync(themeCssPath)) {
       try {
-        const cssContent = fs.readFileSync(themeCssPath, "utf8");
-        theme = parseCssTheme(cssContent, mode);
+        // parseCssFile, not parseCssTheme: a stylesheet that starts with
+        // `@import '@limonify/ui/styles.css'` carries most of its tokens in
+        // the imported file, and reading the entry file alone drops them.
+        theme = parseCssFile(themeCssPath, mode);
       } catch (err: any) {
         p.log.warn(
           `Could not parse CSS theme from ${themeCssPath}: ${err.message}`,
@@ -325,6 +330,64 @@ program
   .action((cmdOptions) => {
     const port = Number.parseInt(cmdOptions.port || "3000", 10);
     startPreviewServer(port);
+  });
+
+// Render templates authored in the studio editor (JSON documents)
+program
+  .command("doc")
+  .argument(
+    "<files...>",
+    "One or more .json documents exported from the editor",
+  )
+  .description("Render editor-authored JSON templates to HTML")
+  .option(
+    "-o, --output <path>",
+    "Output .html file (single input) or directory (multiple inputs)",
+  )
+  .option("--engine <engine>", "Target engine: go, handlebars, raw", "go")
+  .action(async (files: string[], cmdOptions) => {
+    const engine = cmdOptions.engine as TemplateEngine;
+    const multiple = files.length > 1;
+
+    for (const file of files) {
+      const resolved = path.resolve(process.cwd(), file);
+      if (!fs.existsSync(resolved)) {
+        console.error(pc.red(`✖ Document not found: ${file}`));
+        process.exitCode = 1;
+        continue;
+      }
+
+      try {
+        const doc = parseDocument(
+          JSON.parse(fs.readFileSync(resolved, "utf8")),
+        );
+        const html = await renderDocumentToHtml(doc, { engine });
+
+        if (!cmdOptions.output && !multiple) {
+          process.stdout.write(html);
+          continue;
+        }
+
+        const target =
+          cmdOptions.output && !multiple && cmdOptions.output.endsWith(".html")
+            ? path.resolve(process.cwd(), cmdOptions.output)
+            : path.join(
+                path.resolve(process.cwd(), cmdOptions.output || "."),
+                `${path.basename(resolved, ".json")}.html`,
+              );
+
+        fs.mkdirSync(path.dirname(target), { recursive: true });
+        fs.writeFileSync(target, html, "utf8");
+        const relative = path.relative(process.cwd(), target);
+        console.log(
+          pc.green(`✔ ${relative.startsWith("..") ? target : relative}`) +
+            pc.gray(` (${doc.blocks.length} blocks, ${engine})`),
+        );
+      } catch (err: any) {
+        console.error(pc.red(`✖ ${file}: ${err.message}`));
+        process.exitCode = 1;
+      }
+    }
   });
 
 program.parse(process.argv);

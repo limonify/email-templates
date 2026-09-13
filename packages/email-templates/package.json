@@ -5,6 +5,17 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    },
+    "./web": {
+      "types": "./src/web.ts",
+      "default": "./dist/web.js"
+    },
+    "./package.json": "./package.json"
+  },
   "bin": {
     "limonify-email": "./dist/cli.js",
     "email-templates": "./dist/cli.js"
@@ -19,7 +30,7 @@
   ],
   "scripts": {
     "dev": "bun run src/cli.ts",
-    "build": "bun build src/cli.ts --outfile dist/cli.js --target node && bun build src/index.ts --outfile dist/index.js --target node",
+    "build": "bun build src/cli.ts --outfile dist/cli.js --target node && bun build src/index.ts --outfile dist/index.js --target node && bun build src/web.ts --outfile dist/web.js --target browser --external react --external react-dom --external @react-email/components --external @react-email/render",
     "preview": "bun run src/preview/server.ts",
     "start": "bun run src/cli.ts",
     "test": "bun test",
@@ -27,7 +38,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "bump": "bumpp",
-    "release": "bumpp --commit --tag --push"
+    "release": "bumpp --commit --tag --push",
+    "check:web": "bun build src/web.ts --target browser --outdir /tmp/limonify-web-check"
   },
   "repository": {
     "type": "git",

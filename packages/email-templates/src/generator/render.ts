@@ -63,8 +63,29 @@ export type TemplateId =
   | "feedback-request"
   | "product-update";
 
+export type TemplateGroup =
+  | "auth"
+  | "billing"
+  | "team"
+  | "lifecycle"
+  | "devops"
+  | "newsletter"
+  | "commerce";
+
+/** Sidebar order and labels for any UI that lists the registry. */
+export const TEMPLATE_GROUPS: Array<{ id: TemplateGroup; label: string }> = [
+  { id: "auth", label: "Authentication & Security" },
+  { id: "billing", label: "Billing & Subscriptions" },
+  { id: "lifecycle", label: "Onboarding & Announcements" },
+  { id: "team", label: "Team & Collaboration" },
+  { id: "devops", label: "Developer & DevOps" },
+  { id: "newsletter", label: "Newsletters & Digests" },
+  { id: "commerce", label: "E-Commerce" },
+];
+
 export interface TemplateMetadata {
   id: TemplateId;
+  group: TemplateGroup;
   name: string;
   description: string;
   filename: string;
@@ -74,6 +95,7 @@ export interface TemplateMetadata {
 export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   otp: {
     id: "otp",
+    group: "auth",
     name: "OTP / Verification Code",
     description: "Sign in and 2FA authentication code",
     filename: "otp.html",
@@ -81,6 +103,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "password-reset": {
     id: "password-reset",
+    group: "auth",
     name: "Password Reset",
     description: "Password reset request with secure action button",
     filename: "password-reset.html",
@@ -88,6 +111,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "magic-link": {
     id: "magic-link",
+    group: "auth",
     name: "Magic Link Sign In",
     description: "One-click passwordless login link",
     filename: "magic-link.html",
@@ -95,6 +119,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "email-change": {
     id: "email-change",
+    group: "auth",
     name: "Email Change Confirmation",
     description: "Verification link to confirm new primary email address",
     filename: "email-change.html",
@@ -102,6 +127,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   notification: {
     id: "notification",
+    group: "auth",
     name: "Security Alert / Notification",
     description: "Session alert with device & IP details",
     filename: "notification.html",
@@ -109,6 +135,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   announcement: {
     id: "announcement",
+    group: "lifecycle",
     name: "General Announcement / Broadcast",
     description: "Platform announcements, policy updates, and general notices",
     filename: "announcement.html",
@@ -116,6 +143,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "api-key-created": {
     id: "api-key-created",
+    group: "auth",
     name: "API Key Created Alert",
     description: "New API token notice with prefix and revocation button",
     filename: "api-key-created.html",
@@ -123,6 +151,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "two-factor-disabled": {
     id: "two-factor-disabled",
+    group: "auth",
     name: "2FA Disabled Alert",
     description: "Critical security alert when 2FA is removed from account",
     filename: "two-factor-disabled.html",
@@ -130,6 +159,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "payment-completed": {
     id: "payment-completed",
+    group: "billing",
     name: "Payment Receipt / Invoice",
     description: "Itemized invoice summary with download action",
     filename: "payment-completed.html",
@@ -137,6 +167,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "payment-failed": {
     id: "payment-failed",
+    group: "billing",
     name: "Payment Failed / Dunning",
     description: "Declined payment notice with card update action",
     filename: "payment-failed.html",
@@ -144,6 +175,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "trial-ending": {
     id: "trial-ending",
+    group: "billing",
     name: "Trial Ending Reminder",
     description: "Free trial expiration countdown and upgrade notice",
     filename: "trial-ending.html",
@@ -151,6 +183,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "subscription-canceled": {
     id: "subscription-canceled",
+    group: "billing",
     name: "Subscription Canceled",
     description: "Cancellation notice with access expiry date and reactivation",
     filename: "subscription-canceled.html",
@@ -158,6 +191,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "team-invite": {
     id: "team-invite",
+    group: "team",
     name: "Team / Workspace Invitation",
     description: "Invite member to team or workspace with role assignment",
     filename: "team-invite.html",
@@ -165,6 +199,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "comment-mention": {
     id: "comment-mention",
+    group: "team",
     name: "Comment / Mention Notification",
     description: "Alert when tagged in a discussion or issue thread",
     filename: "comment-mention.html",
@@ -172,6 +207,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "account-deletion": {
     id: "account-deletion",
+    group: "auth",
     name: "Account Deletion Scheduled",
     description: "Grace period notice with cancellation button",
     filename: "account-deletion.html",
@@ -179,6 +215,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   welcome: {
     id: "welcome",
+    group: "lifecycle",
     name: "Welcome & Onboarding",
     description: "New account confirmation with setup checklist",
     filename: "welcome.html",
@@ -186,6 +223,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "usage-limit-warning": {
     id: "usage-limit-warning",
+    group: "billing",
     name: "Usage Quota Warning",
     description: "Monthly quota threshold alert with progress meter",
     filename: "usage-limit-warning.html",
@@ -193,6 +231,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "weekly-digest": {
     id: "weekly-digest",
+    group: "newsletter",
     name: "Weekly Analytics Digest",
     description: "7-day performance metrics and activity summary",
     filename: "weekly-digest.html",
@@ -200,6 +239,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "daily-newsletter": {
     id: "daily-newsletter",
+    group: "newsletter",
     name: "Daily Tech Newsletter / Briefing",
     description: "Curated daily briefing with top story and highlight links",
     filename: "daily-newsletter.html",
@@ -207,6 +247,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "deploy-succeeded": {
     id: "deploy-succeeded",
+    group: "devops",
     name: "Deployment Succeeded",
     description: "Production release notice with branch, commit, and duration",
     filename: "deploy-succeeded.html",
@@ -214,6 +255,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "deploy-failed": {
     id: "deploy-failed",
+    group: "devops",
     name: "Deployment Failed Alert",
     description: "CI/CD build failure notice with error snippet and log link",
     filename: "deploy-failed.html",
@@ -221,6 +263,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "incident-report": {
     id: "incident-report",
+    group: "devops",
     name: "Incident / Status Alert",
     description: "System operational status update and affected systems",
     filename: "incident-report.html",
@@ -228,6 +271,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "order-shipped": {
     id: "order-shipped",
+    group: "commerce",
     name: "Order Shipped / Tracking",
     description: "Delivery confirmation with tracking number and carrier",
     filename: "order-shipped.html",
@@ -235,6 +279,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "cart-abandonment": {
     id: "cart-abandonment",
+    group: "commerce",
     name: "Abandoned Cart Reminder",
     description: "Reminder for unpurchased items with checkout link",
     filename: "cart-abandonment.html",
@@ -242,6 +287,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "feedback-request": {
     id: "feedback-request",
+    group: "lifecycle",
     name: "Feedback / NPS Survey",
     description: "Customer satisfaction survey request with 1-click rating",
     filename: "feedback-request.html",
@@ -249,6 +295,7 @@ export const TEMPLATES_REGISTRY: Record<TemplateId, TemplateMetadata> = {
   },
   "product-update": {
     id: "product-update",
+    group: "lifecycle",
     name: "Product Update / Changelog",
     description: "Release announcement with feature tags and changelog link",
     filename: "product-update.html",
