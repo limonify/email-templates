@@ -1,6 +1,6 @@
 {
   "packages": {
-    ".": {
+    "packages/email-templates": {
       "release-type": "node",
       "package-name": "@limonify/email-templates",
       "changelog-path": "CHANGELOG.md"

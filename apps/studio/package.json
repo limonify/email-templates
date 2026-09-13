@@ -1,0 +1,29 @@
+{
+  "name": "@limonify/studio",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@limonify/email-templates": "workspace:*",
+    "@tanstack/react-router": "^1.135.0",
+    "@tanstack/react-store": "^0.7.7",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "@vitejs/plugin-react": "^5.1.0",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^7.0.2",
+    "vite": "^7.2.6"
+  }
+}

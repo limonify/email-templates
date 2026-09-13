@@ -4,6 +4,7 @@ node_modules
 # output
 out
 dist
+**/dist
 *.tgz
 
 # code coverage
@@ -25,6 +26,9 @@ logs
 .eslintcache
 .cache
 *.tsbuildinfo
+.vite
+**/.vite
+**/.tanstack
 
 # IntelliJ based IDEs
 .idea
@@ -34,4 +38,5 @@ logs
 
 # generated output templates & config
 /templates/
+packages/email-templates/templates/
 limonify-email.config.json

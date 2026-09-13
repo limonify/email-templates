@@ -1,11 +1,17 @@
+// Browser-safe entry point.
+//
+// Everything reachable from here must stay free of `node:*` imports and Bun
+// globals: the studio app renders emails client-side from this module, and
+// `bun run check:web` fails the build if a node dependency creeps back in.
+// Node-only modules (config loader, CSS file reader, preview server, locale
+// directory loader) are re-exported from `index.ts` instead.
+
 export * from "./theme/types.js";
 export * from "./theme/defaults.js";
 export * from "./theme/parser.js";
-export * from "./config/loader.js";
 export * from "./i18n/index.js";
 export * from "./generator/render.js";
 export * from "./generator/adapters.js";
-export * from "./preview/server.js";
 
 // Limonify UI Email Component Suite
 export * from "./components/email-layout.js";
@@ -46,3 +52,9 @@ export * from "./templates/order-shipped.js";
 export * from "./templates/cart-abandonment.js";
 export * from "./templates/feedback-request.js";
 export * from "./templates/product-update.js";
+
+// Document model (editor-authored templates)
+export * from "./document/types.js";
+export * from "./document/blocks.js";
+export * from "./document/render.js";
+export * from "./document/presets.js";

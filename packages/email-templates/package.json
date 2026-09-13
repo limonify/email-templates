@@ -1,0 +1,88 @@
+{
+  "name": "@limonify/email-templates",
+  "version": "1.1.1",
+  "description": "Design-system-first email template suite for Go, Node, and Python backends — crafted with @limonify/ui tokens, OKLCH parser, and multi-language support",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    },
+    "./web": {
+      "types": "./src/web.ts",
+      "default": "./dist/web.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "limonify-email": "./dist/cli.js",
+    "email-templates": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "src",
+    "index.ts",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "scripts": {
+    "dev": "bun run src/cli.ts",
+    "build": "bun build src/cli.ts --outfile dist/cli.js --target node && bun build src/index.ts --outfile dist/index.js --target node && bun build src/web.ts --outfile dist/web.js --target browser --external react --external react-dom --external @react-email/components --external @react-email/render",
+    "preview": "bun run src/preview/server.ts",
+    "start": "bun run src/cli.ts",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "bump": "bumpp",
+    "release": "bumpp --commit --tag --push",
+    "check:web": "bun build src/web.ts --target browser --outdir /tmp/limonify-web-check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/limonify/email-templates.git"
+  },
+  "bugs": {
+    "url": "https://github.com/limonify/email-templates/issues"
+  },
+  "homepage": "https://ui.limonify.com",
+  "keywords": [
+    "limonify",
+    "email",
+    "email-templates",
+    "react-email",
+    "golang-templates",
+    "html-email",
+    "design-system",
+    "i18n",
+    "newsletter",
+    "transactional-email"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "limonify",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bun": "^1.4.0",
+    "@types/node": "^26.4.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "bumpp": "^12.2.2",
+    "prettier": "^3.9.6",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.7.0",
+    "@react-email/components": "^1.0.12",
+    "@react-email/render": "^2.1.0",
+    "colord": "^2.10.0",
+    "commander": "^15.0.0",
+    "picocolors": "^1.1.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  }
+}

@@ -1,0 +1,279 @@
+<div align="center">
+  <img src="https://raw.githubusercontent.com/limonify/email-templates/main/.github/assets/logo.png" width="64" height="64" alt="Limonify Logo" />
+  <h1>@limonify/email-templates</h1>
+  <p><strong>Design-system-first, production-grade email template suite for Go, Node.js, and Python backends.</strong></p>
+  <p>Crafted with authentic <code>@limonify/ui</code> design tokens, mathematical OKLCH-to-sRGB CSS parsing, and built-in multi-language (i18n) support.</p>
+
+  <p>
+    <a href="https://www.npmjs.com/package/@limonify/email-templates"><img src="https://img.shields.io/npm/v/@limonify/email-templates?style=flat&color=facc15" alt="npm version" /></a>
+    <a href="https://github.com/limonify/email-templates"><img src="https://img.shields.io/badge/TypeScript-7.0-blue?style=flat" alt="TypeScript 7" /></a>
+    <a href="https://github.com/limonify/email-templates"><img src="https://img.shields.io/badge/Engine-Go%20%7C%20Node%20%7C%20Python-emerald?style=flat" alt="Supported Engines" /></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-gray?style=flat" alt="License" /></a>
+  </p>
+</div>
+
+---
+
+## ✨ Features
+
+- 🖤 **Authentic Limonify UI Craft**: Precision double-frame cards, segmented OTP inputs, quiet status dot badges, and monochrome aesthetics matching `@limonify/ui` web and native components.
+- 📧 **Bulletproof Email Client Compatibility**: Compiled down to table-based inline-styled HTML tested on Gmail, Apple Mail, Outlook (Word engine), and mobile email clients.
+- 🎨 **Mathematical OKLCH CSS Color Parser**: Automatically translates modern CSS custom properties (`oklch(14.5% 0 0)`) from your theme stylesheet into cross-client static `#HEX` colors.
+- ⚡ **Zero-Runtime Overhead in Production**: Pre-compiled localized templates (`/en/otp.html`, `/tr/otp.html`) allow Go, Python, and Node.js backends to render in `<1 ms` without runtime template compilation.
+- 🌐 **Built-in Multi-Language (i18n)**: Out-of-the-box translations for **5 languages** (English, Turkish, German, Spanish, French) + 1-step custom language additions via `./locales/*.json`.
+- 🖥️ **Live Interactive Preview Studio**: Built-in visual dashboard (`bun run preview`) with Dark/Light toggle, language switcher, mobile/desktop viewports, and 1-click HTML copy.
+- 🧩 **Drag & Drop Editor**: Compose your own templates from the same blocks the built-ins are made of, save them as JSON, and render them with the CLI — see [Custom templates](#-custom-templates-json-documents).
+
+---
+
+## 🚀 Quick Start
+
+Run the interactive CLI generator without installing:
+
+```bash
+# Using Bun
+bunx @limonify/email-templates
+
+# Using NPM / NPX
+npx @limonify/email-templates
+
+# Using PNPM
+pnpm dlx @limonify/email-templates
+```
+
+Or launch the **Live Interactive Preview Studio** at `http://localhost:3000`:
+
+```bash
+bunx @limonify/email-templates preview
+```
+
+---
+
+## 📦 26 Production-Grade Templates
+
+| Category                       | Template Name              | Template ID             | Description                                                     |
+| :----------------------------- | :------------------------- | :---------------------- | :-------------------------------------------------------------- |
+| **Authentication & Security**  | OTP / 2FA Verification     | `otp`                   | Segmented 6-digit PIN input with expiration notice              |
+|                                | Password Reset             | `password-reset`        | Secure password reset request with action button                |
+|                                | Magic Link Sign In         | `magic-link`            | One-click passwordless authentication link                      |
+|                                | Email Change Confirmation  | `email-change`          | Verification link to confirm new primary email address          |
+|                                | Security / Session Alert   | `notification`          | Session details card with IP, device, and location              |
+|                                | General Announcement       | `announcement`          | Broadcast notifications, policy updates, and general notices    |
+|                                | API Key Created            | `api-key-created`       | New token alert with prefix and revocation action               |
+|                                | 2FA Disabled Alert         | `two-factor-disabled`   | Critical security alert when 2FA is removed from account        |
+| **Developer & DevOps (CI/CD)** | Deployment Succeeded       | `deploy-succeeded`      | Production release notice with branch, commit, and duration     |
+|                                | Deployment Failed Alert    | `deploy-failed`         | CI/CD build failure alert with error terminal code block        |
+|                                | Incident / Status Alert    | `incident-report`       | Operational incident update with impacted systems               |
+| **Newsletters & Content**      | Daily Tech Briefing        | `daily-newsletter`      | Morning curated tech newsletter with top story and reading time |
+|                                | Weekly Analytics Digest    | `weekly-digest`         | 7-day performance metrics and activity 2x2 grid                 |
+|                                | Product Update / Changelog | `product-update`        | Release announcement with categorized feature tags              |
+| **Billing & Subscriptions**    | Payment Receipt / Invoice  | `payment-completed`     | Itemized invoice breakdown with PDF download action             |
+|                                | Payment Failed / Dunning   | `payment-failed`        | Declined renewal payment notice with update billing action      |
+|                                | Trial Ending Reminder      | `trial-ending`          | Free trial expiration countdown and upgrade notice              |
+|                                | Subscription Canceled      | `subscription-canceled` | Cancellation notice with access period and reactivation         |
+| **Team & Collaboration**       | Team / Workspace Invite    | `team-invite`           | Member invitation with role assignment and accept button        |
+|                                | Comment / Mention Alert    | `comment-mention`       | Discussion mention with quote bubble and reply action           |
+|                                | Account Deletion Scheduled | `account-deletion`      | 30-day grace period notice with restore account button          |
+| **Product & Growth**           | Welcome & Onboarding       | `welcome`               | New account onboarding with setup checklist                     |
+|                                | Usage Quota Warning        | `usage-limit-warning`   | Monthly quota limit alert (80%/100%) with progress meter        |
+|                                | Feedback / NPS Survey      | `feedback-request`      | Customer satisfaction feedback with 1-click survey              |
+| **E-Commerce & Orders**        | Order Shipped / Tracking   | `order-shipped`         | Delivery confirmation with tracking number and carrier          |
+|                                | Abandoned Cart Reminder    | `cart-abandonment`      | Reserved items reminder with complete checkout button           |
+
+---
+
+## 🐹 Go Backend Integration
+
+```go
+package main
+
+import (
+	"bytes"
+	"embed"
+	"fmt"
+	"html/template"
+	"log"
+)
+
+//go:embed templates/emails/*/*.html
+var emailTemplatesFS embed.FS
+
+type MailService struct {
+	tmpl *template.Template
+}
+
+func NewMailService() (*MailService, error) {
+	t, err := template.ParseFS(emailTemplatesFS, "templates/emails/*/*.html")
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse email templates: %w", err)
+	}
+	return &MailService{tmpl: t}, nil
+}
+
+func (s *MailService) RenderEmail(locale, templateName string, data any) (string, error) {
+	var buf bytes.Buffer
+	targetPath := fmt.Sprintf("%s/%s.html", locale, templateName)
+
+	err := s.tmpl.ExecuteTemplate(&buf, targetPath, data)
+	if err != nil {
+		// Fallback to English if locale template is not found
+		fallbackPath := fmt.Sprintf("en/%s.html", templateName)
+		err = s.tmpl.ExecuteTemplate(&buf, fallbackPath, data)
+		if err != nil {
+			return "", err
+		}
+	}
+	return buf.String(), nil
+}
+
+func main() {
+	mailer, err := NewMailService()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	data := map[string]any{
+		"AppName":   "Limonify",
+		"Code":      "849201",
+		"ExpiresIn": "10 minutes",
+	}
+
+	html, err := mailer.RenderEmail("en", "otp", data)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Rendered HTML length:", len(html), "bytes")
+}
+```
+
+---
+
+## 🟢 Node.js / TypeScript Integration
+
+```ts
+import {
+  renderTemplateToHtml,
+  defaultLimonifyDarkTheme,
+  registerCustomLocale,
+} from "@limonify/email-templates";
+
+// Render localized template to static HTML
+const html = await renderTemplateToHtml(
+  "daily-newsletter",
+  defaultLimonifyDarkTheme,
+  "handlebars", // or 'go' | 'raw'
+  {
+    appName: "Limonify Daily",
+    logoUrl:
+      "https://raw.githubusercontent.com/limonify/email-templates/main/.github/assets/logo.png",
+  },
+  {
+    issueNumber: "#142",
+    date: "Monday, August 31, 2026",
+  },
+  "en", // locale
+);
+```
+
+---
+
+## 🌐 Multi-Language (i18n) & Custom Locales
+
+### Method 1: Adding JSON files to `./locales/` (Zero Config)
+
+Create a `locales/` directory in your project root and drop any `{lang}.json` file:
+
+```text
+my-project/
+├── locales/
+│   ├── it.json    # Italian overrides
+│   └── ja.json    # Japanese overrides
+└── limonify-email.config.json
+```
+
+Example `locales/it.json`:
+
+```json
+{
+  "otp": {
+    "badgeText": "Sicurezza",
+    "heading": "Codice di verifica",
+    "description": "Usa questo codice monouso per completare l'accesso:"
+  }
+}
+```
+
+### Method 2: Via `limonify-email.config.json`
+
+```json
+{
+  "locales": ["en", "tr", "de", "es", "fr", "it"],
+  "translations": {
+    "it": {
+      "welcome": {
+        "heading": "Benvenuto in {{ .AppName }}"
+      }
+    }
+  }
+}
+```
+
+---
+
+## 🧩 Custom Templates (JSON Documents)
+
+The 26 built-in templates cover the common transactional and newsletter cases.
+Anything else is authored in the **Email Studio** editor
+(`bun run dev` in the monorepo root, then `/editor`): drag blocks onto the
+email, edit them in the inspector, and export the result as a `.json` document.
+
+**Blocks** (all read their colors, radii and type scale from your theme tokens,
+so a custom template stays visually identical to the built-ins):
+
+| Group   | Blocks                                                                                                                   |
+| ------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Content | Heading, Paragraph, Badge, Image, Image + text, Gallery, Columns, Info card, Link list, Bullet list, Quote, Social links |
+| Actions | Button, Button group                                                                                                     |
+| Data    | OTP code, Code box, Steps, Device session, Summary table, Progress meter                                                 |
+| Layout  | Divider, Spacer, Accent glow, Raw HTML                                                                                   |
+
+That document is the source of truth — render it to HTML exactly as the editor
+previewed it:
+
+```bash
+# One document to stdout
+bunx @limonify/email-templates doc ./templates/order-recap.json
+
+# Write a file, targeting a specific engine
+bunx @limonify/email-templates doc ./templates/order-recap.json \
+  -o ./templates/emails/en/order-recap.html --engine go
+
+# A whole directory of documents
+bunx @limonify/email-templates doc ./templates/*.json -o ./templates/emails/en
+```
+
+Programmatically, the same renderer is exported from the package:
+
+```ts
+import { parseDocument, renderDocumentToHtml } from "@limonify/email-templates";
+
+const doc = parseDocument(
+  JSON.parse(await Bun.file("order-recap.json").text()),
+);
+const html = await renderDocumentToHtml(doc, { engine: "go" });
+```
+
+Documents use the shared `EmailLayout` shell, so branding, card style, footer
+and dark/light behaviour match the built-in templates. Any text field may
+contain backend placeholders (`{{ .UserName }}`); `--engine` rewrites them for
+Handlebars or raw tokens just like the built-ins.
+
+> Importing from a browser? Use the `@limonify/email-templates/web` entry point,
+> which excludes everything that touches the filesystem.
+
+---
+
+## 📄 License
+
+MIT © [limonify](https://ui.limonify.com)
