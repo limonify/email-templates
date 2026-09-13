@@ -4,6 +4,13 @@
 # The studio is a static bundle served by apps/studio/server.ts; nothing here
 # needs a database, a runtime secret or a custom port - the server reads PORT.
 
+# Without this, nixpacks defaults to nodejs_18, which nixpkgs has removed now
+# that it is end-of-life - the build dies in the setup phase before it reaches
+# any of our commands. Vite runs under bun here; node is only present because
+# some tool binaries still shell out to it.
+[phases.setup]
+nixPkgs = ["bun", "nodejs_22"]
+
 [phases.install]
 cmds = ["bun install --frozen-lockfile"]
 
