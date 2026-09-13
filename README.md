@@ -63,17 +63,14 @@ server that handles the fallback:
 
 ```bash
 bun install
-bun run --filter @limonify/studio build
-bun run --filter @limonify/studio start     # PORT=3000 by default
+bun run build     # both workspaces
+bun run start     # serves apps/studio/dist, PORT=3000 by default
 ```
 
-In Dokploy: _Application_ → Build Type **Railpack** (or Nixpacks), with
-
-| Setting       | Value                                     |
-| ------------- | ----------------------------------------- |
-| Build Command | `bun run --filter @limonify/studio build` |
-| Start Command | `bun run --filter @limonify/studio start` |
-| Port          | `3000`                                    |
+In Dokploy: _Application_ → Build Type **Nixpacks**, and that is the whole
+setup - `nixpacks.toml` carries the install, build and start commands, so there
+is nothing to type into the UI. Point the domain at container port `3000` (or
+set `PORT`).
 
 **With Docker**, if you would rather serve it through nginx:
 

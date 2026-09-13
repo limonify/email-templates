@@ -1,0 +1,14 @@
+# Deployment platforms that build with nixpacks (Dokploy, Railway, Coolify)
+# read this instead of exposing build and start fields in their UI.
+#
+# The studio is a static bundle served by apps/studio/server.ts; nothing here
+# needs a database, a runtime secret or a custom port - the server reads PORT.
+
+[phases.install]
+cmds = ["bun install --frozen-lockfile"]
+
+[phases.build]
+cmds = ["bun run --filter @limonify/studio build"]
+
+[start]
+cmd = "bun run --filter @limonify/studio start"
