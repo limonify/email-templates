@@ -1,0 +1,10 @@
+.git
+.github
+**/node_modules
+**/dist
+**/.vite
+**/.tanstack
+templates
+coverage
+*.log
+.DS_Store
