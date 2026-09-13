@@ -11,6 +11,7 @@
     "dev:cli": "bun run --filter @limonify/email-templates dev",
     "preview": "bun run --filter @limonify/email-templates preview",
     "build": "bun run --filter '*' build",
+    "start": "bun run --filter @limonify/studio start",
     "typecheck": "bun run --filter '*' typecheck",
     "test": "bun run --filter @limonify/email-templates test",
     "format": "prettier --write .",
