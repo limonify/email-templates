@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/limonify/email-templates/compare/email-templates-v1.1.1...email-templates-v1.2.0) (2026-09-13)
+
+
+### Features
+
+* monorepo + drag & drop email studio ([67274ed](https://github.com/limonify/email-templates/commit/67274eda4e472b59b9c12e8a9b5038006f313dc9))
+* **package:** add the editor document model and a browser-safe entry ([928814e](https://github.com/limonify/email-templates/commit/928814e232458bf3b1439146c7ea894041de84aa))
+
 ## [1.1.1](https://github.com/limonify/email-templates/compare/email-templates-v1.1.0...email-templates-v1.1.1) (2026-09-02)
 
 
